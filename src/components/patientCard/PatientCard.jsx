@@ -1,7 +1,8 @@
 const PatientCard = () => {
   return (
-    <div> PatientCard </div>
+    <div className="componente1"> PatientCard </div>
   )
 }
 
-export default PatientCard
+export default PatientCard 
+
