@@ -3,9 +3,10 @@ import PatientListItem from '../patientItem/PatientListItem'
 import { PATIENTS } from '../../data'
 
 const PatientList = () => {
-  return (
-    <div className={styles.patientlist}>
-      
+  
+  return (  
+    <div className={styles.patientlist}>  
+    
       {PATIENTS.map((paciente) => (
         <PatientListItem 
           key={paciente.id}

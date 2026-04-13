@@ -11,7 +11,10 @@ function App() {
         <MyNavBar />
 
         <div className="main-container-0">
-          <PatientList />
+       
+          <div className='search-and-patient-list-container'>
+            <PatientList />
+          </div>
 
           <div className="patient-info-container">
             

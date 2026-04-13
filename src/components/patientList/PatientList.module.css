@@ -1,6 +1,9 @@
 .patientlist {
-  width: 380px;
+  display: flex;
+  flex-direction: column;
   background: #FFB3B3;
-  height: 100%;
   overflow-y: auto;
+  gap: 20px;
+  width: 380px;
+  padding: 20px 5px;
 }

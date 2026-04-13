@@ -29,9 +29,14 @@ body {
   gap: 20px;
 }
 
+.search-and-patient-list-container {
+  height: 100%;
+}
+
 .patient-info-container {
   display: flex;
   flex-direction: column;
   gap: 15px;
   flex: 1
 }
+
