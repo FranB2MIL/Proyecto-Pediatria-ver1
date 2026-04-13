@@ -1,0 +1,10 @@
+.patientcard {
+  flex: 1;
+  background: #B3D9FF;
+  width: 100%;
+}
+
+.patientcard-content {
+  display: flex;
+  background-color: red;
+}
