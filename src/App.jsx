@@ -13,7 +13,8 @@ function App() {
         <div className="main-container-0">
           <PatientList />
 
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <div className="patient-info-container">
+            
             <div style={{ flex: 5, background: '#B3D9FF' }}>
               <PatientCard />
             </div>

@@ -28,3 +28,10 @@ body {
   padding: 20px 15px;
   gap: 20px;
 }
+
+.patient-info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 1
+}
