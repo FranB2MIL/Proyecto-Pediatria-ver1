@@ -1,7 +1,11 @@
+import styles from './PatientList.module.css'
+import PatientListItem from '../patientItem/PatientListItem'
+
 const PatientList = () => {
   return (
-    <div style={{ width: '380px', background: '#FFB3B3', height: '100%' }}>
+    <div className={styles.patientlist}>
       Lista
+      <PatientListItem/>
     </div>
   )
 }

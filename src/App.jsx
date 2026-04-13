@@ -12,7 +12,7 @@ function App() {
 
         <MyNavBar/>
         
-        <div style={{ display: 'flex', flex: 1 }}>
+        <div className='main-container-0'>
           
           <PatientList/>
           

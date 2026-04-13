@@ -21,3 +21,10 @@
 body {
   margin: 0;
 }
+
+.main-container-0 {
+  display: flex;
+  flex: 1;
+  padding: 20px 15px;
+  gap: 20px;
+}
