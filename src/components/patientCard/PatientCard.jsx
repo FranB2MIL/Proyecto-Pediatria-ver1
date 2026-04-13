@@ -1,6 +1,8 @@
 const PatientCard = () => {
   return (
-    <div className="componente1"> PatientCard </div>
+    <div style={{ flex: 1, background: '#B3D9FF', height: '100%' }}>
+      Carta paciente
+    </div>
   )
 }
 

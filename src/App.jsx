@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PatientCard from './components/patientCard/PatientCard'
 import MyNavBar from './components/myNavBar/MyNavBar'
-
+import PatientList from './components/patientList/patientList'
 
 
 function App() {
@@ -14,13 +14,9 @@ function App() {
         
         <div style={{ display: 'flex', flex: 1 }}>
           
-          <div style={{ width: '380px', background: '#FFB3B3' }}>
-            Lista
-          </div>
+          <PatientList/>
           
-          <div style={{ flex: 1, background: '#B3D9FF' }}>
-            Carta paciente
-          </div>
+          <PatientCard/>
         
         </div>
 
