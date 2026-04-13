@@ -27,4 +27,5 @@ export const PATIENTS = [
     sexo: "M",
     dni: "08.930.441",
   },
+  
 ]

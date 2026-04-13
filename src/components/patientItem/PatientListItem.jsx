@@ -1,9 +1,10 @@
 import styles from './PatientListItem.module.css'
 
-const PatientListItem = () => {
+const PatientListItem = ({ nombre, edad, sexo, dni }) => {
   return (
     <div className={styles.patientlistitem}>
-      <p>Paciente 1</p>
+      <p>{nombre}</p>
+      <p>{edad} años - {sexo} - {dni}</p>
     </div>
   )
 }
