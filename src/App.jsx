@@ -12,9 +12,7 @@ function App() {
 
         <div className="main-container-0">
        
-          <div className='search-and-patient-list-container'>
-            <PatientList />
-          </div>
+          <PatientList />
 
           <div className="patient-info-container">
             
