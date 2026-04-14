@@ -1,7 +1,7 @@
 .patientlist {
   display: flex;
   flex-direction: column;
-  background: #FFB3B3;
+  background: lightcoral;
   overflow-y: auto;
   gap: 20px;
   width: 380px;
