@@ -2,7 +2,7 @@ import styles from './PatientList.module.css'
 import PatientListItem from '../patientItem/PatientListItem'
 import { PATIENTS } from '../../data'
 
-const PatientList = () => {
+const PatientList = ({onSelectPatient}) => {
   
   return (  
     <div className={styles.patientlist}>  
@@ -10,10 +10,8 @@ const PatientList = () => {
       {PATIENTS.map((paciente) => (
         <PatientListItem 
           key={paciente.id}
-          nombre={paciente.nombre}
-          edad={paciente.edad}
-          sexo={paciente.sexo}
-          dni={paciente.dni}
+          patient={paciente}
+          onSelectPatient={onSelectPatient}
         />
       ))}
     </div>
