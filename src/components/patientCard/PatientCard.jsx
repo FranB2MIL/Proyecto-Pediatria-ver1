@@ -1,15 +1,16 @@
 import styles from './PatientCard.module.css'
 
-const PatientCard = () => {
+const PatientCard = ({ nombre, apellido, dni, fechaNacimiento, obraSocial }) => {
   return (
     <div className={styles.patientcard}>
-      <h2>Paciente 1</h2>
-      <p>Edad: 5 años</p>
-      <p>Diagnóstico: Resfriado común</p>
-      <p>Tratamiento: Descanso, líquidos y medicamentos para aliviar los síntomas</p>
+      <h2>{nombre} {apellido}</h2>
+      <p>DNI: {dni}</p>
+      <p>Fecha de nacimiento: {fechaNacimiento}</p>
+      <p>Obra social: {obraSocial}</p>
+      
     </div>
   )
 }
 
-export default PatientCard 
+export default PatientCard
 
