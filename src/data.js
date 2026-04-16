@@ -36,6 +36,7 @@ export const PATIENTS = [
 export const HISTORIAL = [
   {
     id: 1,
+    descripcion: "Consulta de rutina",
     pacienteId: 1,
     fechaCreacion: "2026-04-03",
     peso: 68.5,
@@ -47,8 +48,21 @@ export const HISTORIAL = [
   },
   {
     id: 2,
+    descripcion: "Consulta de seguimiento",
     pacienteId: 1,
     fechaCreacion: "2026-01-10",
+    peso: 70.0,
+    altura: 1.65,
+    talla: 1.65,
+    percentiloTallaEdad: 55,
+    percentilosPesoEdad: 63,
+    imc: 25.7,
+  },
+  {
+    id: 6,
+    descripcion: "Consulta de seguimiento",
+    pacienteId: 1,
+    fechaCreacion: "2025-02-10",
     peso: 70.0,
     altura: 1.65,
     talla: 1.65,

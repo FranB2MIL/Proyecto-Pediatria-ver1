@@ -26,7 +26,7 @@ function App() {
             </div>
 
             <div style={{ flex: 5, background: '#B3FFB3' }}>
-              <HistoryList />
+              <HistoryList {...selectedPatient} />
             </div>
           </div>
         </div>
