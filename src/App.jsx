@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PatientCard from './components/patientCard/PatientCard'
 import MyNavBar from './components/myNavBar/MyNavBar'
-import PatientList from './components/patientList/patientList'
+import PatientList from './components/patientList/PatientList'
 import HistoryList from './components/historyList/HistoryList'
 import { PATIENTS } from './data'
 
