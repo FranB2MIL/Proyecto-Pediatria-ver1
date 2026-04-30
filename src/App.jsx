@@ -4,6 +4,9 @@ import MyNavBar from './components/myNavBar/MyNavBar'
 import PatientList from './components/patientList/PatientList'
 import HistoryList from './components/historyList/HistoryList'
 import { PATIENTS } from './data'
+import { Routes, Route } from 'react-router-dom'
+import PatientsView from './views/PatientsView'
+import AppointmentsView from './views/AppointmentsView'
 
 function App() {
   const [selectedPatient, setSelectedPatient] = useState(null)
@@ -14,8 +17,11 @@ function App() {
     <>
       <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <MyNavBar />
-
-        <div className="main-container-0">
+        <Routes>
+          <Route path="/" element={<PatientsView />} />
+          <Route path="/turnos" element={<AppointmentsView />} />
+        </Routes>
+        {/* <div className="main-container-0">
 
           <PatientList onSelectPatient={handleSelectPatient} />
 
@@ -29,7 +35,7 @@ function App() {
               <HistoryList {...selectedPatient} />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   )
