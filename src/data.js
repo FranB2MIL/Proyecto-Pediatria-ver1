@@ -31,6 +31,14 @@ export const PATIENTS = [
     fechaNacimiento: "1958-01-30",
     obraSocial: "OSDE 410",
   },
+  {
+    id: 5,
+    nombre: "Fran",
+    apellido: "Pérez",
+    dni: "08.930.441",
+    fechaNacimiento: "1958-01-30",
+    obraSocial: "OSDE 410",
+  },
 ]
 
 export const HISTORIAL = [

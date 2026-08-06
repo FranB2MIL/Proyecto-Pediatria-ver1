@@ -1,9 +1,11 @@
 import React from 'react';
 import styles from './HistoryListItem.module.css'
+import { getPercentileStatus } from '../../utils/percentileStatus'
 
 const HistoryListItem = ({ id,descripcion, fechaCreacion, peso, altura, talla, percentiloTallaEdad, percentilosPesoEdad, imc, onClick }) => {
+    const status = getPercentileStatus(percentiloTallaEdad)
     return (
-        <div className={styles.historyitem}>
+        <div className={styles.historyitem} style={{ borderLeftColor: status ? status.dotColor : '#EFE7DC' }}>
             <div className={styles.header}>
                 <span >{fechaCreacion}</span>
             </div>
