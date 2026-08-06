@@ -1,9 +1,11 @@
 import { HISTORIAL } from '../../data'
 import HistoryListItem from '../historyListItem/HistoryListItem'
+import { getPercentileStatus } from '../../utils/percentileStatus'
 import styles from './PatientCard.module.css'
 
 const PatientCard = ({id, nombre, apellido, dni, fechaNacimiento, obraSocial, history }) => {
   const patientLatestHistory = HISTORIAL.filter(h => h.pacienteId === id).sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))[0]
+  const percentileStatus = patientLatestHistory ? getPercentileStatus(patientLatestHistory.percentiloTallaEdad) : null
   return (
     <div className={styles.patientcard}>
       <div className={styles.topRow}>
@@ -13,6 +15,15 @@ const PatientCard = ({id, nombre, apellido, dni, fechaNacimiento, obraSocial, hi
           <p>DNI: {dni}</p>
           <p>Fecha de nacimiento: {fechaNacimiento}</p>
           <p>Obra social: {obraSocial}</p>
+          {percentileStatus && (
+            <span
+              className={styles.percentileChip}
+              style={{ background: percentileStatus.bg, color: percentileStatus.textColor }}
+            >
+              <span className={styles.percentileDot} style={{ background: percentileStatus.dotColor }} />
+              Percentilo {patientLatestHistory.percentiloTallaEdad} · {percentileStatus.label}
+            </span>
+          )}
         </div>
       </div>
       <div className={styles.summaryStrip}>

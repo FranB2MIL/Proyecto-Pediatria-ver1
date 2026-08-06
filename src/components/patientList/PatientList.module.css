@@ -1,37 +1,35 @@
 .patientlist {
   display: flex;
   flex-direction: column;
-
-  background: #D9D9D9;
+  gap: 10px;
 
   width: 240px;
   flex-shrink: 0;
   height: 100%;
+  box-sizing: border-box;
 }
 
 /*SearchBar*/
 
 .searchContainer {
   flex-shrink: 0;
-  padding: 9px 9px 0;
-  box-sizing: border-box;
 }
 
 .searchInput {
   width: 100%;
   height: 40px;
   box-sizing: border-box;
-  padding: 0 12px;
-  border: none;
-  border-radius: 4px;
-  background: #fff;
-  font-size: 0.9rem;
-  font-family: inherit;
-  color: #1f2937;
+  padding: 0 14px;
+  border: 1px solid #E4D9CE;
+  border-radius: 8px;
+  background: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #2B2320;
 }
 
 .searchInput::placeholder {
-  color: #9ca3af;
+  color: #8A8078;
 }
 /*Fin SearchBar*/
 
@@ -42,8 +40,6 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 11px;
-  padding: 9px 0;
+  gap: 10px;
   box-sizing: border-box;
 }
