@@ -1,12 +1,13 @@
 import React from 'react';
+import styles from './HistoryListItem.module.css'
 
 const HistoryListItem = ({ id,descripcion, fechaCreacion, peso, altura, talla, percentiloTallaEdad, percentilosPesoEdad, imc, onClick }) => {
     return (
-        <div className="history-list-item" style={{ border: '1px solid #1c8f28', padding: '12px', borderRadius: '8px', marginBottom: '12px', cursor: 'pointer' }}>
-            <div className="history-header">
+        <div className={styles.historyitem}>
+            <div className={styles.header}>
                 <span >{fechaCreacion}</span>
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+            <div className={styles.details}>
                 <h3>{descripcion}</h3>
                 <p><strong>Peso:</strong> {peso} kg</p>
                 <p><strong>Altura:</strong> {altura} m</p>

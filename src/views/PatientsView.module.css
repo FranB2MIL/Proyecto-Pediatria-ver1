@@ -1,0 +1,26 @@
+.pageContainer {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.infoColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+.cardSection {
+  flex: 1;
+  min-height: 0;
+}
+
+.historySection {
+  flex: 1;
+  min-height: 0;
+}
