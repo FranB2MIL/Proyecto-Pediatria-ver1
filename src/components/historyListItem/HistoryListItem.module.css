@@ -6,8 +6,15 @@
 }
 
 .header {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+}
+
+.header span {
+  font-size: 0.78rem;
   font-weight: 600;
+  color: #7a2e2e;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .details {
@@ -18,5 +25,20 @@
 
 .details h3 {
   width: 100%;
+  margin: 0 0 2px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2b2b2b;
+}
+
+.details p {
   margin: 0;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #3d3d3d;
+}
+
+.details strong {
+  font-weight: 600;
+  color: #2b2b2b;
 }
