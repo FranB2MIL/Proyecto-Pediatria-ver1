@@ -25,8 +25,13 @@
   border: none;
   border-radius: 4px;
   background: #fff;
-  font-size: 0.95rem;
-  color: #333;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #1f2937;
+}
+
+.searchInput::placeholder {
+  color: #9ca3af;
 }
 /*Fin SearchBar*/
 
