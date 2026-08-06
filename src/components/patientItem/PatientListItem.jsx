@@ -8,8 +8,11 @@ const PatientListItem = ({ patient, onSelectPatient }) => {
       onClick={() => onSelectPatient(patient)}
       style={{ cursor: 'pointer' }}
     >
-      <p>{patient.nombre}</p>
-      <p>{patient.edad} años - {patient.sexo} - {patient.dni}</p>
+      <div className={styles.avatar} />
+      <div className={styles.textBlock}>
+        <p className={styles.name}>{patient.nombre}</p>
+        <p className={styles.details}>{patient.edad} años - {patient.sexo} - {patient.dni}</p>
+      </div>
     </div>
   )
 }

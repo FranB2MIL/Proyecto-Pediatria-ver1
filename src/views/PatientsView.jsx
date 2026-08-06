@@ -2,6 +2,7 @@ import { useState } from 'react'
 import PatientList from '../components/patientList/PatientList'
 import PatientCard from '../components/patientCard/PatientCard'
 import HistoryList from '../components/historyList/HistoryList'
+import styles from './PatientsView.module.css'
 
 function PatientsView() {
   const [selectedPatient, setSelectedPatient] = useState(null)
@@ -11,13 +12,13 @@ function PatientsView() {
   }
 
   return (
-    <div className="main-container-0">
+    <div className={styles.pageContainer}>
       <PatientList onSelectPatient={handleSelectPatient} />
-      <div className="patient-info-container">
-        <div style={{ flex: 5, background: '#B3D9FF' }}>
+      <div className={styles.infoColumn}>
+        <div className={styles.cardSection}>
           <PatientCard {...selectedPatient} />
         </div>
-        <div style={{ flex: 5, background: '#B3FFB3' }}>
+        <div className={styles.historySection}>
           <HistoryList {...selectedPatient} />
         </div>
       </div>
