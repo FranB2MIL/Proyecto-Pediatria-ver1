@@ -6,11 +6,16 @@ const PatientCard = ({id, nombre, apellido, dni, fechaNacimiento, obraSocial, hi
   const patientLatestHistory = HISTORIAL.filter(h => h.pacienteId === id).sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))[0]
   return (
     <div className={styles.patientcard}>
-      <h2>{nombre} {apellido}</h2>
-      <p>DNI: {dni}</p>
-      <p>Fecha de nacimiento: {fechaNacimiento}</p>
-      <p>Obra social: {obraSocial}</p>
-      <div>
+      <div className={styles.topRow}>
+        <div className={styles.avatarBlock} />
+        <div className={styles.infoBlock}>
+          <h2>{nombre} {apellido}</h2>
+          <p>DNI: {dni}</p>
+          <p>Fecha de nacimiento: {fechaNacimiento}</p>
+          <p>Obra social: {obraSocial}</p>
+        </div>
+      </div>
+      <div className={styles.summaryStrip}>
         {patientLatestHistory ? (
           <HistoryListItem
             key={patientLatestHistory.id}
