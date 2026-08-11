@@ -1,20 +1,33 @@
 .navbar {
   height: 86px;
-  background: #FFD0D0;
+  background: #F5DFDA;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 24px;
   box-sizing: border-box;
   flex-shrink: 0;
 }
 
-.navButton {
-  background: #FF8080;
+.navButtonPrimary,
+.navButtonSecondary {
   border: none;
-  color: #fff;
   min-width: 160px;
-  padding: 12px 24px;
+  padding: 10px 20px;
   text-align: center;
   cursor: pointer;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.navButtonPrimary {
+  background: #C0392B;
+  color: #FBF7F2;
+}
+
+.navButtonSecondary {
+  background: #D9887C;
+  color: #FBF7F2;
 }

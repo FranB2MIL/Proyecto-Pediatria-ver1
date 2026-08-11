@@ -6,8 +6,8 @@ const MyNavBar = () => {
     const navigate = useNavigate()
     return (
         <nav className={styles.navbar}>
-            <button className={styles.navButton} onClick={() => navigate('/')}>Mis pacientes</button>
-            <button className={styles.navButton} onClick={() => navigate('/turnos')}>Mis turnos</button>
+            <button className={styles.navButtonPrimary} onClick={() => navigate('/')}>Mis pacientes</button>
+            <button className={styles.navButtonSecondary} onClick={() => navigate('/turnos')}>Mis turnos</button>
         </nav>
     );
 };

@@ -1,13 +1,25 @@
 .historyitem {
-  background: #F2A9A9;
+  background: #FFFFFF;
+  border: 1px solid #EFE7DC;
+  border-left-width: 4px;
+  border-left-style: solid;
+  border-radius: 8px;
   padding: 12px;
   box-sizing: border-box;
   cursor: pointer;
 }
 
 .header {
-  margin-bottom: 4px;
-  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.header span {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8A8078;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .details {
@@ -18,5 +30,22 @@
 
 .details h3 {
   width: 100%;
+  margin: 0 0 2px;
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #2B2320;
+}
+
+.details p {
   margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #5C544C;
+}
+
+.details strong {
+  font-weight: 500;
+  color: #2B2320;
 }
