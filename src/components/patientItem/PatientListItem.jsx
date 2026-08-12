@@ -1,5 +1,4 @@
 import styles from './PatientListItem.module.css'
-import { PATIENTS } from '../../data'
 
 // Placeholder visual — reemplazar por la regla de negocio real cuando se defina.
 const AVATAR_COLORS = [
@@ -13,9 +12,22 @@ const getAvatarColors = (name = '') => {
   return AVATAR_COLORS[hash % AVATAR_COLORS.length]
 }
 
+const calculateAge = (dateOfBirth) => {
+  const birth = new Date(dateOfBirth)
+  const today = new Date()
+  let age = today.getFullYear() - birth.getFullYear()
+  const hasHadBirthdayThisYear =
+    today.getMonth() > birth.getMonth() ||
+    (today.getMonth() === birth.getMonth() && today.getDate() >= birth.getDate())
+  if (!hasHadBirthdayThisYear) age--
+  return age
+}
+
 const PatientListItem = ({ patient, onSelectPatient }) => {
-  const initial = patient.nombre?.charAt(0).toUpperCase()
-  const avatarColors = getAvatarColors(patient.nombre)
+  const fullName = `${patient.firstName} ${patient.lastName}`
+  const initial = patient.firstName?.charAt(0).toUpperCase()
+  const avatarColors = getAvatarColors(fullName)
+  const age = calculateAge(patient.dateOfBirth)
 
   return (
     <div className={styles.patientlistitem}
@@ -26,8 +38,8 @@ const PatientListItem = ({ patient, onSelectPatient }) => {
         {initial}
       </div>
       <div className={styles.textBlock}>
-        <p className={styles.name}>{patient.nombre}</p>
-        <p className={styles.details}>{patient.edad} años - {patient.sexo} - {patient.dni}</p>
+        <p className={styles.name}>{fullName}</p>
+        <p className={styles.details}>{age} años - {patient.dni}</p>
       </div>
     </div>
   )

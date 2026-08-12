@@ -15,12 +15,18 @@ function PatientsView() {
     <div className={styles.pageContainer}>
       <PatientList onSelectPatient={handleSelectPatient} />
       <div className={styles.infoColumn}>
-        <div className={styles.cardSection}>
-          <PatientCard {...selectedPatient} />
-        </div>
-        <div className={styles.historySection}>
-          <HistoryList {...selectedPatient} />
-        </div>
+        {selectedPatient ? (
+          <>
+            <div className={styles.cardSection}>
+              <PatientCard {...selectedPatient} />
+            </div>
+            <div className={styles.historySection}>
+              <HistoryList {...selectedPatient} />
+            </div>
+          </>
+        ) : (
+          <p>Seleccioná un paciente de la lista para ver su información</p>
+        )}
       </div>
     </div>
   )
