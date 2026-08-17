@@ -1,28 +1,51 @@
+import { useState, useEffect } from 'react'
 import HistoryListItem from "../historyListItem/HistoryListItem"
-import { HISTORIAL } from "../../data"
+import { getConsultationsByPatientId } from '../../services/consultationService'
 import styles from './HistoryList.module.css'
 
-const HistoryList = (selectedPatient) => {
-  const patientHistory = HISTORIAL.filter(h => h.pacienteId === selectedPatient?.id)
+const HistoryList = ({ id }) => {
+  const [consultations, setConsultations] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    async function fetchConsultations() {
+      try {
+        const data = await getConsultationsByPatientId(id)
+        setConsultations(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchConsultations()
+  }, [id])
+
+  const sortedHistory = consultations
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+
   return (
     <div className={styles.historylist}>
-        <p className={styles.title}>Historial de consultas del paciente</p>
-        <div className={styles.itemsContainer}>
-          {patientHistory.map(h => (
-              <HistoryListItem
-                  key={h.id}
-                  id={h.id}
-                  descripcion={h.descripcion}
-                  fechaCreacion={h.fechaCreacion}
-                  peso={h.peso}
-                  altura={h.altura}
-                  talla={h.talla}
-                  percentiloTallaEdad={h.percentiloTallaEdad}
-                  percentilosPesoEdad={h.percentilosPesoEdad}
-                  imc={h.imc}
-              />
-          ))}
-        </div>
+      <p className={styles.title}>Historial de consultas del paciente</p>
+      <div className={styles.itemsContainer}>
+        {loading && <p>Cargando historial...</p>}
+        {error && <p>Error: {error}</p>}
+        {!loading && !error && sortedHistory.map(c => (
+          <HistoryListItem
+            key={c.id}
+            id={c.id}
+            descripcion={c.reason}
+            fechaCreacion={c.date}
+            peso={c.measurement?.weight}
+            altura={c.measurement?.height}
+            talla={c.measurement?.size}
+            imc={c.measurement?.imc}
+          />
+        ))}
+      </div>
     </div>
   )
 }
