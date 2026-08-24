@@ -1,0 +1,16 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 16px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.message {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #8A8078;
+}
