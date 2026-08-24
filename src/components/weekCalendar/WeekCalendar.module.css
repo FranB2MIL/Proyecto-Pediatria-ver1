@@ -1,0 +1,71 @@
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+
+.dayColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  background: #FFFFFF;
+  border: 1px solid #EFE7DC;
+  border-radius: 12px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.dayHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-shrink: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #EFE7DC;
+}
+
+.dayName {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8A8078;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dayNumber {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2B2320;
+}
+
+/* El día de hoy se resalta con el rojo de la marca */
+.todayHeader .dayNumber,
+.todayHeader .dayName {
+  color: #C0392B;
+}
+
+.todayHeader {
+  border-bottom-color: #E8B5AE;
+}
+
+.slotsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.emptyDay {
+  margin: 0;
+  padding-top: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #B5ABA1;
+}
