@@ -1,0 +1,92 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 35, 32, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #FFFFFF;
+  border: 1px solid #EFE7DC;
+  border-radius: 12px;
+  padding: 24px;
+  width: 320px;
+  max-width: 90vw;
+}
+
+.title {
+  font-family: 'Fraunces', serif;
+  color: #2B2320;
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  color: #5C544C;
+  margin: 0 0 16px;
+}
+
+.patientName {
+  color: #2B2320;
+  margin-bottom: 16px;
+}
+
+.select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  color: #2B2320;
+  margin-bottom: 16px;
+}
+
+.error {
+  color: #C0392B;
+  font-size: 0.875rem;
+  margin-bottom: 12px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.primaryBtn {
+  background: #C0392B;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secondaryBtn {
+  background: transparent;
+  color: #5C544C;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.dangerBtn {
+  background: #FBF1DE;
+  color: #8A5A0A;
+  border: 1px solid #D9A441;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.dangerBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
