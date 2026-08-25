@@ -5,6 +5,7 @@ import { getAvailabilities } from '../services/availabilityService'
 import { getAppointmentsByWeek } from '../services/appointmentService'
 import { getWeekDays, shiftWeeks } from '../utils/dateUtils'
 import { buildWeekSlots } from '../utils/slots'
+import AppointmentModal from '../components/appointmentModal/AppointmentModal'
 import styles from './AppointmentsView.module.css'
 
 function AppointmentsView() {
@@ -15,6 +16,8 @@ function AppointmentsView() {
   const [appointments, setAppointments] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [selectedSlot, setSelectedSlot] = useState(null)
+  const [refreshTrigger, setRefreshTrigger] = useState(0)
 
   const doctorId = 1 // hardcodeado, igual que en PatientList — sale del token cuando haya login
 
@@ -29,8 +32,8 @@ function AppointmentsView() {
       try {
         // Promise.all dispara las dos llamadas en paralelo en vez de una tras otra.
         const [availabilityData, appointmentData] = await Promise.all([
-          getAvailabilities(doctorId),
-          getAppointmentsByWeek(doctorId, weekDays[0], weekDays[6]),
+          getAvailabilities(),
+          getAppointmentsByWeek(weekDays[0], weekDays[6]),
         ])
         setAvailabilities(availabilityData)
         setAppointments(appointmentData)
@@ -42,7 +45,7 @@ function AppointmentsView() {
     }
 
     fetchData()
-  }, [weekDays])
+  }, [weekDays, refreshTrigger])
 
   // Acá se junta todo: días + disponibilidad + turnos => grilla lista para pintar.
   const slotsByDay = useMemo(
@@ -55,8 +58,16 @@ function AppointmentsView() {
   const handleToday = () => setReferenceDate(new Date())
 
   const handleSlotClick = (slot) => {
-    // TODO(etapa 2): abrir el modal de crear / editar / cancelar turno.
-    console.log('slot clickeado:', slot)
+    setSelectedSlot(slot)
+  }
+
+  const handleModalClose = () => {
+    setSelectedSlot(null)
+  }
+
+  const handleModalSaved = () => {
+    setSelectedSlot(null)
+    setRefreshTrigger((n) => n + 1)
   }
 
   const handleConfigureAvailability = () => {
@@ -82,6 +93,14 @@ function AppointmentsView() {
           weekDays={weekDays}
           slotsByDay={slotsByDay}
           onSlotClick={handleSlotClick}
+        />
+      )}
+
+      {selectedSlot && (
+        <AppointmentModal
+          slot={selectedSlot}
+          onClose={handleModalClose}
+          onSaved={handleModalSaved}
         />
       )}
     </div>
