@@ -43,3 +43,13 @@
   gap: 10px;
   box-sizing: border-box;
 }
+
+.primaryBtn {
+  margin-top: 5px;
+  background: #C0392B;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
