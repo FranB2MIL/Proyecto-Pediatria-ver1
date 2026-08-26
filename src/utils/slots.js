@@ -39,7 +39,10 @@ export function generateDaySlots(availabilities, date) {
 export function attachAppointments(slots, appointments) {
   return slots.map((slot) => {
     const appointment = appointments.find(
-      (a) => a.date === slot.date && a.startTime === slot.startTime
+      (a) => 
+        a.date === slot.date && 
+        a.startTime === slot.startTime &&
+        a.status !== APPOINTMENT_STATUS.CANCELADO
     )
 
     return {
