@@ -48,3 +48,12 @@
   font-weight: 400;
   color: #8A8078;
 }
+
+.primaryBtn {
+  background: #C0392B;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}

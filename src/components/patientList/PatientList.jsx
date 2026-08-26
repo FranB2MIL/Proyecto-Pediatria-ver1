@@ -4,6 +4,7 @@ import PatientListItem from '../patientItem/PatientListItem'
 import { getAllPatients } from '../../services/patientService'
 import CreateModal from '../../modal/CreateModal';
 
+
 const PatientList = ({ onSelectPatient }) => {
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(true)
@@ -67,7 +68,7 @@ const PatientList = ({ onSelectPatient }) => {
 
       <div className={styles.searchContainer}>
         <input type="text" placeholder="Buscar paciente..." className={styles.searchInput} />
-        <button onClick={() => setIsModalOpen(true)} className={styles.addButton}>Agregar Paciente</button>
+        <button onClick={() => setIsModalOpen(true)} className={styles.primaryBtn}>Agregar Paciente</button>
       </div>
 
       {isModalOpen && (
