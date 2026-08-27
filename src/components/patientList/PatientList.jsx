@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import styles from './PatientList.module.css'
 import PatientListItem from '../patientItem/PatientListItem'
 import { getAllPatients } from '../../services/patientService'
-import CreateModal from '../../modal/CreateModal';
+import CreateModal from '../../modal/CreatePacientModal';
+
 
 
 const PatientList = ({ onSelectPatient }) => {

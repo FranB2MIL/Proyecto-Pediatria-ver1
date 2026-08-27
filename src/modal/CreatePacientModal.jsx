@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { initialPatientsForm } from './modalHelper.js';
-
+import { initialPatientsForm } from './createPacientModalHelper.js';
 import Modal from 'react-bootstrap/Modal';
-import styles from './CreateModal.module.css';
+import styles from './CreatePacientModal.module.css';
+
 
 const CreateModal = ({ onClose, onSave, modalTitle }) => {
 
