@@ -6,6 +6,7 @@ import { getAppointmentsByWeek } from '../services/appointmentService'
 import { getWeekDays, shiftWeeks } from '../utils/dateUtils'
 import { buildWeekSlots } from '../utils/slots'
 import AppointmentModal from '../components/appointmentModal/AppointmentModal'
+import AvailabilityModal from '../components/availabilityModal/AvailabilityModal'
 import styles from './AppointmentsView.module.css'
 
 function AppointmentsView() {
@@ -70,10 +71,18 @@ function AppointmentsView() {
     setRefreshTrigger((n) => n + 1)
   }
 
+
+  const [isAvailabilityModalOpen, setIsAvailabilityModalOpen] = useState(false)
+
   const handleConfigureAvailability = () => {
-    // TODO(etapa 3): abrir el panel de configuración de disponibilidad.
-    console.log('configurar disponibilidad')
+    setIsAvailabilityModalOpen(true)
   }
+
+  const handleAvailabilitySaved = () => {
+    setIsAvailabilityModalOpen(false)
+    setRefreshTrigger((n) => n + 1)
+  }
+
 
   return (
     <div className={styles.pageContainer}>
@@ -96,6 +105,7 @@ function AppointmentsView() {
         />
       )}
 
+
       {selectedSlot && (
         <AppointmentModal
           slot={selectedSlot}
@@ -103,6 +113,15 @@ function AppointmentsView() {
           onSaved={handleModalSaved}
         />
       )}
+
+      {isAvailabilityModalOpen && (
+        <AvailabilityModal
+          onClose={() => setIsAvailabilityModalOpen(false)}
+          onSaved={handleAvailabilitySaved}
+          existingAvailabilities={availabilities}
+        />
+      )}
+
     </div>
   )
 }
