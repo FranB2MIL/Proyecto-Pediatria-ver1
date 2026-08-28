@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import HistoryListItem from '../historyListItem/HistoryListItem'
-import { getConsultationsByPatientId } from '../../services/consultationService'
+import { getConsultationsByPatientId, createConsultation } from '../../services/consultationService'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
 import styles from './PatientCard.module.css'
 
@@ -10,38 +10,22 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
   const [error, setError] = useState(null)
   const [isModalOpen,setIsModalOpen] = useState(false)
 
-  const handleAddConsultations = (consultationData) => {
-    const token = localStorage.getItem('token');
-    fetch(`http://localhost:5072/api/Consultation/patient/${id}`, {
-      method : "POST",
-      headers : {
-        "Content-Type" : "application/json",
-        "Authorization" : `Bearer ${token}` 
-      },
-      body: JSON.stringify({
-        date : consultationData.date,
-        reason : consultationData.reason,
-        description : consultationData.description,
-        measurement : {
-                weight: Number(consultationData.measurement.weight) || 0,
-                height: Number(consultationData.measurement.height) || 0,
-                size: Number(consultationData.measurement.size) || 0
+  const handleAddConsultations = async (consultationData) => {
+    try {
+      const newConsultation = await createConsultation(id, {
+        date: consultationData.date,
+        reason: consultationData.reason,
+        description: consultationData.description,
+        measurement: {
+          weight: Number(consultationData.measurement.weight) || 0,
+          height: Number(consultationData.measurement.height) || 0,
+          size: Number(consultationData.measurement.size) || 0
         }
       })
-    })
-    .then(res => {
-      if(res.ok){
-        return res.json();
-      }
-      throw  new Error("error al crear la consulta");
-    })
-    .then(newConsultation => {
-      setConsultations((prev) => [...prev, newConsultation]);
-    })
-    .catch((err)=> {
-      console.log("Error", err);
-    })
-
+      setConsultations((prev) => [...prev, newConsultation])
+    } catch (err) {
+      console.log("Error", err)
+    }
   }
 
 
@@ -78,8 +62,8 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
           <p>Fecha de nacimiento: {new Date(dateOfBirth).toLocaleDateString('es-AR')}</p>
           <p>Obra social: {healthInsurance}</p>
           <button  onClick={() => setIsModalOpen(true)} className={styles.primaryBtn}>
-  
-              + Nueva Consulta 
+
+              + Nueva Consulta
           </button>
           {/* TODO: chip de percentilo — pendiente hasta implementar cálculo OMS en el back */}
         </div>
