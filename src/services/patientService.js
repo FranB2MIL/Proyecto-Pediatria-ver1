@@ -1,17 +1,29 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5072/api";
+import { apiFetch } from './apiClient'
+
+function toPatientDto(formData) {
+  return {
+    FirstName: formData.firstName,
+    LastName: formData.lastName,
+    DateOfBirth: formData.dateOfBirth,
+    DNI: formData.dni,
+    HealthInsurance: formData.healthInsurance,
+  }
+}
 
 export async function getAllPatients() {
-  const token = localStorage.getItem("token");
-  
-  const response = await fetch(`${API_URL}/patient`, {
-    headers: {
-      "Authorization": `Bearer ${token}`
-    }
-  });
+  return apiFetch('/patient')
+}
 
-  if (!response.ok) {
-    throw new Error(`Error al obtener pacientes: ${response.status}`);
-  }
+export async function createPatient(formData) {
+  return apiFetch('/patient', {
+    method: 'POST',
+    body: JSON.stringify(toPatientDto(formData)),
+  })
+}
 
-  return await response.json();
+export async function updatePatient(id, formData) {
+  return apiFetch(`/patient/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(toPatientDto(formData)),
+  })
 }

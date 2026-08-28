@@ -1,11 +1,12 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5072/api";
+import { apiFetch } from './apiClient'
 
 export async function getConsultationsByPatientId(patientId) {
-  const response = await fetch(`${API_URL}/consultation/patient/${patientId}`);
+  return apiFetch(`/consultation/patient/${patientId}`)
+}
 
-  if (!response.ok) {
-    throw new Error(`Error al obtener consultas: ${response.status}`);
-  }
-
-  return await response.json();
+export async function createConsultation(patientId, data) {
+  return apiFetch(`/Consultation/patient/${patientId}`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './PatientList.module.css'
 import PatientListItem from '../patientItem/PatientListItem'
-import { getAllPatients } from '../../services/patientService'
+import { getAllPatients, createPatient } from '../../services/patientService'
 import CreateModal from '../../modal/CreatePacientModal';
 
 
@@ -30,35 +30,13 @@ const PatientList = ({ onSelectPatient }) => {
   }, [])
 
 
-  const handleAddPatient = (patientData) => {
-    const token = localStorage.getItem('token'); 
-
-    fetch(`http://localhost:5072/api/patient`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}` 
-        },
-        body: JSON.stringify({
-            FirstName: patientData.firstName,      
-            LastName: patientData.lastName,
-            DateOfBirth: patientData.dateOfBirth,   
-            DNI: patientData.dni,
-            HealthInsurance: patientData.healthInsurance
-        })
-    })
-    .then(res => {
-        if (res.ok) {
-            return res.json();
-        }
-        throw new Error("Error al crear el paciente");
-    })
-    .then(newPatient => {
-        setPatients((prevPatients) => [...prevPatients, newPatient]);
-    })
-    .catch((err) => {
-        console.error("Error", err);
-    });
+  const handleAddPatient = async (patientData) => {
+    try {
+      const newPatient = await createPatient(patientData)
+      setPatients((prevPatients) => [...prevPatients, newPatient])
+    } catch (err) {
+      console.error("Error", err)
+    }
   }
 
 
