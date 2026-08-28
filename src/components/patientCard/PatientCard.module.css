@@ -90,3 +90,12 @@
 .summaryStrip {
   flex-shrink: 0;
 }
+
+.dangerBtn {
+    background: #C0392B;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+}

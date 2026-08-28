@@ -10,6 +10,9 @@
 }
 
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 6px;
 }
 
@@ -20,6 +23,28 @@
   color: #8A8078;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+
+.editBtn {
+  background: transparent;
+  color: #5C544C;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.deleteBtn {
+  background: transparent;
+  color: #C0392B;
+  border: 1px solid #C0392B;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 .details {
@@ -48,4 +73,11 @@
 .details strong {
   font-weight: 500;
   color: #2B2320;
+}
+
+
+.actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
