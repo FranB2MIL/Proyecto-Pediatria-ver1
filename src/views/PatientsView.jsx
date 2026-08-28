@@ -11,14 +11,21 @@ function PatientsView() {
     setSelectedPatient(patient)
   }
 
+  const handleDeletePatient = (id) => {
+  setSelectedPatient(null)
+  setDeletedPatientId(id)
+}
+
+const [deletedPatientId, setDeletedPatientId] = useState(null)
+
   return (
     <div className={styles.pageContainer}>
-      <PatientList onSelectPatient={handleSelectPatient} />
+      <PatientList onSelectPatient={handleSelectPatient} deletedPatientId={deletedPatientId}/>
       <div className={styles.infoColumn}>
         {selectedPatient ? (
           <>
             <div className={styles.cardSection}>
-              <PatientCard {...selectedPatient} />
+              <PatientCard {...selectedPatient} onDelete={handleDeletePatient} />
             </div>
             <div className={styles.historySection}>
               <HistoryList {...selectedPatient} />

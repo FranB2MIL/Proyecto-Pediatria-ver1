@@ -27,3 +27,8 @@ export async function updatePatient(id, formData) {
     body: JSON.stringify(toPatientDto(formData)),
   })
 }
+
+
+export async function deletePatient(id) {
+  return apiFetch(`/patient/${id}`, { method: 'DELETE' })
+}

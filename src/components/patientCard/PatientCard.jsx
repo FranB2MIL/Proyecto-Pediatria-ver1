@@ -5,14 +5,17 @@ import { updatePatient } from '../../services/patientService'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
 import CreateModal from '../../modal/CreatePacientModal'
 import styles from './PatientCard.module.css'
+import ConfirmModal from '../../modal/ConfirmModal'
+import { deletePatient } from '../../services/patientService'
 
-const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsurance }) => {
+const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsurance, onDelete }) => {
   const [consultations, setConsultations] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [isModalOpen,setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [patientData, setPatientData] = useState({ firstName, lastName, dni, dateOfBirth, healthInsurance })
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
   useEffect(() => {
     setPatientData({ firstName, lastName, dni, dateOfBirth, healthInsurance })
@@ -24,6 +27,16 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
       setPatientData((prev) => ({ ...prev, ...formData }))
     } catch (err) {
       console.error("Error", err)
+    }
+  }
+  
+  const handleDeletePatient = async () => {
+    try {
+      await deletePatient(id)
+      // notificar al padre que el paciente fue eliminado
+      onDelete(id)
+    } catch (err) {
+      console.error('Error al eliminar paciente', err)
     }
   }
 
@@ -80,11 +93,24 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
           <p>Obra social: {patientData.healthInsurance}</p>
           <div className={styles.actions}>
             <button onClick={() => setIsModalOpen(true)} className={styles.primaryBtn}>
-                + Nueva Consulta
+              + Nueva Consulta
             </button>
             <button onClick={() => setIsEditModalOpen(true)} className={styles.primaryBtn}>
-                Editar paciente
+              Editar paciente
             </button>
+            <button onClick={() => setIsDeleteModalOpen(true)} className={styles.dangerBtn}>
+              Eliminar paciente
+            </button>
+            {isDeleteModalOpen && (
+              <ConfirmModal
+                message="¿Estás seguro que querés eliminar este paciente?"
+                onConfirm={() => {
+                  handleDeletePatient()
+                  setIsDeleteModalOpen(false)
+                }}
+                onClose={() => setIsDeleteModalOpen(false)}
+              />
+            )}
           </div>
           {/* TODO: chip de percentilo — pendiente hasta implementar cálculo OMS en el back */}
         </div>
@@ -93,12 +119,12 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
 
       {isModalOpen && (
         <CreateConsultationModal
-        title = "Agregar Consulta"
-        onClose = {() => setIsModalOpen(false)}
-        onSave = {(pacientConsultation) => {
-          handleAddConsultations(pacientConsultation)
-          setIsModalOpen(false)
-        }}
+          title="Agregar Consulta"
+          onClose={() => setIsModalOpen(false)}
+          onSave={(pacientConsultation) => {
+            handleAddConsultations(pacientConsultation)
+            setIsModalOpen(false)
+          }}
         />
       )}
 

@@ -10,3 +10,14 @@ export async function createConsultation(patientId, data) {
     body: JSON.stringify(data),
   })
 }
+
+export async function updateConsultation(id, data) {
+  return apiFetch(`/consultation/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
+}
+
+export async function deleteConsultation(id) {
+  return apiFetch(`/consultation/${id}`, { method: 'DELETE' })
+}

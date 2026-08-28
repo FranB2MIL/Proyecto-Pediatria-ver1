@@ -1,0 +1,28 @@
+.modalTitle {
+    font-family: 'Fraunces', serif;
+    color: #2B2320;
+}
+
+.message {
+    font-family: 'Inter', sans-serif;
+    color: #2B2320;
+    font-size: 15px;
+}
+
+.secondaryBtn {
+    background: transparent;
+    color: #5C544C;
+    border: 1px solid #EFE7DC;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.dangerBtn {
+    background: #C0392B;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+}

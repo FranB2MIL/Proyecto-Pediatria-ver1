@@ -1,0 +1,87 @@
+:global(.modal-content) {
+  border: 1px solid #EFE7DC;
+  border-radius: 12px;
+}
+
+:global(.modal-header) {
+  border-bottom: none;
+  padding: 24px 24px 0;
+}
+
+:global(.modal-body) {
+  padding: 16px 24px;
+}
+
+:global(.modal-footer) {
+  border-top: none;
+  padding: 0 24px 24px;
+  gap: 8px;
+}
+
+:global(.modal-backdrop.show) {
+  background: #2B2320;
+  opacity: 0.4;
+}
+
+.modalTitle {
+  font-family: 'Fraunces', serif;
+  color: #2B2320;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.label {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #5C544C;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  color: #2B2320;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+
+.textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  color: #2B2320;
+  font-family: 'Inter', sans-serif;
+  min-height: 80px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.primaryBtn {
+  background: #C0392B;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secondaryBtn {
+  background: transparent;
+  color: #5C544C;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}

@@ -6,7 +6,7 @@ import CreateModal from '../../modal/CreatePacientModal';
 
 
 
-const PatientList = ({ onSelectPatient }) => {
+const PatientList = ({ onSelectPatient, deletedPatientId }) => {
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -39,8 +39,12 @@ const PatientList = ({ onSelectPatient }) => {
     }
   }
 
+  useEffect(() => {
+    if (deletedPatientId) {
+      setPatients(prev => prev.filter(p => p.id !== deletedPatientId))
+    }
+  }, [deletedPatientId])
 
-  
 
   return (
     <div className={styles.patientlist}>
