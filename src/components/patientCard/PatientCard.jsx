@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import HistoryListItem from '../historyListItem/HistoryListItem'
 import { getConsultationsByPatientId, createConsultation } from '../../services/consultationService'
+import { updatePatient } from '../../services/patientService'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
+import CreateModal from '../../modal/CreatePacientModal'
 import styles from './PatientCard.module.css'
 
 const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsurance }) => {
@@ -9,6 +11,21 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [isModalOpen,setIsModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [patientData, setPatientData] = useState({ firstName, lastName, dni, dateOfBirth, healthInsurance })
+
+  useEffect(() => {
+    setPatientData({ firstName, lastName, dni, dateOfBirth, healthInsurance })
+  }, [id, firstName, lastName, dni, dateOfBirth, healthInsurance])
+
+  const handleEditPatient = async (formData) => {
+    try {
+      await updatePatient(id, formData)
+      setPatientData((prev) => ({ ...prev, ...formData }))
+    } catch (err) {
+      console.error("Error", err)
+    }
+  }
 
   const handleAddConsultations = async (consultationData) => {
     try {
@@ -57,14 +74,18 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
       <div className={styles.topRow}>
         <div className={styles.avatarBlock} />
         <div className={styles.infoBlock}>
-          <h2>{firstName} {lastName}</h2>
-          <p>DNI: {dni}</p>
-          <p>Fecha de nacimiento: {new Date(dateOfBirth).toLocaleDateString('es-AR')}</p>
-          <p>Obra social: {healthInsurance}</p>
-          <button  onClick={() => setIsModalOpen(true)} className={styles.primaryBtn}>
-
-              + Nueva Consulta
-          </button>
+          <h2>{patientData.firstName} {patientData.lastName}</h2>
+          <p>DNI: {patientData.dni}</p>
+          <p>Fecha de nacimiento: {new Date(patientData.dateOfBirth).toLocaleDateString('es-AR')}</p>
+          <p>Obra social: {patientData.healthInsurance}</p>
+          <div className={styles.actions}>
+            <button onClick={() => setIsModalOpen(true)} className={styles.primaryBtn}>
+                + Nueva Consulta
+            </button>
+            <button onClick={() => setIsEditModalOpen(true)} className={styles.primaryBtn}>
+                Editar paciente
+            </button>
+          </div>
           {/* TODO: chip de percentilo — pendiente hasta implementar cálculo OMS en el back */}
         </div>
       </div>
@@ -78,6 +99,24 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
           handleAddConsultations(pacientConsultation)
           setIsModalOpen(false)
         }}
+        />
+      )}
+
+      {isEditModalOpen && (
+        <CreateModal
+          modalTitle="Editar Paciente"
+          initialData={{
+            firstName: patientData.firstName,
+            lastName: patientData.lastName,
+            dni: patientData.dni,
+            dateOfBirth: patientData.dateOfBirth?.slice(0, 10) ?? '',
+            healthInsurance: patientData.healthInsurance,
+          }}
+          onClose={() => setIsEditModalOpen(false)}
+          onSave={(formData) => {
+            handleEditPatient(formData)
+            setIsEditModalOpen(false)
+          }}
         />
       )}
 

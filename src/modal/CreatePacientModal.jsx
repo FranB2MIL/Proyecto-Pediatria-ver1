@@ -4,9 +4,9 @@ import Modal from 'react-bootstrap/Modal';
 import styles from './CreatePacientModal.module.css';
 
 
-const CreateModal = ({ onClose, onSave, modalTitle }) => {
+const CreateModal = ({ onClose, onSave, modalTitle, initialData = null }) => {
 
-    const [formData, setformData] = useState(initialPatientsForm);
+    const [formData, setformData] = useState(initialData || initialPatientsForm);
 
     const handleInputChange = (event, inputKey) => {
         setformData(prevFormData => ({
