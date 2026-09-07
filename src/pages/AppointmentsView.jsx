@@ -10,7 +10,7 @@ import AvailabilityModal from '../components/availabilityModal/AvailabilityModal
 import styles from './AppointmentsView.module.css'
 
 function AppointmentsView() {
-  // Fecha "ancla": cualquier día dentro de la semana que estamos mirando.
+  // Anchor date: any day within the week which we are looking at
   const [referenceDate, setReferenceDate] = useState(new Date())
 
   const [availabilities, setAvailabilities] = useState([])
@@ -20,10 +20,10 @@ function AppointmentsView() {
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [refreshTrigger, setRefreshTrigger] = useState(0)
 
-  const doctorId = 1 // hardcodeado, igual que en PatientList — sale del token cuando haya login
+  const doctorId = 1 // hardcoded, same as PatientList - extracted from token when loged.
 
-  // useMemo evita recalcular los 7 días en cada render.
-  // Sin esto, weekDays sería un array nuevo cada vez y el useEffect se dispararía en loop.
+  // useMemo avoids re-calculating the days in each render.
+  // Without this, weekDays would be a new array each time, and the useEffect would trigger in loop
   const weekDays = useMemo(() => getWeekDays(referenceDate), [referenceDate])
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function AppointmentsView() {
       setLoading(true)
       setError(null)
       try {
-        // Promise.all dispara las dos llamadas en paralelo en vez de una tras otra.
+        // Promise.all triggers both calls in paralell instead of one after the other.
         const [availabilityData, appointmentData] = await Promise.all([
           getAvailabilities(),
           getAppointmentsByWeek(weekDays[0], weekDays[6]),
@@ -48,7 +48,7 @@ function AppointmentsView() {
     fetchData()
   }, [weekDays, refreshTrigger])
 
-  // Acá se junta todo: días + disponibilidad + turnos => grilla lista para pintar.
+  // Here is where everything merges: days + availabiliy + appointments => table ready.
   const slotsByDay = useMemo(
     () => buildWeekSlots(weekDays, availabilities, appointments),
     [weekDays, availabilities, appointments]

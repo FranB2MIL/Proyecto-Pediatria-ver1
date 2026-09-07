@@ -1,9 +1,11 @@
 import styles from './AppointmentSlot.module.css'
 import { APPOINTMENT_STATUS } from '../../data/mockAppointments'
 
-// Mapea el estado del turno a la clase CSS que le corresponde.
-// Mismo criterio de colores que utils/percentileStatus.js: verde = todo bien,
-// ámbar = requiere atención, neutro = vacío.
+// Maps the state of the appointment to the corresponding CSS class.
+// 
+// Same color pattern as utils/percentileStatus.js: green = everything's ok!
+// red = requires atention, neutral = empty.
+
 const STATUS_CLASS = {
   [APPOINTMENT_STATUS.DISPONIBLE]: styles.free,
   [APPOINTMENT_STATUS.RESERVADO]: styles.booked,

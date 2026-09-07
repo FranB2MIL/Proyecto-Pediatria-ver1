@@ -15,7 +15,7 @@ function AppointmentModal({ slot, onClose, onSaved }) {
   const isBooked = slot.status === 'Reservado'
 
   useEffect(() => {
-    if (isBooked) return // no hace falta la lista de pacientes para cancelar
+    if (isBooked) return // list of patients not required to cancel
 
     async function loadPatients() {
       setLoadingPatients(true)
