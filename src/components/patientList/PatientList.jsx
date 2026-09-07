@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import styles from './PatientList.module.css'
 import PatientListItem from '../patientItem/PatientListItem'
 import { getAllPatients, createPatient } from '../../services/patientService'
-import CreateModal from '../../modal/CreatePacientModal';
+import CreateModal from '../../modal/CreatePatientModal';
 
 
 
@@ -68,10 +68,10 @@ const PatientList = ({ onSelectPatient, deletedPatientId }) => {
       <div className={styles.listContainer}>
         {loading && <p>Cargando pacientes...</p>}
         {error && <p>Error: {error}</p>}
-        {!loading && !error && patients.map((paciente) => (
+        {!loading && !error && patients.map((patient) => (
           <PatientListItem
-            key={paciente.id}
-            patient={paciente}
+            key={patient.id}
+            patient={patient}
             onSelectPatient={onSelectPatient}
           />
         ))}

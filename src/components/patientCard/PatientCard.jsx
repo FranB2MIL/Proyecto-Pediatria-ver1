@@ -3,7 +3,7 @@ import HistoryListItem from '../historyListItem/HistoryListItem'
 import { getConsultationsByPatientId, createConsultation } from '../../services/consultationService'
 import { updatePatient } from '../../services/patientService'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
-import CreateModal from '../../modal/CreatePacientModal'
+import CreateModal from '../../modal/CreatePatientModal'
 import styles from './PatientCard.module.css'
 import ConfirmModal from '../../modal/ConfirmModal'
 import { deletePatient } from '../../services/patientService'
@@ -121,8 +121,8 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
         <CreateConsultationModal
           title="Agregar Consulta"
           onClose={() => setIsModalOpen(false)}
-          onSave={(pacientConsultation) => {
-            handleAddConsultations(pacientConsultation)
+          onSave={(consultationData) => {
+            handleAddConsultations(consultationData)
             setIsModalOpen(false)
           }}
         />
@@ -155,10 +155,10 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
             <HistoryListItem
               key={latestConsultation.id}
               id={latestConsultation.id}
-              fechaCreacion={latestConsultation.date}
-              peso={latestConsultation.measurement?.weight}
-              altura={latestConsultation.measurement?.height}
-              talla={latestConsultation.measurement?.size}
+              date={latestConsultation.date}
+              weight={latestConsultation.measurement?.weight}
+              height={latestConsultation.measurement?.height}
+              size={latestConsultation.measurement?.size}
               imc={latestConsultation.measurement?.imc}
             />
           ) : (
