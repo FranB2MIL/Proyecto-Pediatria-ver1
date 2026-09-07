@@ -33,7 +33,7 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
   const handleDeletePatient = async () => {
     try {
       await deletePatient(id)
-      // notificar al padre que el paciente fue eliminado
+      // notify parent component that the patient has been deleted
       onDelete(id)
     } catch (err) {
       console.error('Error al eliminar paciente', err)

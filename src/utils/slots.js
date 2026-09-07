@@ -31,10 +31,11 @@ export function generateDaySlots(availabilities, date) {
 }
 
 /**
- * Toma los slots de un día y les "pega" el turno correspondiente, si existe.
  *
- * Esta te la dejo hecha para que tengas de referencia el estilo con el que
- * encarar la de arriba. Fijate que no muta nada: devuelve objetos nuevos.
+ * 
+ * Takes slots from a day and assigns the corresponding appointment, if it exists
+ * 
+ * 
  */
 export function attachAppointments(slots, appointments) {
   return slots.map((slot) => {
@@ -54,12 +55,11 @@ export function attachAppointments(slots, appointments) {
 }
 
 /**
- * Arma el calendario completo de la semana.
+ * Builds week calendar
  *
- * Devuelve un objeto indexado por fecha, listo para renderizar:
- *   { '2026-08-18': [slot, slot, ...], '2026-08-19': [...] }
- *
- * También te la dejo hecha: es solo pegamento entre las dos funciones anteriores.
+ * Returns an indexed by date object, ready for render:
+ * { '2026-08-18': [slot, slot, ...], '2026-08-19': [...] }
+ * 
  */
 export function buildWeekSlots(weekDays, availabilities, appointments) {
   const result = {}

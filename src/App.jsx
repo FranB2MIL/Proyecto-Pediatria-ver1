@@ -1,7 +1,7 @@
 import MyNavBar from './components/myNavBar/MyNavBar'
 import { Routes, Route } from 'react-router-dom'
-import PatientsView from './views/PatientsView'
-import AppointmentsView from './views/AppointmentsView'
+import PatientsView from './pages/PatientsView'
+import AppointmentsView from './pages/AppointmentsView'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {

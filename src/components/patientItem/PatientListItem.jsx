@@ -1,6 +1,6 @@
 import styles from './PatientListItem.module.css'
 
-// Placeholder visual — reemplazar por la regla de negocio real cuando se defina.
+// visual placeholder 
 const AVATAR_COLORS = [
   { bg: '#7FA88A', text: '#F2F7F0' },
   { bg: '#C0392B', text: '#FBF7F2' },
