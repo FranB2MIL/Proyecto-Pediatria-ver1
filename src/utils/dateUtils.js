@@ -86,4 +86,18 @@ export function formatShortDate(value) {
   return format(date, 'd MMM yyyy', { locale: es })
 }
 
+/** "viernes 24 de octubre" */
+export function formatLongDate(value) {
+  const date = parseLocalDate(value)
+  if (!date) return '—'
+  return format(date, "EEEE d 'de' MMMM", { locale: es })
+}
+
+/** "oct" — mes abreviado. */
+export function formatMonthShort(value) {
+  const date = parseLocalDate(value)
+  if (!date) return ''
+  return format(date, 'MMM', { locale: es })
+}
+
 export { isSameDay, isToday }

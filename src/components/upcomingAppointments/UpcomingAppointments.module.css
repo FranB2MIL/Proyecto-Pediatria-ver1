@@ -1,0 +1,144 @@
+.upcoming {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #FFFFFF;
+  border: 1px solid #EFE7DC;
+  border-radius: 14px;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  color: #2B2320;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2B2320;
+}
+
+.stateMessage {
+  margin: 0;
+  font-size: 14px;
+  color: #6E655D;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid #EFE7DC;
+  border-radius: 12px;
+  background: #FBF7F3;
+}
+
+.itemCancelled {
+  background: #FFFFFF;
+}
+
+.itemCancelled .when,
+.itemCancelled .dayNumber {
+  color: #8A8078;
+}
+
+.dateBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  border: 1px solid #EFE7DC;
+}
+
+.dayNumber {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #2B2320;
+}
+
+.month {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #C0392B;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.when {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2B2320;
+}
+
+.when::first-letter {
+  text-transform: uppercase;
+}
+
+.doctor {
+  font-size: 13px;
+  color: #5C544C;
+}
+
+.statusOk,
+.statusWarn,
+.statusNeutral {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.statusOk {
+  background: #EAF1E8;
+  color: #3D6B4C;
+}
+
+.statusWarn {
+  background: #FBF1DE;
+  color: #8A5A0A;
+}
+
+.statusNeutral {
+  background: #FBF7F3;
+  color: #5C544C;
+}
+
+@media (max-width: 640px) {
+  .upcoming {
+    padding: 16px;
+  }
+
+  .item {
+    flex-wrap: wrap;
+  }
+}

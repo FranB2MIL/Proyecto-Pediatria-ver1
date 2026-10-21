@@ -1,0 +1,105 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: #FBF7F2;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 86px;
+  padding: 0 24px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  background: #F5DFDA;
+}
+
+.brand {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #2B2320;
+}
+
+.greeting {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5C544C;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.columns {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+.sideColumn {
+  flex: 0 0 340px;
+  min-width: 0;
+}
+
+.stateMessage {
+  margin: 0;
+  font-size: 14px;
+  color: #6E655D;
+}
+
+.errorMessage {
+  margin: 0;
+  padding: 10px 14px;
+  background: #FDF4F2;
+  border: 1px solid #F1CFC9;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #7D241B;
+}
+
+/* En pantallas angostas los turnos van primero: es lo que el paciente busca */
+@media (max-width: 900px) {
+  .columns {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .sideColumn {
+    flex: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .topBar {
+    height: 64px;
+    padding: 0 16px;
+  }
+
+  .content {
+    padding: 16px;
+  }
+}

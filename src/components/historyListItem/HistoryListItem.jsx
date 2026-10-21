@@ -30,32 +30,34 @@ const HistoryListItem = ({ id, reason, date, description, weight, height, size, 
             <td className={styles.num}><Measure value={height} unit="m" /></td>
             <td className={styles.num}><Measure value={size} unit="m" /></td>
             <td className={`${styles.num} ${styles.imc}`}>{formatMeasure(imc, { decimals: 2 })}</td>
-            <td>
-                <div className={styles.actions}>
-                    {onEdit && (
-                        <button
-                        className={styles.editBtn}
-                        onClick={() => onEdit({
-                            id,
-                            date,
-                            reason,
-                            description,
-                            measurement: { weight, height, size },
-                        })}
-                        >
-                            Editar
-                        </button>
-                    )}
-                    {onDelete && (
-                        <button
-                        className={styles.deleteBtn}
-                        onClick={() => onDelete(id)}
-                        >
-                            Eliminar
-                        </button>
-                    )}
-                </div>
-            </td>
+            {(onEdit || onDelete) && (
+                <td>
+                    <div className={styles.actions}>
+                        {onEdit && (
+                            <button
+                            className={styles.editBtn}
+                            onClick={() => onEdit({
+                                id,
+                                date,
+                                reason,
+                                description,
+                                measurement: { weight, height, size },
+                            })}
+                            >
+                                Editar
+                            </button>
+                        )}
+                        {onDelete && (
+                            <button
+                            className={styles.deleteBtn}
+                            onClick={() => onDelete(id)}
+                            >
+                                Eliminar
+                            </button>
+                        )}
+                    </div>
+                </td>
+            )}
         </tr>
     );
 };

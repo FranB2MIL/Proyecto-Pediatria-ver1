@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { unlinkPatient } from '../../services/patientService'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
 import ConfirmModal from '../../modal/ConfirmModal'
-import { formatDate, formatShortDate } from '../../utils/dateUtils'
-import { calculateAge, formatDni, formatMeasure, getAvatarVariant } from '../../utils/patientFormat'
-import { getPercentileStatus } from '../../utils/percentileStatus'
+import LatestConsultation from '../latestConsultation/LatestConsultation'
+import { formatDate } from '../../utils/dateUtils'
+import { calculateAge, formatDni, getAvatarVariant } from '../../utils/patientFormat'
 import styles from './PatientCard.module.css'
 
 const AVATAR_CLASSES = {
@@ -56,18 +56,6 @@ const PatientCard = ({
     { label: 'Obra social', value: healthInsurance?.trim() || 'Sin obra social' },
   ]
 
-  const measurement = latestConsultation?.measurement
-  const measureTiles = [
-    { label: 'Peso', value: formatMeasure(measurement?.weight), unit: 'kg' },
-    { label: 'Altura', value: formatMeasure(measurement?.height), unit: 'm' },
-    { label: 'Talla', value: formatMeasure(measurement?.size), unit: 'm' },
-    { label: 'IMC', value: formatMeasure(measurement?.imc, { decimals: 2 }) },
-  ]
-  const percentileTiles = [
-    { label: 'Percentil talla/edad', value: measurement?.heightAgePercentile },
-    { label: 'Percentil peso/edad', value: measurement?.weightAgePercentile },
-  ]
-
   return (
     <div className={styles.patientcard}>
       <section className={styles.header}>
@@ -99,56 +87,7 @@ const PatientCard = ({
 
       {actionError && <p className={styles.actionError} role="alert">{actionError}</p>}
 
-      <section className={styles.latest}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Última consulta</h2>
-          {!loading && !error && latestConsultation && (
-            <span className={styles.meta}>
-              {formatShortDate(latestConsultation.date)}
-              {latestConsultation.reason && ` · ${latestConsultation.reason}`}
-            </span>
-          )}
-        </div>
-
-        {loading && <p className={styles.stateMessage}>Cargando historial...</p>}
-        {!loading && error && <p className={styles.stateMessage}>Error: {error}</p>}
-        {!loading && !error && !latestConsultation && (
-          <p className={styles.stateMessage}>Todavía no hay consultas</p>
-        )}
-        {!loading && !error && latestConsultation && (
-          <div className={styles.tiles}>
-            {measureTiles.map(tile => (
-              <div key={tile.label} className={styles.tile}>
-                <span className={styles.tileLabel}>{tile.label}</span>
-                <span className={styles.tileValue}>
-                  {tile.value}
-                  {tile.unit && tile.value !== '—' && <span className={styles.tileUnit}>{tile.unit}</span>}
-                </span>
-              </div>
-            ))}
-            {percentileTiles.map(tile => {
-              const status = getPercentileStatus(tile.value)
-              if (!status) {
-                return (
-                  <div key={tile.label} className={`${styles.tile} ${styles.tilePending}`}>
-                    <span className={styles.tileLabel}>{tile.label}</span>
-                    <span className={styles.tilePendingValue}>Próximamente</span>
-                  </div>
-                )
-              }
-              return (
-                <div key={tile.label} className={styles.tile}>
-                  <span className={styles.tileLabel}>{tile.label}</span>
-                  <span className={styles.tileValue}>{formatMeasure(tile.value)}</span>
-                  <span className={status.label === 'normal' ? styles.percentileOk : styles.percentileWarn}>
-                    {status.label}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
-        )}
-      </section>
+      <LatestConsultation consultation={latestConsultation} loading={loading} error={error} />
 
       {isUnlinkModalOpen && (
         <ConfirmModal
