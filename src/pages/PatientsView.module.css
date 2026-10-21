@@ -13,14 +13,33 @@
   gap: 20px;
   flex: 1;
   min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
 }
 
+/* La ficha toma su alto natural; el historial se queda con el resto y scrollea adentro */
 .cardSection {
-  flex: 1;
-  min-height: 0;
+  flex: 0 0 auto;
 }
 
 .historySection {
   flex: 1;
-  min-height: 0;
+  min-height: 260px;
+}
+
+@media (max-width: 640px) {
+  .pageContainer {
+    flex-direction: column;
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .infoColumn {
+    flex: none;
+    overflow-y: visible;
+  }
+
+  .historySection {
+    flex: none;
+  }
 }

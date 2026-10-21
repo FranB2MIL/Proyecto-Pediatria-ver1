@@ -1,27 +1,5 @@
+import { getAvatarColors, calculateAge } from '../../utils/patientFormat'
 import styles from './PatientListItem.module.css'
-
-// visual placeholder 
-const AVATAR_COLORS = [
-  { bg: '#7FA88A', text: '#F2F7F0' },
-  { bg: '#C0392B', text: '#FBF7F2' },
-  { bg: '#D9A441', text: '#4A3105' },
-]
-
-const getAvatarColors = (name = '') => {
-  const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-  return AVATAR_COLORS[hash % AVATAR_COLORS.length]
-}
-
-const calculateAge = (dateOfBirth) => {
-  const birth = new Date(dateOfBirth)
-  const today = new Date()
-  let age = today.getFullYear() - birth.getFullYear()
-  const hasHadBirthdayThisYear =
-    today.getMonth() > birth.getMonth() ||
-    (today.getMonth() === birth.getMonth() && today.getDate() >= birth.getDate())
-  if (!hasHadBirthdayThisYear) age--
-  return age
-}
 
 const PatientListItem = ({ patient, onSelectPatient }) => {
   const fullName = `${patient.firstName} ${patient.lastName}`

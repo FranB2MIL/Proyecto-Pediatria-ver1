@@ -1,83 +1,110 @@
-.historyitem {
-  background: #FFFFFF;
-  border: 1px solid #EFE7DC;
-  border-left-width: 4px;
-  border-left-style: solid;
-  border-radius: 8px;
+.row td {
   padding: 12px;
-  box-sizing: border-box;
-  cursor: pointer;
+  border-bottom: 1px solid #F4EEE6;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #2B2320;
+  vertical-align: middle;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
+.row:last-child td {
+  border-bottom: none;
+}
+
+.date {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.reasonCell {
+  max-width: 280px;
+}
+
+.reason {
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 6px;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-weight: 500;
 }
 
-.header span {
+.badge {
+  padding: 2px 8px;
+  background: #FDF4F2;
+  border: 1px solid #F1CFC9;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #7D241B;
+}
+
+.description {
+  display: block;
+  max-width: 280px;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: #6E655D;
+}
+
+.num {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.unit {
+  margin-left: 3px;
+  font-size: 12px;
+  color: #6E655D;
+}
+
+.imc {
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.editBtn,
+.deleteBtn {
+  background: transparent;
+  border-radius: 8px;
+  padding: 4px 10px;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 500;
-  color: #8A8078;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 
 .editBtn {
-  background: transparent;
   color: #5C544C;
   border: 1px solid #EFE7DC;
-  border-radius: 8px;
-  padding: 4px 10px;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  cursor: pointer;
+}
+
+.editBtn:hover {
+  background: #FBF7F3;
 }
 
 .deleteBtn {
-  background: transparent;
-  color: #C0392B;
-  border: 1px solid #C0392B;
-  border-radius: 8px;
-  padding: 4px 10px;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  cursor: pointer;
+  color: #A8321F;
+  border: 1px solid #F1CFC9;
 }
 
-.details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+.deleteBtn:hover {
+  background: #FDF4F2;
 }
 
-.details h3 {
-  width: 100%;
-  margin: 0 0 2px;
-  font-family: 'Fraunces', serif;
-  font-size: 15px;
-  font-weight: 500;
-  color: #2B2320;
-}
-
-.details p {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  color: #5C544C;
-}
-
-.details strong {
-  font-weight: 500;
-  color: #2B2320;
-}
-
-
-.actions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
+.editBtn:focus-visible,
+.deleteBtn:focus-visible {
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
 }

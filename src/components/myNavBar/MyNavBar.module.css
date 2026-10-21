@@ -28,6 +28,7 @@
 }
 
 .navButtonSecondary {
-  background: #D9887C;
-  color: #FBF7F2;
+  background: #FFFFFF;
+  color: #7D241B;
+  border: 1px solid #E8B9B2;
 }

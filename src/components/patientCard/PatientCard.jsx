@@ -1,9 +1,22 @@
 import { useState } from 'react'
-import HistoryListItem from '../historyListItem/HistoryListItem'
 import { unlinkPatient } from '../../services/patientService'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
 import ConfirmModal from '../../modal/ConfirmModal'
+import { formatDate, formatShortDate } from '../../utils/dateUtils'
+import { calculateAge, formatDni, formatMeasure, getAvatarVariant } from '../../utils/patientFormat'
+import { getPercentileStatus } from '../../utils/percentileStatus'
 import styles from './PatientCard.module.css'
+
+const AVATAR_CLASSES = {
+  green: styles.avatarGreen,
+  red: styles.avatarRed,
+  amber: styles.avatarAmber,
+}
+
+const formatAge = (age) => {
+  if (age === null) return '—'
+  return age === 1 ? '1 año' : `${age} años`
+}
 
 const PatientCard = ({
   id, firstName, lastName, dni, dateOfBirth, healthInsurance, onDelete,
@@ -32,37 +45,121 @@ const PatientCard = ({
     }
   }
 
+  const fullName = `${firstName} ${lastName}`
+  const initial = firstName?.charAt(0).toUpperCase()
+  const avatarClass = AVATAR_CLASSES[getAvatarVariant(fullName)]
+
+  const facts = [
+    { label: 'DNI', value: formatDni(dni) },
+    { label: 'Edad', value: formatAge(calculateAge(dateOfBirth)) },
+    { label: 'Nacimiento', value: formatDate(dateOfBirth) },
+    { label: 'Obra social', value: healthInsurance?.trim() || 'Sin obra social' },
+  ]
+
+  const measurement = latestConsultation?.measurement
+  const measureTiles = [
+    { label: 'Peso', value: formatMeasure(measurement?.weight), unit: 'kg' },
+    { label: 'Altura', value: formatMeasure(measurement?.height), unit: 'm' },
+    { label: 'Talla', value: formatMeasure(measurement?.size), unit: 'm' },
+    { label: 'IMC', value: formatMeasure(measurement?.imc, { decimals: 2 }) },
+  ]
+  const percentileTiles = [
+    { label: 'Percentil talla/edad', value: measurement?.heightAgePercentile },
+    { label: 'Percentil peso/edad', value: measurement?.weightAgePercentile },
+  ]
+
   return (
     <div className={styles.patientcard}>
-      <div className={styles.topRow}>
-        <div className={styles.avatarBlock} />
-        <div className={styles.infoBlock}>
-          <h2>{firstName} {lastName}</h2>
-          <p>DNI: {dni}</p>
-          <p>Fecha de nacimiento: {new Date(dateOfBirth).toLocaleDateString('es-AR')}</p>
-          <p>Obra social: {healthInsurance}</p>
-          <div className={styles.actions}>
-            <button onClick={() => setIsModalOpen(true)} className={styles.primaryBtn}>
-              + Nueva Consulta
-            </button>
-            <button onClick={() => setIsUnlinkModalOpen(true)} className={styles.dangerBtn}>
-              Quitar de mi lista
-            </button>
-            {isUnlinkModalOpen && (
-              <ConfirmModal
-                message={`¿Querés quitar a ${firstName} ${lastName} de tu lista? Sus consultas no se borran.`}
-                onConfirm={() => {
-                  handleUnlinkPatient()
-                  setIsUnlinkModalOpen(false)
-                }}
-                onClose={() => setIsUnlinkModalOpen(false)}
-              />
-            )}
+      <section className={styles.header}>
+        <div className={styles.identity}>
+          <div className={`${styles.avatar} ${avatarClass}`} aria-hidden="true">
+            {initial}
           </div>
-          {actionError && <p>{actionError}</p>}
-          {/* TODO: chip de percentilo — pendiente hasta implementar cálculo OMS en el back */}
+          <div className={styles.identityText}>
+            <h1 className={styles.name}>{fullName}</h1>
+            <dl className={styles.facts}>
+              {facts.map(fact => (
+                <div key={fact.label} className={styles.fact}>
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
-      </div>
+        <div className={styles.actions}>
+          <button onClick={() => setIsUnlinkModalOpen(true)} className={styles.secondaryBtn}>
+            Quitar de mi lista
+          </button>
+          <button onClick={() => setIsModalOpen(true)} className={styles.primaryBtn}>
+            + Nueva consulta
+          </button>
+        </div>
+      </section>
+
+      {actionError && <p className={styles.actionError} role="alert">{actionError}</p>}
+
+      <section className={styles.latest}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Última consulta</h2>
+          {!loading && !error && latestConsultation && (
+            <span className={styles.meta}>
+              {formatShortDate(latestConsultation.date)}
+              {latestConsultation.reason && ` · ${latestConsultation.reason}`}
+            </span>
+          )}
+        </div>
+
+        {loading && <p className={styles.stateMessage}>Cargando historial...</p>}
+        {!loading && error && <p className={styles.stateMessage}>Error: {error}</p>}
+        {!loading && !error && !latestConsultation && (
+          <p className={styles.stateMessage}>Todavía no hay consultas</p>
+        )}
+        {!loading && !error && latestConsultation && (
+          <div className={styles.tiles}>
+            {measureTiles.map(tile => (
+              <div key={tile.label} className={styles.tile}>
+                <span className={styles.tileLabel}>{tile.label}</span>
+                <span className={styles.tileValue}>
+                  {tile.value}
+                  {tile.unit && tile.value !== '—' && <span className={styles.tileUnit}>{tile.unit}</span>}
+                </span>
+              </div>
+            ))}
+            {percentileTiles.map(tile => {
+              const status = getPercentileStatus(tile.value)
+              if (!status) {
+                return (
+                  <div key={tile.label} className={`${styles.tile} ${styles.tilePending}`}>
+                    <span className={styles.tileLabel}>{tile.label}</span>
+                    <span className={styles.tilePendingValue}>Próximamente</span>
+                  </div>
+                )
+              }
+              return (
+                <div key={tile.label} className={styles.tile}>
+                  <span className={styles.tileLabel}>{tile.label}</span>
+                  <span className={styles.tileValue}>{formatMeasure(tile.value)}</span>
+                  <span className={status.label === 'normal' ? styles.percentileOk : styles.percentileWarn}>
+                    {status.label}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </section>
+
+      {isUnlinkModalOpen && (
+        <ConfirmModal
+          message={`¿Querés quitar a ${firstName} ${lastName} de tu lista? Sus consultas no se borran.`}
+          onConfirm={() => {
+            handleUnlinkPatient()
+            setIsUnlinkModalOpen(false)
+          }}
+          onClose={() => setIsUnlinkModalOpen(false)}
+        />
+      )}
 
       {isModalOpen && (
         <CreateConsultationModal
@@ -74,26 +171,6 @@ const PatientCard = ({
           }}
         />
       )}
-
-      <div className={styles.summaryStrip}>
-        {loading && <p>Cargando historial...</p>}
-        {!loading && error && <p>Error: {error}</p>}
-        {!loading && !error && (
-          latestConsultation ? (
-            <HistoryListItem
-              key={latestConsultation.id}
-              id={latestConsultation.id}
-              date={latestConsultation.date}
-              weight={latestConsultation.measurement?.weight}
-              height={latestConsultation.measurement?.height}
-              size={latestConsultation.measurement?.size}
-              imc={latestConsultation.measurement?.imc}
-            />
-          ) : (
-            <p>No hay historial disponible</p>
-          )
-        )}
-      </div>
     </div>
   )
 }
