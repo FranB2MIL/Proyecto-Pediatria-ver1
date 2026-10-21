@@ -1,49 +1,62 @@
 import React from 'react';
 import styles from './HistoryListItem.module.css'
-import { getPercentileStatus } from '../../utils/percentileStatus'
+import { formatDate } from '../../utils/dateUtils'
+import { formatMeasure } from '../../utils/patientFormat'
 
-const HistoryListItem = ({ id, reason, date, description, weight, height, size, heightAgePercentile, weightAgePercentile, imc, onClick, onEdit, onDelete }) => {
-    const status = getPercentileStatus(heightAgePercentile)
+const Measure = ({ value, unit }) => {
+    const formatted = formatMeasure(value)
     return (
-        <div className={styles.historyitem} style={{ borderLeftColor: status ? status.dotColor : '#EFE7DC' }}>
-            <div className={styles.header}>
-                <span >{date}</span>
-                <div className={styles.actions}>
+        <>
+            {formatted}
+            {formatted !== '—' && <span className={styles.unit}>{unit}</span>}
+        </>
+    )
+}
 
-                {onEdit && (
-                    <button
-                    className={styles.editBtn}
-                    onClick={() => onEdit({
-                        id,
-                        date,
-                        reason,
-                        description,
-                        measurement: { weight, height, size },
-                    })}
-                    >
-                        Editar
-                    </button>
+const HistoryListItem = ({ id, reason, date, description, weight, height, size, imc, isLatest, onEdit, onDelete }) => {
+    return (
+        <tr className={styles.row}>
+            <td className={styles.date}>{formatDate(date)}</td>
+            <td className={styles.reasonCell}>
+                <span className={styles.reason}>
+                    {reason || '—'}
+                    {isLatest && <span className={styles.badge}>Última</span>}
+                </span>
+                {description && (
+                    <span className={styles.description} title={description}>{description}</span>
                 )}
-                {onDelete && (
-                    <button
-                    className={styles.deleteBtn}
-                    onClick={() => onDelete(id)}
-                    >
-                        Eliminar
-                    </button>
-                )}
+            </td>
+            <td className={styles.num}><Measure value={weight} unit="kg" /></td>
+            <td className={styles.num}><Measure value={height} unit="m" /></td>
+            <td className={styles.num}><Measure value={size} unit="m" /></td>
+            <td className={`${styles.num} ${styles.imc}`}>{formatMeasure(imc, { decimals: 2 })}</td>
+            <td>
+                <div className={styles.actions}>
+                    {onEdit && (
+                        <button
+                        className={styles.editBtn}
+                        onClick={() => onEdit({
+                            id,
+                            date,
+                            reason,
+                            description,
+                            measurement: { weight, height, size },
+                        })}
+                        >
+                            Editar
+                        </button>
+                    )}
+                    {onDelete && (
+                        <button
+                        className={styles.deleteBtn}
+                        onClick={() => onDelete(id)}
+                        >
+                            Eliminar
+                        </button>
+                    )}
                 </div>
-            </div>
-            <div className={styles.details}>
-                <h3>{reason}</h3>
-                <p><strong>Peso:</strong> {weight} kg</p>
-                <p><strong>Altura:</strong> {height} m</p>
-                <p><strong>Talla:</strong> {size} m</p>
-                <p><strong>Percentilo Talla/Edad:</strong> {heightAgePercentile}</p>
-                <p><strong>Percentilo Peso/Edad:</strong> {weightAgePercentile}</p>
-                <p><strong>IMC:</strong> {imc}</p>
-            </div>
-        </div>
+            </td>
+        </tr>
     );
 };
 

@@ -60,4 +60,30 @@ export function minutesToTime(totalMinutes) {
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
 }
 
+/**
+ * "2026-10-21T00:00:00" -> Date del 21/10/2026 a las 00:00 hora LOCAL.
+ * Se queda solo con la parte yyyy-MM-dd a propósito: parsearla como UTC
+ * mostraría el día anterior en Argentina.
+ */
+export function parseLocalDate(value) {
+  if (!value) return null
+  const [year, month, day] = String(value).slice(0, 10).split('-').map(Number)
+  if (!year || !month || !day) return null
+  return new Date(year, month - 1, day)
+}
+
+/** "21/10/2026" */
+export function formatDate(value) {
+  const date = parseLocalDate(value)
+  if (!date) return '—'
+  return date.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+}
+
+/** "21 oct 2026" */
+export function formatShortDate(value) {
+  const date = parseLocalDate(value)
+  if (!date) return '—'
+  return format(date, 'd MMM yyyy', { locale: es })
+}
+
 export { isSameDay, isToday }

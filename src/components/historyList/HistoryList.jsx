@@ -27,32 +27,59 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
     }
   }
 
+  const hasConsultations = !loading && !error && consultations.length > 0
+
   return (
-    <div className={styles.historylist}>
-      <p className={styles.title}>Historial de consultas del paciente</p>
-      {actionError && <p>{actionError}</p>}
-      <div className={styles.itemsContainer}>
-        {loading && <p>Cargando historial...</p>}
-        {!loading && error && <p>Error: {error}</p>}
-        {!loading && !error && consultations.length === 0 && (
-          <p>Este paciente todavía no tiene consultas.</p>
+    <section className={styles.historylist}>
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.title}>Historial de consultas</h2>
+        {hasConsultations && (
+          <span className={styles.count}>
+            {consultations.length === 1 ? '1 consulta' : `${consultations.length} consultas`}
+          </span>
         )}
-        {!loading && !error && consultations.map(c => (
-          <HistoryListItem
-            key={c.id}
-            id={c.id}
-            reason={c.reason}
-            date={c.date}
-            description={c.description}
-            weight={c.measurement?.weight}
-            height={c.measurement?.height}
-            size={c.measurement?.size}
-            imc={c.measurement?.imc}
-            onEdit={(consultationData) => setEditingConsultation(consultationData)}
-            onDelete={(id) => setDeletingConsultation(id)}
-          />
-        ))}
       </div>
+      {actionError && <p className={styles.actionError} role="alert">{actionError}</p>}
+      {loading && <p className={styles.stateMessage}>Cargando historial...</p>}
+      {!loading && error && <p className={styles.stateMessage}>Error: {error}</p>}
+      {!loading && !error && consultations.length === 0 && (
+        <p className={styles.stateMessage}>Este paciente todavía no tiene consultas.</p>
+      )}
+      {hasConsultations && (
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Motivo</th>
+                <th scope="col" className={styles.num}>Peso</th>
+                <th scope="col" className={styles.num}>Altura</th>
+                <th scope="col" className={styles.num}>Talla</th>
+                <th scope="col" className={styles.num}>IMC</th>
+                <th scope="col"><span className={styles.srOnly}>Acciones</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {consultations.map((c, index) => (
+                <HistoryListItem
+                  key={c.id}
+                  id={c.id}
+                  reason={c.reason}
+                  date={c.date}
+                  description={c.description}
+                  weight={c.measurement?.weight}
+                  height={c.measurement?.height}
+                  size={c.measurement?.size}
+                  imc={c.measurement?.imc}
+                  isLatest={index === 0}
+                  onEdit={(consultationData) => setEditingConsultation(consultationData)}
+                  onDelete={(id) => setDeletingConsultation(id)}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {editingConsultation && (
         <CreateConsultationModal
@@ -85,7 +112,7 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
           onClose={() => setDeletingConsultation(null)}
         />
       )}
-    </div>
+    </section>
   )
 }
 
