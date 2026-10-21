@@ -41,12 +41,12 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
           <HistoryListItem
             key={c.id}
             id={c.id}
-            descripcion={c.reason}
-            fechaCreacion={c.date}
+            reason={c.reason}
+            date={c.date}
             description={c.description}
-            peso={c.measurement?.weight}
-            altura={c.measurement?.height}
-            talla={c.measurement?.size}
+            weight={c.measurement?.weight}
+            height={c.measurement?.height}
+            size={c.measurement?.size}
             imc={c.measurement?.imc}
             onEdit={(consultationData) => setEditingConsultation(consultationData)}
             onDelete={(id) => setDeletingConsultation(id)}

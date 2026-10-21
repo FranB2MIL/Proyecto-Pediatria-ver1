@@ -83,10 +83,10 @@ const PatientCard = ({
             <HistoryListItem
               key={latestConsultation.id}
               id={latestConsultation.id}
-              fechaCreacion={latestConsultation.date}
-              peso={latestConsultation.measurement?.weight}
-              altura={latestConsultation.measurement?.height}
-              talla={latestConsultation.measurement?.size}
+              date={latestConsultation.date}
+              weight={latestConsultation.measurement?.weight}
+              height={latestConsultation.measurement?.height}
+              size={latestConsultation.measurement?.size}
               imc={latestConsultation.measurement?.imc}
             />
           ) : (

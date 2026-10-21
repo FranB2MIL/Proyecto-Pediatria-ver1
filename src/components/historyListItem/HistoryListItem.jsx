@@ -2,12 +2,12 @@ import React from 'react';
 import styles from './HistoryListItem.module.css'
 import { getPercentileStatus } from '../../utils/percentileStatus'
 
-const HistoryListItem = ({ id,descripcion, fechaCreacion, description, peso, altura, talla, percentiloTallaEdad, percentilosPesoEdad, imc, onClick, onEdit, onDelete }) => {
-    const status = getPercentileStatus(percentiloTallaEdad)
+const HistoryListItem = ({ id, reason, date, description, weight, height, size, heightAgePercentile, weightAgePercentile, imc, onClick, onEdit, onDelete }) => {
+    const status = getPercentileStatus(heightAgePercentile)
     return (
         <div className={styles.historyitem} style={{ borderLeftColor: status ? status.dotColor : '#EFE7DC' }}>
             <div className={styles.header}>
-                <span >{fechaCreacion}</span>
+                <span >{date}</span>
                 <div className={styles.actions}>
 
                 {onEdit && (
@@ -15,10 +15,10 @@ const HistoryListItem = ({ id,descripcion, fechaCreacion, description, peso, alt
                     className={styles.editBtn}
                     onClick={() => onEdit({
                         id,
-                        date: fechaCreacion,
-                        reason: descripcion,
+                        date,
+                        reason,
                         description,
-                        measurement: { weight: peso, height: altura, size: talla },
+                        measurement: { weight, height, size },
                     })}
                     >
                         Editar
@@ -35,12 +35,12 @@ const HistoryListItem = ({ id,descripcion, fechaCreacion, description, peso, alt
                 </div>
             </div>
             <div className={styles.details}>
-                <h3>{descripcion}</h3>
-                <p><strong>Peso:</strong> {peso} kg</p>
-                <p><strong>Altura:</strong> {altura} m</p>
-                <p><strong>Talla:</strong> {talla} m</p>
-                <p><strong>Percentilo Talla/Edad:</strong> {percentiloTallaEdad}</p>
-                <p><strong>Percentilo Peso/Edad:</strong> {percentilosPesoEdad}</p>
+                <h3>{reason}</h3>
+                <p><strong>Peso:</strong> {weight} kg</p>
+                <p><strong>Altura:</strong> {height} m</p>
+                <p><strong>Talla:</strong> {size} m</p>
+                <p><strong>Percentilo Talla/Edad:</strong> {heightAgePercentile}</p>
+                <p><strong>Percentilo Peso/Edad:</strong> {weightAgePercentile}</p>
                 <p><strong>IMC:</strong> {imc}</p>
             </div>
         </div>

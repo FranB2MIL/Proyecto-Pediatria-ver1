@@ -76,10 +76,10 @@ const PatientList = ({ onSelectPatient, deletedPatientId }) => {
           <p className={styles.emptyState}>Ningún paciente coincide con "{query}".</p>
         )}
 
-        {!loading && !error && filtered.map((paciente) => (
+        {!loading && !error && filtered.map((patient) => (
           <PatientListItem
-            key={paciente.id}
-            patient={paciente}
+            key={patient.id}
+            patient={patient}
             onSelectPatient={onSelectPatient}
           />
         ))}
