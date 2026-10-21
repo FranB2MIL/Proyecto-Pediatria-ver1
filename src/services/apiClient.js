@@ -19,7 +19,18 @@ export async function apiFetch(path, options = {}) {
   }
 
   if (!response.ok) {
-    throw new Error(`Error ${response.status}`)
+    let message = `Error ${response.status}`
+
+    try {
+      const body = await response.json()
+      if (body?.message) message = body.message
+    } catch {
+      // La respuesta no tenía cuerpo JSON: nos quedamos con el mensaje genérico
+    }
+
+    const error = new Error(message)
+    error.status = response.status
+    throw error
   }
 
   if (response.status === 204) return null

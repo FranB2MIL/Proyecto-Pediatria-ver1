@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
 import styles from './PatientList.module.css'
 import PatientListItem from '../patientItem/PatientListItem'
-import { getAllPatients, createPatient } from '../../services/patientService'
-import CreateModal from '../../modal/CreatePacientModal';
-
-
+import { getAllPatients } from '../../services/patientService'
+import AddPatientModal from '../../modal/AddPatientModal'
 
 const PatientList = ({ onSelectPatient, deletedPatientId }) => {
   const [patients, setPatients] = useState([])
@@ -12,39 +10,27 @@ const PatientList = ({ onSelectPatient, deletedPatientId }) => {
   const [error, setError] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-
-
-  useEffect(() => {
-    async function fetchPatients() {
-      try {
-        const data = await getAllPatients()
-        setPatients(data)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchPatients()
-  }, [])
-
-
-  const handleAddPatient = async (patientData) => {
+  const loadPatients = async () => {
     try {
-      const newPatient = await createPatient(patientData)
-      setPatients((prevPatients) => [...prevPatients, newPatient])
+      setError(null)
+      const data = await getAllPatients()
+      setPatients(data)
     } catch (err) {
-      console.error("Error", err)
+      setError(err.message)
+    } finally {
+      setLoading(false)
     }
   }
+
+  useEffect(() => {
+    loadPatients()
+  }, [])
 
   useEffect(() => {
     if (deletedPatientId) {
       setPatients(prev => prev.filter(p => p.id !== deletedPatientId))
     }
   }, [deletedPatientId])
-
 
   return (
     <div className={styles.patientlist}>
@@ -55,13 +41,9 @@ const PatientList = ({ onSelectPatient, deletedPatientId }) => {
       </div>
 
       {isModalOpen && (
-        <CreateModal
-          modalTitle="Agregar Paciente"
+        <AddPatientModal
           onClose={() => setIsModalOpen(false)}
-          onSave={(patientData) => {
-            handleAddPatient(patientData)
-            setIsModalOpen(false)
-          }}
+          onPatientLinked={loadPatients}
         />
       )}
 
@@ -81,4 +63,4 @@ const PatientList = ({ onSelectPatient, deletedPatientId }) => {
   )
 }
 
-export default PatientList;
+export default PatientList

@@ -1,0 +1,133 @@
+/* Estilos globales del modal: mismos que CreatePacientModal */
+:global(.modal-content) {
+  border: 1px solid #EFE7DC;
+  border-radius: 12px;
+}
+
+:global(.modal-header) {
+  border-bottom: none;
+  padding: 24px 24px 0;
+}
+
+:global(.modal-body) {
+  padding: 16px 24px;
+}
+
+:global(.modal-footer) {
+  border-top: none;
+  padding: 0 24px 24px;
+  gap: 8px;
+}
+
+:global(.modal-backdrop.show) {
+  background: #2B2320;
+  opacity: 0.4;
+}
+
+.modalTitle {
+  font-family: 'Fraunces', serif;
+  color: #2B2320;
+}
+
+/* Parte B: buscador */
+.searchInput {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  color: #2B2320;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Parte A: lista */
+.patientList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.patientRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  color: #2B2320;
+}
+
+.patientRow div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dni {
+  font-size: 0.85rem;
+  color: #5C544C;
+}
+
+.emptyState {
+  color: #5C544C;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
+
+/* Parte C: mensajes de resultado */
+.success,
+.errorMessage {
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+
+.success {
+  background: #EDF5EF;
+  color: #2E6B45;
+}
+
+.errorMessage {
+  background: #FBEDEB;
+  color: #C0392B;
+}
+
+/* Botones: mismos que CreatePacientModal */
+.primaryBtn {
+  background: #C0392B;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Variante chica para el botón "Agregar" de cada fila */
+.smallBtn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.secondaryBtn {
+  background: transparent;
+  color: #5C544C;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}

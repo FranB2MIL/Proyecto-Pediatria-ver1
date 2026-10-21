@@ -14,21 +14,14 @@ export async function getAllPatients() {
   return apiFetch('/patient')
 }
 
-export async function createPatient(formData) {
-  return apiFetch('/patient', {
-    method: 'POST',
-    body: JSON.stringify(toPatientDto(formData)),
-  })
+export async function getAvailablePatients(){
+  return apiFetch('/patient/available')
 }
 
-export async function updatePatient(id, formData) {
-  return apiFetch(`/patient/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(toPatientDto(formData)),
-  })
+export async function linkPatient(id){
+  return apiFetch(`/patient/${id}/link`, { method: 'POST'})
 }
 
-
-export async function deletePatient(id) {
-  return apiFetch(`/patient/${id}`, { method: 'DELETE' })
+export async function unlinkPatient(id){
+  return apiFetch(`/patient/${id}/link`, { method: 'DELETE'})
 }

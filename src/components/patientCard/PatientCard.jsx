@@ -1,42 +1,26 @@
 import { useState, useEffect } from 'react'
 import HistoryListItem from '../historyListItem/HistoryListItem'
 import { getConsultationsByPatientId, createConsultation } from '../../services/consultationService'
-import { updatePatient } from '../../services/patientService'
+import { unlinkPatient } from '../../services/patientService'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
-import CreateModal from '../../modal/CreatePacientModal'
-import styles from './PatientCard.module.css'
 import ConfirmModal from '../../modal/ConfirmModal'
-import { deletePatient } from '../../services/patientService'
+import styles from './PatientCard.module.css'
 
 const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsurance, onDelete }) => {
   const [consultations, setConsultations] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [patientData, setPatientData] = useState({ firstName, lastName, dni, dateOfBirth, healthInsurance })
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isUnlinkModalOpen, setIsUnlinkModalOpen] = useState(false)
+  const [unlinkError, setUnlinkError] = useState(null)
 
-  useEffect(() => {
-    setPatientData({ firstName, lastName, dni, dateOfBirth, healthInsurance })
-  }, [id, firstName, lastName, dni, dateOfBirth, healthInsurance])
-
-  const handleEditPatient = async (formData) => {
+  const handleUnlinkPatient = async () => {
     try {
-      await updatePatient(id, formData)
-      setPatientData((prev) => ({ ...prev, ...formData }))
-    } catch (err) {
-      console.error("Error", err)
-    }
-  }
-  
-  const handleDeletePatient = async () => {
-    try {
-      await deletePatient(id)
-      // notify parent component that the patient has been deleted
+      setUnlinkError(null)
+      await unlinkPatient(id)
       onDelete(id)
     } catch (err) {
-      console.error('Error al eliminar paciente', err)
+      setUnlinkError(err.message)
     }
   }
 
@@ -58,8 +42,6 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
     }
   }
 
-
-
   useEffect(() => {
     async function fetchConsultations() {
       try {
@@ -79,47 +61,41 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
     .slice()
     .sort((a, b) => new Date(b.date) - new Date(a.date))[0]
 
-
-
-
   return (
     <div className={styles.patientcard}>
       <div className={styles.topRow}>
         <div className={styles.avatarBlock} />
         <div className={styles.infoBlock}>
-          <h2>{patientData.firstName} {patientData.lastName}</h2>
-          <p>DNI: {patientData.dni}</p>
-          <p>Fecha de nacimiento: {new Date(patientData.dateOfBirth).toLocaleDateString('es-AR')}</p>
-          <p>Obra social: {patientData.healthInsurance}</p>
+          <h2>{firstName} {lastName}</h2>
+          <p>DNI: {dni}</p>
+          <p>Fecha de nacimiento: {new Date(dateOfBirth).toLocaleDateString('es-AR')}</p>
+          <p>Obra social: {healthInsurance}</p>
           <div className={styles.actions}>
             <button onClick={() => setIsModalOpen(true)} className={styles.primaryBtn}>
               + Nueva Consulta
             </button>
-            <button onClick={() => setIsEditModalOpen(true)} className={styles.primaryBtn}>
-              Editar paciente
+            <button onClick={() => setIsUnlinkModalOpen(true)} className={styles.dangerBtn}>
+              Quitar de mi lista
             </button>
-            <button onClick={() => setIsDeleteModalOpen(true)} className={styles.dangerBtn}>
-              Eliminar paciente
-            </button>
-            {isDeleteModalOpen && (
+            {isUnlinkModalOpen && (
               <ConfirmModal
-                message="¿Estás seguro que querés eliminar este paciente?"
+                message={`¿Querés quitar a ${firstName} ${lastName} de tu lista? Sus consultas no se borran.`}
                 onConfirm={() => {
-                  handleDeletePatient()
-                  setIsDeleteModalOpen(false)
+                  handleUnlinkPatient()
+                  setIsUnlinkModalOpen(false)
                 }}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => setIsUnlinkModalOpen(false)}
               />
             )}
           </div>
+          {unlinkError && <p>No se pudo quitar al paciente: {unlinkError}</p>}
           {/* TODO: chip de percentilo — pendiente hasta implementar cálculo OMS en el back */}
         </div>
       </div>
 
-
       {isModalOpen && (
         <CreateConsultationModal
-          title="Agregar Consulta"
+          modalTitle="Agregar Consulta"
           onClose={() => setIsModalOpen(false)}
           onSave={(pacientConsultation) => {
             handleAddConsultations(pacientConsultation)
@@ -127,25 +103,6 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
           }}
         />
       )}
-
-      {isEditModalOpen && (
-        <CreateModal
-          modalTitle="Editar Paciente"
-          initialData={{
-            firstName: patientData.firstName,
-            lastName: patientData.lastName,
-            dni: patientData.dni,
-            dateOfBirth: patientData.dateOfBirth?.slice(0, 10) ?? '',
-            healthInsurance: patientData.healthInsurance,
-          }}
-          onClose={() => setIsEditModalOpen(false)}
-          onSave={(formData) => {
-            handleEditPatient(formData)
-            setIsEditModalOpen(false)
-          }}
-        />
-      )}
-
 
       <div className={styles.summaryStrip}>
         {loading && <p>Cargando historial...</p>}
