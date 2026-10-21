@@ -1,65 +1,36 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import HistoryListItem from '../historyListItem/HistoryListItem'
-import { getConsultationsByPatientId, createConsultation } from '../../services/consultationService'
 import { unlinkPatient } from '../../services/patientService'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
 import ConfirmModal from '../../modal/ConfirmModal'
 import styles from './PatientCard.module.css'
 
-const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsurance, onDelete }) => {
-  const [consultations, setConsultations] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+const PatientCard = ({
+  id, firstName, lastName, dni, dateOfBirth, healthInsurance, onDelete,
+  latestConsultation, loading, error, onCreateConsultation,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isUnlinkModalOpen, setIsUnlinkModalOpen] = useState(false)
-  const [unlinkError, setUnlinkError] = useState(null)
+  const [actionError, setActionError] = useState(null)
 
   const handleUnlinkPatient = async () => {
     try {
-      setUnlinkError(null)
+      setActionError(null)
       await unlinkPatient(id)
       onDelete(id)
     } catch (err) {
-      setUnlinkError(err.message)
+      setActionError(`No se pudo quitar al paciente: ${err.message}`)
     }
   }
 
-  const handleAddConsultations = async (consultationData) => {
+  const handleAddConsultation = async (formData) => {
     try {
-      const newConsultation = await createConsultation(id, {
-        date: consultationData.date,
-        reason: consultationData.reason,
-        description: consultationData.description,
-        measurement: {
-          weight: Number(consultationData.measurement.weight) || 0,
-          height: Number(consultationData.measurement.height) || 0,
-          size: Number(consultationData.measurement.size) || 0
-        }
-      })
-      setConsultations((prev) => [...prev, newConsultation])
+      setActionError(null)
+      await onCreateConsultation(formData)
     } catch (err) {
-      console.log("Error", err)
+      setActionError(`No se pudo crear la consulta: ${err.message}`)
     }
   }
-
-  useEffect(() => {
-    async function fetchConsultations() {
-      try {
-        const data = await getConsultationsByPatientId(id)
-        setConsultations(data)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchConsultations()
-  }, [id])
-
-  const latestConsultation = consultations
-    .slice()
-    .sort((a, b) => new Date(b.date) - new Date(a.date))[0]
 
   return (
     <div className={styles.patientcard}>
@@ -88,7 +59,7 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
               />
             )}
           </div>
-          {unlinkError && <p>No se pudo quitar al paciente: {unlinkError}</p>}
+          {actionError && <p>{actionError}</p>}
           {/* TODO: chip de percentilo — pendiente hasta implementar cálculo OMS en el back */}
         </div>
       </div>
@@ -97,8 +68,8 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
         <CreateConsultationModal
           modalTitle="Agregar Consulta"
           onClose={() => setIsModalOpen(false)}
-          onSave={(pacientConsultation) => {
-            handleAddConsultations(pacientConsultation)
+          onSave={(formData) => {
+            handleAddConsultation(formData)
             setIsModalOpen(false)
           }}
         />
@@ -106,7 +77,7 @@ const PatientCard = ({ id, firstName, lastName, dni, dateOfBirth, healthInsuranc
 
       <div className={styles.summaryStrip}>
         {loading && <p>Cargando historial...</p>}
-        {error && <p>Error: {error}</p>}
+        {!loading && error && <p>Error: {error}</p>}
         {!loading && !error && (
           latestConsultation ? (
             <HistoryListItem

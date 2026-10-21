@@ -1,75 +1,43 @@
-import { useState, useEffect } from 'react'
-import HistoryListItem from "../historyListItem/HistoryListItem"
+import { useState } from 'react'
+import HistoryListItem from '../historyListItem/HistoryListItem'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
 import ConfirmModal from '../../modal/ConfirmModal'
-import { getConsultationsByPatientId, updateConsultation, deleteConsultation } from '../../services/consultationService'
 import styles from './HistoryList.module.css'
 
-const HistoryList = ({ id }) => {
-  const [consultations, setConsultations] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+const HistoryList = ({ consultations, loading, error, onEditConsultation, onDeleteConsultation }) => {
   const [editingConsultation, setEditingConsultation] = useState(null)
   const [deletingConsultation, setDeletingConsultation] = useState(null)
-
-  const handleEditClick = (consultationData) => {
-    setEditingConsultation(consultationData)
-  }
+  const [actionError, setActionError] = useState(null)
 
   const handleEditConsultation = async (consultationId, formData) => {
     try {
-      const normalized = {
-        date: formData.date,
-        reason: formData.reason,
-        description: formData.description,
-        measurement: {
-          weight: Number(formData.measurement.weight) || 0,
-          height: Number(formData.measurement.height) || 0,
-          size: Number(formData.measurement.size) || 0,
-        },
-      }
-      await updateConsultation(consultationId, normalized)
-      setConsultations(prev => prev.map(c => (c.id === consultationId ? { ...c, ...normalized } : c)))
+      setActionError(null)
+      await onEditConsultation(consultationId, formData)
     } catch (err) {
-      setError(err.message)
+      setActionError(`No se pudo guardar la consulta: ${err.message}`)
     }
   }
 
   const handleDeleteConsultation = async (consultationId) => {
     try {
-      await deleteConsultation(consultationId)
-      setConsultations(prev => prev.filter(c => c.id !== consultationId))
+      setActionError(null)
+      await onDeleteConsultation(consultationId)
     } catch (err) {
-      setError(err.message)
+      setActionError(`No se pudo eliminar la consulta: ${err.message}`)
     }
   }
-
-  useEffect(() => {
-    async function fetchConsultations() {
-      try {
-        const data = await getConsultationsByPatientId(id)
-        setConsultations(data)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchConsultations()
-  }, [id])
-
-  const sortedHistory = consultations
-    .slice()
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
 
   return (
     <div className={styles.historylist}>
       <p className={styles.title}>Historial de consultas del paciente</p>
+      {actionError && <p>{actionError}</p>}
       <div className={styles.itemsContainer}>
         {loading && <p>Cargando historial...</p>}
-        {error && <p>Error: {error}</p>}
-        {!loading && !error && sortedHistory.map(c => (
+        {!loading && error && <p>Error: {error}</p>}
+        {!loading && !error && consultations.length === 0 && (
+          <p>Este paciente todavía no tiene consultas.</p>
+        )}
+        {!loading && !error && consultations.map(c => (
           <HistoryListItem
             key={c.id}
             id={c.id}
@@ -80,7 +48,7 @@ const HistoryList = ({ id }) => {
             altura={c.measurement?.height}
             talla={c.measurement?.size}
             imc={c.measurement?.imc}
-            onEdit={handleEditClick}
+            onEdit={(consultationData) => setEditingConsultation(consultationData)}
             onDelete={(id) => setDeletingConsultation(id)}
           />
         ))}
