@@ -53,3 +53,11 @@
   padding: 8px 16px;
   cursor: pointer;
 }
+
+.emptyState {
+  color: #5C544C;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 8px 4px;
+}
