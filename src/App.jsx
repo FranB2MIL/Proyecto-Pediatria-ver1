@@ -5,27 +5,27 @@ import AppointmentsView from './pages/AppointmentsView'
 import PatientHomeView from './pages/PatientHomeView'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-// Las pantallas del doctor comparten la navbar; la del paciente tiene la suya
+// Las pantallas del doctor comparten la navbar; la del paciente tiene la suya.
+// El alto fijo vive acá y no en App: el doctor scrollea por columna (calendario,
+// historial), mientras que la vista del paciente scrollea la página completa.
 function DoctorLayout() {
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <MyNavBar />
       <Outlet />
-    </>
+    </div>
   )
 }
 
 function App() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      <Routes>
-        <Route element={<DoctorLayout />}>
-          <Route path="/" element={<PatientsView />} />
-          <Route path="/turnos" element={<AppointmentsView />} />
-        </Route>
-        <Route path="/mi-ficha" element={<PatientHomeView />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route element={<DoctorLayout />}>
+        <Route path="/" element={<PatientsView />} />
+        <Route path="/turnos" element={<AppointmentsView />} />
+      </Route>
+      <Route path="/mi-ficha" element={<PatientHomeView />} />
+    </Routes>
   )
 }
 

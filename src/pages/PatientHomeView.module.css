@@ -1,8 +1,8 @@
+/* Sin alto fijo ni overflow propio: scrollea la ventana, así la barra queda en el borde */
 .page {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: 0;
+  min-height: 100vh;
   background: #FBF7F2;
 }
 
@@ -37,8 +37,6 @@
   flex-direction: column;
   gap: 20px;
   flex: 1;
-  min-height: 0;
-  overflow-y: auto;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
