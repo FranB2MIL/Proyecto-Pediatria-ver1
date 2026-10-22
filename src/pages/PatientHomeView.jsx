@@ -5,16 +5,27 @@ import PatientProfile from '../components/patientProfile/PatientProfile'
 import LatestConsultation from '../components/latestConsultation/LatestConsultation'
 import UpcomingAppointments from '../components/upcomingAppointments/UpcomingAppointments'
 import HistoryList from '../components/historyList/HistoryList'
-import { getMyProfile, getMyConsultations, getMyAppointments } from '../services/patientPortalService'
+import EditProfileModal from '../modal/EditProfileModal'
+import {
+  getMyProfile, getMyConsultations, getMyAppointments, updateMyProfile,
+} from '../services/patientPortalService'
 import { toDateKey } from '../utils/dateUtils'
 import styles from './PatientHomeView.module.css'
 
-// Pantalla del paciente logueado: su ficha, sus turnos y su historial, solo lectura
+// Pantalla del paciente logueado: su ficha (editable), sus turnos y su historial
 function PatientHomeView() {
   const navigate = useNavigate()
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [isEditingProfile, setIsEditingProfile] = useState(false)
+
+  // Si falla, el error sube al modal, que lo muestra sin cerrarse
+  const handleSaveProfile = async (profileData) => {
+    const updated = await updateMyProfile(profileData)
+    setData(prev => ({ ...prev, profile: updated }))
+    setIsEditingProfile(false)
+  }
 
   useEffect(() => {
     let ignore = false
@@ -67,7 +78,7 @@ function PatientHomeView() {
         )}
         {!loading && !error && data && (
           <>
-            <PatientProfile {...data.profile} />
+            <PatientProfile {...data.profile} onEdit={() => setIsEditingProfile(true)} />
             <div className={styles.columns}>
               <div className={styles.mainColumn}>
                 <LatestConsultation consultation={consultations[0]} loading={false} error={null} />
@@ -85,6 +96,14 @@ function PatientHomeView() {
           </>
         )}
       </main>
+
+      {isEditingProfile && data?.profile && (
+        <EditProfileModal
+          profile={data.profile}
+          onClose={() => setIsEditingProfile(false)}
+          onSave={handleSaveProfile}
+        />
+      )}
     </div>
   )
 }
