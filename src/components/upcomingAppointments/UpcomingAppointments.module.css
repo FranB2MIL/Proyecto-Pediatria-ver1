@@ -11,12 +11,45 @@
   color: #2B2320;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .title {
   margin: 0;
   font-family: 'Fraunces', serif;
   font-size: 18px;
   font-weight: 600;
   color: #2B2320;
+}
+
+/* Mismo tamaño que el botón de editar de PatientProfile */
+.addButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: #C0392B;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.addButton:hover {
+  background: #A93226;
+}
+
+.addButton:focus-visible {
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
 }
 
 .stateMessage {

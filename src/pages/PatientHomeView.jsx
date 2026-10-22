@@ -1,4 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import PatientTopBar from '../components/patientTopBar/PatientTopBar'
 import PatientProfile from '../components/patientProfile/PatientProfile'
 import LatestConsultation from '../components/latestConsultation/LatestConsultation'
 import UpcomingAppointments from '../components/upcomingAppointments/UpcomingAppointments'
@@ -9,6 +11,7 @@ import styles from './PatientHomeView.module.css'
 
 // Pantalla del paciente logueado: su ficha, sus turnos y su historial, solo lectura
 function PatientHomeView() {
+  const navigate = useNavigate()
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -55,12 +58,7 @@ function PatientHomeView() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.topBar}>
-        <span className={styles.brand}>MediTrack</span>
-        {data?.profile && (
-          <span className={styles.greeting}>Hola, {data.profile.firstName}</span>
-        )}
-      </header>
+      <PatientTopBar firstName={data?.profile?.firstName} />
 
       <main className={styles.content}>
         {loading && <p className={styles.stateMessage}>Cargando tu ficha...</p>}
@@ -76,7 +74,12 @@ function PatientHomeView() {
                 <HistoryList consultations={consultations} loading={false} error={null} />
               </div>
               <aside className={styles.sideColumn}>
-                <UpcomingAppointments appointments={upcomingAppointments} loading={false} error={null} />
+                <UpcomingAppointments
+                  appointments={upcomingAppointments}
+                  loading={false}
+                  error={null}
+                  onAddAppointment={() => navigate('/mi-ficha/turnos')}
+                />
               </aside>
             </div>
           </>

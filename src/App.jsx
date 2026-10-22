@@ -3,6 +3,7 @@ import { Routes, Route, Outlet } from 'react-router-dom'
 import PatientsView from './pages/PatientsView'
 import AppointmentsView from './pages/AppointmentsView'
 import PatientHomeView from './pages/PatientHomeView'
+import PatientBookingView from './pages/PatientBookingView'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 // Las pantallas del doctor comparten la navbar; la del paciente tiene la suya.
@@ -25,6 +26,7 @@ function App() {
         <Route path="/turnos" element={<AppointmentsView />} />
       </Route>
       <Route path="/mi-ficha" element={<PatientHomeView />} />
+      <Route path="/mi-ficha/turnos" element={<PatientBookingView />} />
     </Routes>
   )
 }

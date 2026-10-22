@@ -12,10 +12,25 @@ const STATUS_LABELS = {
   [APPOINTMENT_STATUS.CANCELADO]: 'Cancelado',
 }
 
-const UpcomingAppointments = ({ appointments, loading, error }) => {
+const UpcomingAppointments = ({ appointments, loading, error, onAddAppointment }) => {
   return (
     <section className={styles.upcoming}>
-      <h2 className={styles.title}>Próximos turnos</h2>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Próximos turnos</h2>
+        {onAddAppointment && (
+          <button
+            type="button"
+            className={styles.addButton}
+            onClick={onAddAppointment}
+            aria-label="Agendar turno"
+            title="Agendar turno"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" />
+            </svg>
+          </button>
+        )}
+      </div>
 
       {loading && <p className={styles.stateMessage}>Cargando turnos...</p>}
       {!loading && error && <p className={styles.stateMessage}>Error: {error}</p>}

@@ -6,32 +6,6 @@
   background: #FBF7F2;
 }
 
-.topBar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  height: 86px;
-  padding: 0 24px;
-  box-sizing: border-box;
-  flex-shrink: 0;
-  background: #F5DFDA;
-}
-
-.brand {
-  font-family: 'Fraunces', serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: #2B2320;
-}
-
-.greeting {
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #5C544C;
-}
-
 .content {
   display: flex;
   flex-direction: column;
@@ -92,11 +66,6 @@
 }
 
 @media (max-width: 640px) {
-  .topBar {
-    height: 64px;
-    padding: 0 16px;
-  }
-
   .content {
     padding: 16px;
   }
