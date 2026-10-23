@@ -6,6 +6,7 @@ import { formatDate, formatShortDate } from '../../utils/dateUtils'
 import { calculateAge, formatDni, formatMeasure, getAvatarVariant } from '../../utils/patientFormat'
 import { getPercentileStatus } from '../../utils/percentileStatus'
 import styles from './PatientCard.module.css'
+import { heightInCm, headCircumferenceInCm } from '../../utils/measurement'
 
 const AVATAR_CLASSES = {
   green: styles.avatarGreen,
@@ -59,8 +60,8 @@ const PatientCard = ({
   const measurement = latestConsultation?.measurement
   const measureTiles = [
     { label: 'Peso', value: formatMeasure(measurement?.weight), unit: 'kg' },
-    { label: 'Altura', value: formatMeasure(measurement?.height), unit: 'm' },
-    { label: 'Talla', value: formatMeasure(measurement?.size), unit: 'm' },
+    { label: 'Talla', value: formatMeasure(heightInCm(measurement)), unit: 'cm' },
+    { label: 'P. cefálico', value: formatMeasure(headCircumferenceInCm(measurement)), unit: 'cm' },
     { label: 'IMC', value: formatMeasure(measurement?.imc, { decimals: 2 }) },
   ]
   const percentileTiles = [

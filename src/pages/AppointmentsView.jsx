@@ -20,7 +20,7 @@ function AppointmentsView() {
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [refreshTrigger, setRefreshTrigger] = useState(0)
 
-  const doctorId = 1 // hardcoded, same as PatientList - extracted from token when loged.
+  
 
   // useMemo avoids re-calculating the days in each render.
   // Without this, weekDays would be a new array each time, and the useEffect would trigger in loop
@@ -92,8 +92,11 @@ function AppointmentsView() {
         onNextWeek={handleNextWeek}
         onToday={handleToday}
         onConfigureAvailability={handleConfigureAvailability}
+        onRefresh={() => setRefreshTrigger((n) => n + 1)}
+        refreshing={loading}
       />
 
+      
       {loading && <p className={styles.message}>Cargando turnos...</p>}
       {error && <p className={styles.message}>Error: {error}</p>}
 
@@ -111,6 +114,7 @@ function AppointmentsView() {
           slot={selectedSlot}
           onClose={handleModalClose}
           onSaved={handleModalSaved}
+          onChanged={() => setRefreshTrigger((n) => n + 1)}
         />
       )}
 
@@ -118,6 +122,7 @@ function AppointmentsView() {
         <AvailabilityModal
           onClose={() => setIsAvailabilityModalOpen(false)}
           onSaved={handleAvailabilitySaved}
+          onChanged={() => setRefreshTrigger((n) => n + 1)}
           existingAvailabilities={availabilities}
         />
       )}

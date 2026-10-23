@@ -1,10 +1,12 @@
 export const initialConsultationsForm = {
-    date: "",
-  reason: "",
-  description: "",
-  measurement: {
-    weight: 0,
-    height: 0,
-    size: 0
-  }
+  date: '',
+  reason: '',
+  description: '',
+  measurement: null,
+}
+
+export const emptyMeasurement = {
+  weight: '',
+  height: '',
+  headCircumference: '',
 }

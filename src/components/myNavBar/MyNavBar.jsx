@@ -7,6 +7,9 @@ const MyNavBar = () => {
     return (
         <nav className={styles.navbar}>
             <button className={styles.navButtonPrimary} onClick={() => navigate('/')}>Mis pacientes</button>
+            <a href="/" className={styles.brand} aria-label="MediTrack, ir al inicio">
+                Medi<span className={styles.brandAccent}>Track</span>
+            </a>
             <button className={styles.navButtonSecondary} onClick={() => navigate('/turnos')}>Mis turnos</button>
         </nav>
     );

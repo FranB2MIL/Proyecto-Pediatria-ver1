@@ -3,7 +3,7 @@ import { getAllPatients } from '../../services/patientService'
 import { createAppointment, cancelAppointment } from '../../services/appointmentService'
 import styles from './AppointmentModal.module.css'
 
-function AppointmentModal({ slot, onClose, onSaved }) {
+function AppointmentModal({ slot, onClose, onSaved, onChanged }) {
   const [patients, setPatients] = useState([])
   const [loadingPatients, setLoadingPatients] = useState(true)
   const [errorPatients, setErrorPatients] = useState(null)
@@ -11,6 +11,7 @@ function AppointmentModal({ slot, onClose, onSaved }) {
   const [selectedPatientId, setSelectedPatientId] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
+  const [slotUnavailable, setSlotUnavailable] = useState(false)
 
   const isBooked = slot.status === 'Reservado'
 
@@ -33,7 +34,7 @@ function AppointmentModal({ slot, onClose, onSaved }) {
     loadPatients()
   }, [isBooked])
 
-  async function handleCreate() {
+    async function handleCreate() {
     if (!selectedPatientId) return
 
     setSubmitting(true)
@@ -47,7 +48,13 @@ function AppointmentModal({ slot, onClose, onSaved }) {
       })
       onSaved()
     } catch (err) {
-      setSubmitError(err.message)
+      if (err.status === 409 || err.status === 400) {
+        setSubmitError(`${err.message} La grilla se actualizó.`)
+        setSlotUnavailable(true)
+        onChanged()
+      } else {
+        setSubmitError(err.message)
+      }
     } finally {
       setSubmitting(false)
     }
@@ -127,7 +134,7 @@ function AppointmentModal({ slot, onClose, onSaved }) {
               <button
                 className={styles.primaryBtn}
                 onClick={handleCreate}
-                disabled={submitting || !selectedPatientId}
+                disabled={submitting || !selectedPatientId || slotUnavailable}
               >
                 {submitting ? 'Guardando...' : 'Confirmar turno'}
               </button>
