@@ -8,8 +8,8 @@ const LatestConsultation = ({ consultation, loading, error }) => {
   const measurement = consultation?.measurement
   const measureTiles = [
     { label: 'Peso', value: formatMeasure(measurement?.weight), unit: 'kg' },
-    { label: 'Altura', value: formatMeasure(measurement?.height), unit: 'm' },
-    { label: 'Talla', value: formatMeasure(measurement?.size), unit: 'm' },
+    { label: 'Talla', value: formatMeasure(heightInCm(measurement)), unit: 'cm' },
+    { label: 'P. cefálico', value: formatMeasure(headCircumferenceInCm(measurement)), unit: 'cm' },
     { label: 'IMC', value: formatMeasure(measurement?.imc, { decimals: 2 }) },
   ]
   const percentileTiles = [

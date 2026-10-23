@@ -6,7 +6,7 @@ import LatestConsultation from '../latestConsultation/LatestConsultation'
 import { formatDate } from '../../utils/dateUtils'
 import { calculateAge, formatDni, getAvatarVariant } from '../../utils/patientFormat'
 import styles from './PatientCard.module.css'
-import { heightInCm, headCircumferenceInCm } from '../../utils/measurement'
+
 
 const AVATAR_CLASSES = {
   green: styles.avatarGreen,
