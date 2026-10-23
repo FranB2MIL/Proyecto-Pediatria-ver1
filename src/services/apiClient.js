@@ -12,7 +12,7 @@ export async function apiFetch(path, options = {}) {
     },
   })
 
-  if (response.status === 401) {
+  if (response.status === 401 && token) {
     localStorage.removeItem('token')
     window.location.href = '/login'
     throw new Error('Sesión expirada')
