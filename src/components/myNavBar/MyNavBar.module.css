@@ -32,3 +32,25 @@
   color: #7D241B;
   border: 1px solid #E8B9B2;
 }
+
+
+.brand {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 2.3rem;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: #2B2320;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brandAccent {
+  color: #C0392B;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.brand:hover .brandAccent {
+  color: #A8321F;
+}
