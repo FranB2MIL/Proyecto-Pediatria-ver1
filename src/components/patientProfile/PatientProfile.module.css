@@ -1,0 +1,145 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #FFFFFF;
+  border: 1px solid #EFE7DC;
+  border-radius: 14px;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  color: #2B2320;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.identityText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Mismo tamaño que el botón "+" de UpcomingAppointments; arriba a la derecha */
+.editButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #EFE7DC;
+  border-radius: 10px;
+  background: #FFFFFF;
+  color: #5C544C;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.editButton:hover {
+  background: #FBF7F2;
+  border-color: #E0D4C4;
+  color: #2B2320;
+}
+
+.editButton:focus-visible {
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Mismos colores que AVATAR_COLORS en utils/patientFormat.js */
+.avatarGreen {
+  background: #7FA88A;
+  color: #F2F7F0;
+}
+
+.avatarRed {
+  background: #C0392B;
+  color: #FBF7F2;
+}
+
+.avatarAmber {
+  background: #D9A441;
+  color: #4A3105;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8A8078;
+}
+
+.name {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.15;
+  color: #2B2320;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px 24px;
+  margin: 0;
+  padding-top: 20px;
+  border-top: 1px solid #EFE7DC;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.fact dt {
+  font-size: 12px;
+  font-weight: 400;
+  color: #6E655D;
+}
+
+.fact dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2B2320;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .profile {
+    padding: 16px;
+  }
+
+  .name {
+    font-size: 24px;
+  }
+
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -30,6 +30,8 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
   }
 
   const hasConsultations = !loading && !error && consultations.length > 0
+  // Sin callbacks (vista del paciente) la tabla es solo lectura
+  const readOnly = !onEditConsultation && !onDeleteConsultation
 
   return (
     <section className={styles.historylist}>
@@ -45,7 +47,7 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
       {loading && <p className={styles.stateMessage}>Cargando historial...</p>}
       {!loading && error && <p className={styles.stateMessage}>Error: {error}</p>}
       {!loading && !error && consultations.length === 0 && (
-        <p className={styles.stateMessage}>Este paciente todavía no tiene consultas.</p>
+        <p className={styles.stateMessage}>Todavía no hay consultas registradas.</p>
       )}
       {hasConsultations && (
         <div className={styles.tableWrapper}>
@@ -58,7 +60,7 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
                 <th scope="col" className={styles.num}>Talla</th>
                 <th scope="col" className={styles.num}>P. cefálico</th>
                 <th scope="col" className={styles.num}>IMC</th>
-                <th scope="col"><span className={styles.srOnly}>Acciones</span></th>
+                {!readOnly && <th scope="col"><span className={styles.srOnly}>Acciones</span></th>}
               </tr>
             </thead>
             <tbody>
@@ -74,8 +76,9 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
                   size={headCircumferenceInCm(c.measurement)}
                   imc={c.measurement?.imc}
                   isLatest={index === 0}
-                  onEdit={() => setEditingConsultation(c)}
-                  onDelete={(id) => setDeletingConsultation(id)}
+
+                  onEdit={onEditConsultation && (() => setEditingConsultation(c))}
+                  onDelete={onDeleteConsultation && ((id) => setDeletingConsultation(id))}
                 />
               ))}
             </tbody>

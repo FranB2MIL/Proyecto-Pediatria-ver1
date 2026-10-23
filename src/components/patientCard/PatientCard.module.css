@@ -152,123 +152,9 @@
   color: #7D241B;
 }
 
-/* Última consulta */
-
-.latest {
-  background: #FFFFFF;
-  border: 1px solid #EFE7DC;
-  border-radius: 14px;
-  padding: 24px;
-  box-sizing: border-box;
-}
-
-.sectionHeader {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 12px;
-  margin-bottom: 16px;
-}
-
-.sectionTitle {
-  margin: 0;
-  font-family: 'Fraunces', serif;
-  font-size: 18px;
-  font-weight: 600;
-  color: #2B2320;
-}
-
-.meta {
-  font-size: 13px;
-  color: #6E655D;
-}
-
-.stateMessage {
-  margin: 0;
-  font-size: 14px;
-  color: #6E655D;
-}
-
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
-}
-
-.tile {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-  background: #FBF7F3;
-  border: 1px solid #EFE7DC;
-  border-radius: 12px;
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-.tileLabel {
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #6E655D;
-}
-
-.tileValue {
-  font-size: 26px;
-  font-weight: 600;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-  color: #2B2320;
-}
-
-.tileUnit {
-  margin-left: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #6E655D;
-}
-
-.tilePending {
-  background: #FFFFFF;
-  border-style: dashed;
-}
-
-.tilePendingValue {
-  font-size: 16px;
-  font-weight: 500;
-  color: #6E655D;
-}
-
-.percentileOk,
-.percentileWarn {
-  align-self: flex-start;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.percentileOk {
-  background: #EAF1E8;
-  color: #3D6B4C;
-}
-
-.percentileWarn {
-  background: #FBF1DE;
-  color: #8A5A0A;
-}
-
 @media (max-width: 640px) {
-  .header,
-  .latest {
-    padding: 16px;
-  }
-
   .header {
+    padding: 16px;
     flex-direction: column;
     align-items: stretch;
   }
@@ -289,13 +175,5 @@
   .primaryBtn,
   .secondaryBtn {
     width: 100%;
-  }
-
-  .tiles {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .tileValue {
-    font-size: 22px;
   }
 }
