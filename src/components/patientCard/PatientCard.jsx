@@ -6,6 +6,7 @@ import LatestConsultation from '../latestConsultation/LatestConsultation'
 import { formatDate } from '../../utils/dateUtils'
 import { calculateAge, formatDni, getAvatarVariant } from '../../utils/patientFormat'
 import styles from './PatientCard.module.css'
+import { heightInCm, headCircumferenceInCm } from '../../utils/measurement'
 
 const AVATAR_CLASSES = {
   green: styles.avatarGreen,
@@ -55,6 +56,7 @@ const PatientCard = ({
     { label: 'Nacimiento', value: formatDate(dateOfBirth) },
     { label: 'Obra social', value: healthInsurance?.trim() || 'Sin obra social' },
   ]
+
 
   return (
     <div className={styles.patientcard}>

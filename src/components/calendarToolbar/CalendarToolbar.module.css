@@ -59,3 +59,27 @@
 .configButton:hover {
   background: #A83226;
 }
+
+.rightActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.refreshBtn {
+  background: #FFFFFF;
+  color: #5C544C;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.refreshBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

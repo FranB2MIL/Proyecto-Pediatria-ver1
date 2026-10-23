@@ -3,6 +3,8 @@ import HistoryListItem from '../historyListItem/HistoryListItem'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
 import ConfirmModal from '../../modal/ConfirmModal'
 import styles from './HistoryList.module.css'
+import { toFormMeasurement } from '../../utils/measurement'
+import { heightInCm, headCircumferenceInCm } from '../../utils/measurement'
 
 const HistoryList = ({ consultations, loading, error, onEditConsultation, onDeleteConsultation }) => {
   const [editingConsultation, setEditingConsultation] = useState(null)
@@ -55,8 +57,8 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
                 <th scope="col">Fecha</th>
                 <th scope="col">Motivo</th>
                 <th scope="col" className={styles.num}>Peso</th>
-                <th scope="col" className={styles.num}>Altura</th>
                 <th scope="col" className={styles.num}>Talla</th>
+                <th scope="col" className={styles.num}>P. cefálico</th>
                 <th scope="col" className={styles.num}>IMC</th>
                 {!readOnly && <th scope="col"><span className={styles.srOnly}>Acciones</span></th>}
               </tr>
@@ -70,11 +72,12 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
                   date={c.date}
                   description={c.description}
                   weight={c.measurement?.weight}
-                  height={c.measurement?.height}
-                  size={c.measurement?.size}
+                  height={heightInCm(c.measurement)}
+                  size={headCircumferenceInCm(c.measurement)}
                   imc={c.measurement?.imc}
                   isLatest={index === 0}
-                  onEdit={onEditConsultation && ((consultationData) => setEditingConsultation(consultationData))}
+
+                  onEdit={onEditConsultation && (() => setEditingConsultation(c))}
                   onDelete={onDeleteConsultation && ((id) => setDeletingConsultation(id))}
                 />
               ))}
@@ -90,11 +93,7 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
             date: editingConsultation.date?.slice(0, 10) ?? '',
             reason: editingConsultation.reason ?? '',
             description: editingConsultation.description ?? '',
-            measurement: {
-              weight: editingConsultation.measurement?.weight ?? 0,
-              height: editingConsultation.measurement?.height ?? 0,
-              size: editingConsultation.measurement?.size ?? 0,
-            },
+            measurement: toFormMeasurement(editingConsultation.measurement),
           }}
           onClose={() => setEditingConsultation(null)}
           onSave={(formData) => {

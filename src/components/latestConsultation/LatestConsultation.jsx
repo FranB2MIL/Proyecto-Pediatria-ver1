@@ -1,6 +1,7 @@
 import { formatShortDate } from '../../utils/dateUtils'
 import { formatMeasure } from '../../utils/patientFormat'
 import { getPercentileStatus } from '../../utils/percentileStatus'
+import { heightInCm, headCircumferenceInCm } from '../../utils/measurement'
 import styles from './LatestConsultation.module.css'
 
 const LatestConsultation = ({ consultation, loading, error }) => {

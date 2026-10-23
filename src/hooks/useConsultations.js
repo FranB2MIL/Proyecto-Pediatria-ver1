@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { toApiMeasurement } from '../utils/measurement'
 import {
   getConsultationsByPatientId,
   createConsultation,
@@ -8,13 +9,9 @@ import {
 
 const toPayload = (formData) => ({
   date: formData.date,
-  reason: formData.reason,
-  description: formData.description,
-  measurement: {
-    weight: Number(formData.measurement.weight) || 0,
-    height: Number(formData.measurement.height) || 0,
-    size: Number(formData.measurement.size) || 0,
-  },
+  reason: formData.reason.trim(),
+  description: formData.description.trim(),
+  measurement: toApiMeasurement(formData.measurement),
 })
 
 export function useConsultations(patientId) {

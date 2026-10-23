@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { createAvailability, deleteAvailability } from '../../services/availabilityService'
+import { createAvailability, updateAvailability, deleteAvailability } from '../../services/availabilityService'
 import { timeToMinutes, minutesToTime } from '../../utils/dateUtils'
 import styles from './AvailabilityModal.module.css'
 
@@ -60,7 +60,40 @@ function slotsToRanges(slots) {
   return ranges
 }
 
-function AvailabilityModal({ onClose, onSaved, existingAvailabilities = [] }) {
+async function syncDay(dayOfWeek, ranges, existingAvailabilities) {
+  const existing = existingAvailabilities
+    .filter((a) => a.dayOfWeek === dayOfWeek)
+    .sort((a, b) => timeToMinutes(a.startTime) - timeToMinutes(b.startTime))
+
+  const common = Math.min(existing.length, ranges.length)
+
+  for (const a of existing.slice(common)) {
+    await deleteAvailability(a.id)
+  }
+
+  for (let i = 0; i < common; i++) {
+    const a = existing[i]
+    const r = ranges[i]
+    if (a.startTime === r.startTime && a.endTime === r.endTime) continue
+    await updateAvailability(a.id, {
+      dayOfWeek,
+      startTime: r.startTime,
+      endTime: r.endTime,
+      appointmentDuration: APPOINTMENT_DURATION,
+    })
+  }
+
+  for (const r of ranges.slice(common)) {
+    await createAvailability({
+      dayOfWeek,
+      startTime: r.startTime,
+      endTime: r.endTime,
+      appointmentDuration: APPOINTMENT_DURATION,
+    })
+  }
+}
+
+function AvailabilityModal({ onClose, onSaved, onChanged, existingAvailabilities = [] }) {
   const [selectedDays, setSelectedDays] = useState([]) // array de dayOfWeek (números)
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
@@ -159,8 +192,6 @@ function AvailabilityModal({ onClose, onSaved, existingAvailabilities = [] }) {
     setSubmitting(true)
     setSubmitError(null)
     try {
-      // Borra del backend todas las franjas existentes de los días
-      // seleccionados, dejándolos sin configuración.
       for (const dayOfWeek of selectedDays) {
         const existing = existingAvailabilities.filter((a) => a.dayOfWeek === dayOfWeek)
         for (const a of existing) {
@@ -176,12 +207,13 @@ function AvailabilityModal({ onClose, onSaved, existingAvailabilities = [] }) {
       onSaved()
     } catch (err) {
       setSubmitError(err.message)
+      onChanged()
     } finally {
       setSubmitting(false)
     }
   }
 
-  async function handleConfirm() {
+    async function handleConfirm() {
     if (selectedDays.length === 0 || !isRangeValid) return
 
     const ranges = fineTune ? slotsToRanges(slots) : [{ startTime, endTime }]
@@ -189,31 +221,26 @@ function AvailabilityModal({ onClose, onSaved, existingAvailabilities = [] }) {
 
     setSubmitting(true)
     setSubmitError(null)
-    try {
-      for (const dayOfWeek of selectedDays) {
-        // Si el día ya tenía configuración guardada, la reemplazamos entera
-        // en vez de sumar rangos nuevos encima — si no, quedan rangos
-        // superpuestos y slots duplicados en la grilla.
-        const existing = existingAvailabilities.filter((a) => a.dayOfWeek === dayOfWeek)
-        for (const a of existing) {
-          await deleteAvailability(a.id)
-        }
 
-        for (const range of ranges) {
-          await createAvailability({
-            dayOfWeek,
-            startTime: range.startTime,
-            endTime: range.endTime,
-            appointmentDuration: APPOINTMENT_DURATION,
-          })
-        }
+    const savedDays = []
+    for (const dayOfWeek of selectedDays) {
+      try {
+        await syncDay(dayOfWeek, ranges, existingAvailabilities)
+        savedDays.push(dayOfWeek)
+      } catch (err) {
+        const dayLabel = DAYS.find((d) => d.value === dayOfWeek)?.label ?? ''
+        const savedText = savedDays.length > 0
+          ? ' Los días anteriores sí se guardaron.'
+          : ''
+        setSubmitError(`No se pudo guardar el ${dayLabel}: ${err.message}${savedText}`)
+        setSubmitting(false)
+        onChanged()
+        return
       }
-      onSaved()
-    } catch (err) {
-      setSubmitError(err.message)
-    } finally {
-      setSubmitting(false)
     }
+
+    setSubmitting(false)
+    onSaved()
   }
 
   const activeSlots = fineTune ? slots : currentSlots
