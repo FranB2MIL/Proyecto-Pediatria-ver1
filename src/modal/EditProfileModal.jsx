@@ -6,11 +6,11 @@ import styles from './EditProfileModal.module.css'
 const FIELDS = [
   { key: 'firstName', label: 'Nombre', type: 'text', autoComplete: 'given-name', required: true },
   { key: 'lastName', label: 'Apellido', type: 'text', autoComplete: 'family-name', required: true },
-  { key: 'dni', label: 'DNI', type: 'text', inputMode: 'numeric', required: true },
+  { key: 'dni', label: 'DNI', type: 'text', readOnly: true },
   { key: 'dateOfBirth', label: 'Fecha de nacimiento', type: 'date', required: true },
   { key: 'healthInsurance', label: 'Obra social', type: 'text' },
   { key: 'insuranceNumber', label: 'N.º de afiliado', type: 'text' },
-  { key: 'email', label: 'Email', type: 'email', autoComplete: 'email', required: true },
+  { key: 'email', label: 'Email', type: 'email', readOnly: true },
   { key: 'phoneNumber', label: 'Teléfono', type: 'tel', autoComplete: 'tel', required: true },
 ]
 
@@ -50,7 +50,8 @@ const EditProfileModal = ({ profile, onClose, onSave }) => {
     try {
       await onSave(toProfilePayload(formData))
     } catch (err) {
-      setSubmitError(err.message)
+      // El back valida con DataAnnotations: un 400 sin { message } llega como "Error 400"
+      setSubmitError(err.status === 400 && err.message === 'Error 400' ? 'Revisá los datos ingresados' : err.message)
       setSaving(false)
     }
   }
@@ -74,7 +75,7 @@ const EditProfileModal = ({ profile, onClose, onSave }) => {
               <div key={field.key} className={styles.field}>
                 <label className={styles.label} htmlFor={inputId}>
                   {field.label}
-                  {!field.required && <span className={styles.optional}> (opcional)</span>}
+                  {!field.required && !field.readOnly && <span className={styles.optional}> (opcional)</span>}
                 </label>
                 <input
                   id={inputId}
@@ -84,7 +85,7 @@ const EditProfileModal = ({ profile, onClose, onSave }) => {
                   autoComplete={field.autoComplete}
                   value={formData[field.key]}
                   onChange={(event) => handleInputChange(event, field.key)}
-                  disabled={saving}
+                  disabled={saving || field.readOnly}
                   aria-invalid={hasError}
                   aria-describedby={hasError ? errorId : undefined}
                 />
@@ -92,6 +93,7 @@ const EditProfileModal = ({ profile, onClose, onSave }) => {
               </div>
             )
           })}
+          <p className={styles.readOnlyNote}>Para cambiar el DNI o el email contactá a tu doctor/clínica.</p>
         </form>
       </Modal.Body>
 

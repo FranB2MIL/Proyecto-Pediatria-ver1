@@ -1,6 +1,5 @@
 import { parseLocalDate, toDateKey } from '../utils/dateUtils'
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 // Dígitos con espacios, guiones, paréntesis y un + opcional al principio: "11 5555-1234", "+54 9 11 ..."
 const PHONE_REGEX = /^\+?[\d\s()-]+$/
 
@@ -26,18 +25,10 @@ export const validateProfileForm = (form) => {
   if (!form.firstName.trim()) errors.firstName = 'Ingresá el nombre.'
   if (!form.lastName.trim()) errors.lastName = 'Ingresá el apellido.'
 
-  const dni = normalizeDni(form.dni)
-  if (!dni) errors.dni = 'Ingresá el DNI.'
-  else if (!/^\d{7,8}$/.test(dni)) errors.dni = 'El DNI debe tener 7 u 8 dígitos.'
-
   const birth = parseLocalDate(form.dateOfBirth)
   if (!form.dateOfBirth) errors.dateOfBirth = 'Ingresá la fecha de nacimiento.'
   else if (!birth || birth.getFullYear() < 1900) errors.dateOfBirth = 'La fecha de nacimiento no es válida.'
   else if (form.dateOfBirth > toDateKey(new Date())) errors.dateOfBirth = 'La fecha de nacimiento no puede ser futura.'
-
-  const email = form.email.trim()
-  if (!email) errors.email = 'Ingresá el email.'
-  else if (!EMAIL_REGEX.test(email)) errors.email = 'El email no tiene un formato válido.'
 
   // Obligatorio porque el back lo pide así en RegisterPatientDto
   const phone = form.phoneNumber.trim()
@@ -50,14 +41,12 @@ export const validateProfileForm = (form) => {
   return errors
 }
 
-/** Valores del form -> datos para guardar, con el mismo formato que trae el perfil. */
+/** Valores del form -> body del PUT /me/profile. DNI y email no se envían: el back no los edita. */
 export const toProfilePayload = (form) => ({
   firstName: form.firstName.trim(),
   lastName: form.lastName.trim(),
-  dni: normalizeDni(form.dni),
   dateOfBirth: `${form.dateOfBirth}T00:00:00`,
   healthInsurance: form.healthInsurance.trim(),
   insuranceNumber: form.insuranceNumber.trim(),
-  email: form.email.trim(),
   phoneNumber: form.phoneNumber.trim(),
 })

@@ -17,6 +17,29 @@
   color: #2B2320;
 }
 
+.right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logoutButton {
+  padding: 6px 14px;
+  border: 1px solid #C0392B;
+  border-radius: 8px;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #C0392B;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.logoutButton:hover {
+  background: #FDF4F2;
+}
+
 .greeting {
   font-family: 'Inter', sans-serif;
   font-size: 14px;

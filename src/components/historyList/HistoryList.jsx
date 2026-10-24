@@ -6,7 +6,7 @@ import styles from './HistoryList.module.css'
 import { toFormMeasurement } from '../../utils/measurement'
 import { heightInCm, headCircumferenceInCm } from '../../utils/measurement'
 
-const HistoryList = ({ consultations, loading, error, onEditConsultation, onDeleteConsultation }) => {
+const HistoryList = ({ consultations, loading, error, onEditConsultation, onDeleteConsultation, showDoctor = false }) => {
   const [editingConsultation, setEditingConsultation] = useState(null)
   const [deletingConsultation, setDeletingConsultation] = useState(null)
   const [actionError, setActionError] = useState(null)
@@ -71,6 +71,7 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
                   reason={c.reason}
                   date={c.date}
                   description={c.description}
+                  doctorName={showDoctor ? c.doctorName : undefined}
                   weight={c.measurement?.weight}
                   height={heightInCm(c.measurement)}
                   size={headCircumferenceInCm(c.measurement)}

@@ -41,7 +41,7 @@ function PatientHomeView() {
         ])
         if (!ignore) setData({ profile, consultations, appointments })
       } catch (err) {
-        if (!ignore) setError(err.message)
+        if (!ignore) setError(err.status === 403 ? 'Esta vista es solo para pacientes' : `No pudimos cargar tu ficha: ${err.message}`)
       } finally {
         if (!ignore) setLoading(false)
       }
@@ -60,10 +60,12 @@ function PatientHomeView() {
   )
 
   // Las fechas son strings yyyy-MM-dd, así que se pueden comparar directo
+  // y la hora "HH:mm" también: un turno de hoy cuya hora ya pasó no es próximo
   const upcomingAppointments = useMemo(() => {
-    const todayKey = toDateKey(new Date())
+    const now = new Date()
+    const nowKey = `${toDateKey(now)} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
     return (data?.appointments ?? [])
-      .filter(a => a.date >= todayKey)
+      .filter(a => `${a.date} ${a.startTime}` >= nowKey)
       .sort((a, b) => `${a.date} ${a.startTime}`.localeCompare(`${b.date} ${b.startTime}`))
   }, [data])
 
@@ -74,7 +76,7 @@ function PatientHomeView() {
       <main className={styles.content}>
         {loading && <p className={styles.stateMessage}>Cargando tu ficha...</p>}
         {!loading && error && (
-          <p className={styles.errorMessage} role="alert">No pudimos cargar tu ficha: {error}</p>
+          <p className={styles.errorMessage} role="alert">{error}</p>
         )}
         {!loading && !error && data && (
           <>
@@ -82,7 +84,7 @@ function PatientHomeView() {
             <div className={styles.columns}>
               <div className={styles.mainColumn}>
                 <LatestConsultation consultation={consultations[0]} loading={false} error={null} />
-                <HistoryList consultations={consultations} loading={false} error={null} />
+                <HistoryList consultations={consultations} loading={false} error={null} showDoctor />
               </div>
               <aside className={styles.sideColumn}>
                 <UpcomingAppointments
