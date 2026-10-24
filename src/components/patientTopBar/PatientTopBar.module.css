@@ -4,7 +4,8 @@
   justify-content: space-between;
   gap: 16px;
   height: 86px;
-  padding: 0 24px;
+  /* Alineado con el contenido (max-width 1760px + padding de las vistas del paciente) */
+  padding: 0 max(clamp(16px, 3vw, 48px), calc((100% - 1760px) / 2 + clamp(16px, 3vw, 48px)));
   box-sizing: border-box;
   flex-shrink: 0;
   background: #F5DFDA;
@@ -17,6 +18,29 @@
   color: #2B2320;
 }
 
+.right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logoutButton {
+  padding: 6px 14px;
+  border: 1px solid #C0392B;
+  border-radius: 8px;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #C0392B;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.logoutButton:hover {
+  background: #FDF4F2;
+}
+
 .greeting {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
@@ -27,6 +51,5 @@
 @media (max-width: 640px) {
   .topBar {
     height: 64px;
-    padding: 0 16px;
   }
 }

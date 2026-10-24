@@ -10,6 +10,8 @@ import {
   getMyProfile, getMyConsultations, getMyAppointments, updateMyProfile,
 } from '../services/patientPortalService'
 import { toDateKey } from '../utils/dateUtils'
+import { getErrorMessage } from '../utils/errorMessages'
+import { APPOINTMENT_STATUS } from '../constants/appointmentStatus'
 import styles from './PatientHomeView.module.css'
 
 // Pantalla del paciente logueado: su ficha (editable), sus turnos y su historial
@@ -41,7 +43,13 @@ function PatientHomeView() {
         ])
         if (!ignore) setData({ profile, consultations, appointments })
       } catch (err) {
-        if (!ignore) setError(err.message)
+        if (ignore) return
+        // Sin sesión válida (apiFetch no redirige si no hay token guardado)
+        if (err.status === 401) {
+          navigate('/login', { replace: true })
+          return
+        }
+        setError(err.status === 403 ? 'Esta vista es solo para pacientes' : `No pudimos cargar tu ficha: ${getErrorMessage(err)}`)
       } finally {
         if (!ignore) setLoading(false)
       }
@@ -49,7 +57,7 @@ function PatientHomeView() {
 
     load()
     return () => { ignore = true }
-  }, [])
+  }, [navigate])
 
   // Más reciente primero, igual que en la vista del doctor
   const consultations = useMemo(
@@ -60,11 +68,17 @@ function PatientHomeView() {
   )
 
   // Las fechas son strings yyyy-MM-dd, así que se pueden comparar directo
+  // y la hora "HH:mm" también: un turno de hoy cuya hora ya pasó no es próximo
   const upcomingAppointments = useMemo(() => {
-    const todayKey = toDateKey(new Date())
+    const now = new Date()
+    const nowKey = `${toDateKey(now)} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
     return (data?.appointments ?? [])
-      .filter(a => a.date >= todayKey)
-      .sort((a, b) => `${a.date} ${a.startTime}`.localeCompare(`${b.date} ${b.startTime}`))
+      .filter(a => `${a.date} ${a.startTime}` >= nowKey)
+      .sort((a, b) => {
+        // Los cancelados van después de los activos; dentro de cada grupo, por fecha y hora
+        const byStatus = Number(a.status === APPOINTMENT_STATUS.CANCELADO) - Number(b.status === APPOINTMENT_STATUS.CANCELADO)
+        return byStatus || `${a.date} ${a.startTime}`.localeCompare(`${b.date} ${b.startTime}`)
+      })
   }, [data])
 
   return (
@@ -74,7 +88,7 @@ function PatientHomeView() {
       <main className={styles.content}>
         {loading && <p className={styles.stateMessage}>Cargando tu ficha...</p>}
         {!loading && error && (
-          <p className={styles.errorMessage} role="alert">No pudimos cargar tu ficha: {error}</p>
+          <p className={styles.errorMessage} role="alert">{error}</p>
         )}
         {!loading && !error && data && (
           <>
@@ -82,7 +96,7 @@ function PatientHomeView() {
             <div className={styles.columns}>
               <div className={styles.mainColumn}>
                 <LatestConsultation consultation={consultations[0]} loading={false} error={null} />
-                <HistoryList consultations={consultations} loading={false} error={null} />
+                <HistoryList consultations={consultations} loading={false} error={null} showDoctor />
               </div>
               <aside className={styles.sideColumn}>
                 <UpcomingAppointments

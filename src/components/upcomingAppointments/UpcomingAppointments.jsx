@@ -1,4 +1,4 @@
-import { APPOINTMENT_STATUS } from '../../data/mockAppointments'
+import { APPOINTMENT_STATUS } from '../../constants/appointmentStatus'
 import { formatDayNumber, formatLongDate, formatMonthShort, parseLocalDate } from '../../utils/dateUtils'
 import styles from './UpcomingAppointments.module.css'
 

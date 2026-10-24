@@ -13,7 +13,7 @@ const Measure = ({ value, unit }) => {
     )
 }
 
-const HistoryListItem = ({ id, reason, date, description, weight, height, size, imc, isLatest, onEdit, onDelete }) => {
+const HistoryListItem = ({ id, reason, date, description, doctorName, weight, height, size, imc, isLatest, onEdit, onDelete }) => {
     return (
         <tr className={styles.row}>
             <td className={styles.date}>{formatDate(date)}</td>
@@ -22,6 +22,9 @@ const HistoryListItem = ({ id, reason, date, description, weight, height, size, 
                     {reason || '—'}
                     {isLatest && <span className={styles.badge}>Última</span>}
                 </span>
+                {doctorName && (
+                    <span className={styles.doctor}>{doctorName}</span>
+                )}
                 {description && (
                     <span className={styles.description} title={description}>{description}</span>
                 )}

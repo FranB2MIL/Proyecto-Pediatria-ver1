@@ -128,3 +128,9 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.readOnlyNote {
+  margin: 0;
+  font-size: 12px;
+  color: #6E655D;
+}

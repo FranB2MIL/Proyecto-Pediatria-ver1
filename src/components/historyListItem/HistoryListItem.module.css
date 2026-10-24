@@ -40,6 +40,14 @@
   color: #7D241B;
 }
 
+.doctor {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5C544C;
+}
+
 .description {
   display: block;
   max-width: 280px;
