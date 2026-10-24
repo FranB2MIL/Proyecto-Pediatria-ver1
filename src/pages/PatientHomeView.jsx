@@ -10,6 +10,8 @@ import {
   getMyProfile, getMyConsultations, getMyAppointments, updateMyProfile,
 } from '../services/patientPortalService'
 import { toDateKey } from '../utils/dateUtils'
+import { getErrorMessage } from '../utils/errorMessages'
+import { APPOINTMENT_STATUS } from '../constants/appointmentStatus'
 import styles from './PatientHomeView.module.css'
 
 // Pantalla del paciente logueado: su ficha (editable), sus turnos y su historial
@@ -41,7 +43,13 @@ function PatientHomeView() {
         ])
         if (!ignore) setData({ profile, consultations, appointments })
       } catch (err) {
-        if (!ignore) setError(err.status === 403 ? 'Esta vista es solo para pacientes' : `No pudimos cargar tu ficha: ${err.message}`)
+        if (ignore) return
+        // Sin sesión válida (apiFetch no redirige si no hay token guardado)
+        if (err.status === 401) {
+          navigate('/login', { replace: true })
+          return
+        }
+        setError(err.status === 403 ? 'Esta vista es solo para pacientes' : `No pudimos cargar tu ficha: ${getErrorMessage(err)}`)
       } finally {
         if (!ignore) setLoading(false)
       }
@@ -49,7 +57,7 @@ function PatientHomeView() {
 
     load()
     return () => { ignore = true }
-  }, [])
+  }, [navigate])
 
   // Más reciente primero, igual que en la vista del doctor
   const consultations = useMemo(
@@ -66,7 +74,11 @@ function PatientHomeView() {
     const nowKey = `${toDateKey(now)} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
     return (data?.appointments ?? [])
       .filter(a => `${a.date} ${a.startTime}` >= nowKey)
-      .sort((a, b) => `${a.date} ${a.startTime}`.localeCompare(`${b.date} ${b.startTime}`))
+      .sort((a, b) => {
+        // Los cancelados van después de los activos; dentro de cada grupo, por fecha y hora
+        const byStatus = Number(a.status === APPOINTMENT_STATUS.CANCELADO) - Number(b.status === APPOINTMENT_STATUS.CANCELADO)
+        return byStatus || `${a.date} ${a.startTime}`.localeCompare(`${b.date} ${b.startTime}`)
+      })
   }, [data])
 
   return (

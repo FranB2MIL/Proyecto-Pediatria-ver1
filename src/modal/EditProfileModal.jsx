@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import { toProfileForm, validateProfileForm, toProfilePayload } from './editProfileModalHelper.js'
+import { getErrorMessage } from '../utils/errorMessages'
 import styles from './EditProfileModal.module.css'
 
 const FIELDS = [
@@ -51,7 +52,7 @@ const EditProfileModal = ({ profile, onClose, onSave }) => {
       await onSave(toProfilePayload(formData))
     } catch (err) {
       // El back valida con DataAnnotations: un 400 sin { message } llega como "Error 400"
-      setSubmitError(err.status === 400 && err.message === 'Error 400' ? 'Revisá los datos ingresados' : err.message)
+      setSubmitError(err.status === 400 && err.message === 'Error 400' ? 'Revisá los datos ingresados' : getErrorMessage(err))
       setSaving(false)
     }
   }

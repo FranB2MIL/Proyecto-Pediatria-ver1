@@ -4,7 +4,8 @@
   justify-content: space-between;
   gap: 16px;
   height: 86px;
-  padding: 0 24px;
+  /* Alineado con el contenido (max-width 1760px + padding de las vistas del paciente) */
+  padding: 0 max(clamp(16px, 3vw, 48px), calc((100% - 1760px) / 2 + clamp(16px, 3vw, 48px)));
   box-sizing: border-box;
   flex-shrink: 0;
   background: #F5DFDA;
@@ -50,6 +51,5 @@
 @media (max-width: 640px) {
   .topBar {
     height: 64px;
-    padding: 0 16px;
   }
 }
