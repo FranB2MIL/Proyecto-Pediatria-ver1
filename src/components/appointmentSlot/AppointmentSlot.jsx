@@ -12,16 +12,19 @@ const STATUS_CLASS = {
   [APPOINTMENT_STATUS.CANCELADO]: styles.cancelled,
 }
 
-const AppointmentSlot = ({ slot, onClick }) => {
+const AppointmentSlot = ({ slot, onClick, isPast = false }) => {
   const statusClass = STATUS_CLASS[slot.status] ?? styles.free
 
   return (
     <button
       type="button"
-      className={`${styles.slot} ${statusClass}`}
+      className={`${styles.slot} ${statusClass} ${isPast ? styles.past : ''}`}
       onClick={() => onClick(slot)}
     >
-      <span className={styles.time}>{slot.startTime}</span>
+      <span className={styles.time}>
+        {slot.startTime}
+        {isPast && <span className={styles.pastTag}>Pasado</span>}
+      </span>
       <span className={styles.label}>
         {slot.appointment ? slot.appointment.patientName : 'Libre'}
       </span>
