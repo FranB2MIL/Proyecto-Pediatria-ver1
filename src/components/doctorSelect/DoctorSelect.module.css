@@ -1,0 +1,146 @@
+.root {
+  position: relative;
+  flex-shrink: 0;
+  width: 280px;
+  max-width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  border: 1px solid #EFE7DC;
+  border-radius: 10px;
+  background: #FFFFFF;
+  color: #2B2320;
+  font-family: 'Inter', sans-serif;
+  text-align: left;
+}
+
+.boxButton {
+  cursor: pointer;
+}
+
+.boxButton:hover {
+  background: #FBF7F3;
+}
+
+.boxButton:focus-visible {
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
+}
+
+/* Un solo doctor: informativa, sin interacción */
+.boxStatic {
+  background: #FBF7F3;
+  cursor: default;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2B2320;
+}
+
+.specialty {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: #8A8078;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: #8A8078;
+  transition: transform 0.15s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Pegada debajo de la caja, del mismo ancho */
+.list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 260px;
+  margin: 0;
+  padding: 6px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  list-style: none;
+  background: #FFFFFF;
+  border: 1px solid #EFE7DC;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(43, 35, 32, 0.12);
+  outline: none;
+  animation: listIn 0.15s ease-out;
+}
+
+@keyframes listIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.option {
+  padding: 8px 12px;
+  border: 1px solid #EFE7DC;
+  border-radius: 10px;
+  background: #FFFFFF;
+  cursor: pointer;
+}
+
+.optionActive {
+  background: #FBF7F3;
+}
+
+/* Doctor activo: acento de la marca */
+.optionSelected {
+  border-color: #C0392B;
+  background: #FDF4F2;
+}
+
+/* A 400 px el selector ocupa todo el ancho de la tarjeta */
+@media (max-width: 640px) {
+  .root {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list {
+    animation: none;
+  }
+
+  .chevron {
+    transition: none;
+  }
+}

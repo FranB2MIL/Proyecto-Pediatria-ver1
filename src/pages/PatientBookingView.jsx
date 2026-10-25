@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import PatientTopBar from '../components/patientTopBar/PatientTopBar'
 import PatientWeekGrid from '../components/patientWeekGrid/PatientWeekGrid'
+import DoctorSelect from '../components/doctorSelect/DoctorSelect'
 import PatientConfirmModal from '../modal/PatientConfirmModal'
 import {
   getMyProfile, getMyDoctors, getAvailableSlots, bookAppointment,
@@ -70,7 +71,8 @@ function PatientBookingView() {
         const data = await getMyDoctors()
         if (ignore) return
         setDoctors(data)
-        if (data.length === 1) setDoctorId(String(data[0].id))
+        // Al entrar queda elegido el primer doctor de la lista
+        if (data.length > 0) setDoctorId(String(data[0].id))
       } catch (err) {
         if (ignore) return
         if (err.status === 401) {
@@ -115,10 +117,15 @@ function PatientBookingView() {
     return () => { ignore = true }
   }, [doctorId, from, to, reloadKey, navigate])
 
-  const handleDoctorChange = (event) => {
-    setDoctorId(event.target.value)
+  // Cambia solo el doctor: la semana se conserva y se vuelve a pedir. Se descarta cualquier
+  // horario elegido o confirmación abierta del doctor anterior.
+  const handleDoctorChange = (id) => {
+    if (id === doctorId) return
+    setDoctorId(id)
     setSlots([])
     setNotice(null)
+    setSelectedSlot(null)
+    setBookingError(null)
   }
 
   const handleShiftWeek = (amount) => {
@@ -129,6 +136,14 @@ function PatientBookingView() {
   const handleCloseModal = () => {
     setSelectedSlot(null)
     setBookingError(null)
+  }
+
+  // Vuelve a pedir los horarios de la misma semana y doctor. Se cierra la confirmación abierta:
+  // el horario elegido puede haber dejado de estar libre.
+  const handleRefresh = () => {
+    handleCloseModal()
+    setNotice(null)
+    setReloadKey(key => key + 1)
   }
 
   const handleConfirm = async () => {
@@ -165,7 +180,12 @@ function PatientBookingView() {
       <main className={styles.content}>
         <Link to="/mi-ficha" className={styles.backLink}>‹ Volver a mi ficha</Link>
         <section className={styles.card}>
-          <h1 className={styles.title}>Agendar turno</h1>
+          <div className={styles.cardHeader}>
+            <h1 className={styles.title}>Agendar turno</h1>
+            {!doctorsLoading && !doctorsError && doctors.length > 0 && (
+              <DoctorSelect doctors={doctors} selectedId={doctorId} onChange={handleDoctorChange} />
+            )}
+          </div>
 
           {doctorsLoading && <p className={styles.text}>Cargando...</p>}
           {!doctorsLoading && doctorsError && <p className={styles.error} role="alert">{doctorsError}</p>}
@@ -175,20 +195,6 @@ function PatientBookingView() {
 
           {!doctorsLoading && !doctorsError && doctors.length > 0 && (
             <>
-              {doctors.length === 1 ? (
-                <p className={styles.text}>Doctor: {doctors[0].firstName} {doctors[0].lastName}</p>
-              ) : (
-                <label className={styles.field}>
-                  <span className={styles.label}>Doctor</span>
-                  <select className={styles.select} value={doctorId} onChange={handleDoctorChange}>
-                    <option value="">Elegí un doctor</option>
-                    {doctors.map(d => (
-                      <option key={d.id} value={d.id}>{d.firstName} {d.lastName}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-
               {notice && <p className={styles.error} role="alert">{notice}</p>}
 
               {doctorId && (
@@ -211,6 +217,14 @@ function PatientBookingView() {
                       aria-label="Semana siguiente"
                     >
                       ›
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.refreshBtn}
+                      onClick={handleRefresh}
+                      disabled={slotsLoading}
+                    >
+                      {slotsLoading ? 'Actualizando...' : 'Actualizar turnos'}
                     </button>
                   </div>
 

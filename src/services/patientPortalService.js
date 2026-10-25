@@ -22,8 +22,15 @@ export async function getMyConsultations() {
   return consultations.map(withDoctorName)
 }
 
+// El back todavía no manda la especialidad; si llega (specialty o especialidad) queda en `specialty`
+const withSpecialty = (doctor) => ({
+  ...doctor,
+  specialty: String(doctor.specialty ?? doctor.especialidad ?? '').trim(),
+})
+
 export async function getMyDoctors() {
-  return apiFetch('/me/doctors')
+  const doctors = await apiFetch('/me/doctors')
+  return doctors.map(withSpecialty)
 }
 
 export async function getMyAppointments() {
