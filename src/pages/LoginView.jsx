@@ -80,6 +80,7 @@ function LoginView() {
                     <p className={styles.footer}>
                         ¿No tenés cuenta? <Link to="/register" className={styles.link}>Registrate</Link>
                     </p>
+                    <p className={styles.footer}>¿Sos medico o admin? <Link to="/staff/login" className={styles.link}>Incia sesion aqui.</Link></p>
                 </div>
             </div>
         )
