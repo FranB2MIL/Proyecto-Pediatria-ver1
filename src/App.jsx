@@ -4,9 +4,11 @@ import PatientsView from './pages/PatientsView'
 import AppointmentsView from './pages/AppointmentsView'
 import LoginView from './pages/LoginView'
 import RegisterView from './pages/RegisterView'
+import LoginStaffView from './pages/LoginStaffView'
+import AdminView from './pages/AdminView'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-const ROUTES_WITHOUT_NAVBAR = ['/login', '/register', '/paciente']
+const ROUTES_WITHOUT_NAVBAR = ['/login', '/register', '/paciente', '/staff/login']
 
 function App() {
   const location = useLocation()
@@ -20,6 +22,8 @@ function App() {
         <Route path="/turnos" element={<AppointmentsView />} />
         <Route path="/login" element={<LoginView />} />
         <Route path="/register" element={<RegisterView />} />
+        <Route path="/staff/login" element={<LoginStaffView />} />
+        <Route path="/admin" element={<AdminView />} />
       </Routes>
     </div>
   )

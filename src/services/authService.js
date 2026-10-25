@@ -23,4 +23,14 @@ export async function registerPatient(formData) {
         })
         })
     }
+
+
+
+
+export async function loginStaff(email, password) {
+    return apiFetch('/auth/staff/login', {
+        method: 'POST',
+        body: JSON.stringify({email, password}),
+    })
+}
        
