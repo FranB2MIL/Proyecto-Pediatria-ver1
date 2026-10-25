@@ -8,11 +8,9 @@
 //
 // status refleja el enum AppointmentStatus: 'Disponible' | 'Reservado' | 'Cancelado'
 
-export const APPOINTMENT_STATUS = {
-  DISPONIBLE: 'Disponible',
-  RESERVADO: 'Reservado',
-  CANCELADO: 'Cancelado',
-}
+import { APPOINTMENT_STATUS } from '../constants/appointmentStatus'
+
+export { APPOINTMENT_STATUS } from '../constants/appointmentStatus'
 
 // Las fechas son relativas a "hoy" para que el mock siempre caiga en la semana
 // que estás viendo, sin importar cuándo corras el proyecto.

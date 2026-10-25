@@ -3,8 +3,10 @@ import HistoryListItem from '../historyListItem/HistoryListItem'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
 import ConfirmModal from '../../modal/ConfirmModal'
 import styles from './HistoryList.module.css'
+import { toFormMeasurement } from '../../utils/measurement'
+import { heightInCm, headCircumferenceInCm } from '../../utils/measurement'
 
-const HistoryList = ({ consultations, loading, error, onEditConsultation, onDeleteConsultation }) => {
+const HistoryList = ({ consultations, loading, error, onEditConsultation, onDeleteConsultation, showDoctor = false }) => {
   const [editingConsultation, setEditingConsultation] = useState(null)
   const [deletingConsultation, setDeletingConsultation] = useState(null)
   const [actionError, setActionError] = useState(null)
@@ -28,6 +30,8 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
   }
 
   const hasConsultations = !loading && !error && consultations.length > 0
+  // Sin callbacks (vista del paciente) la tabla es solo lectura
+  const readOnly = !onEditConsultation && !onDeleteConsultation
 
   return (
     <section className={styles.historylist}>
@@ -43,7 +47,7 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
       {loading && <p className={styles.stateMessage}>Cargando historial...</p>}
       {!loading && error && <p className={styles.stateMessage}>Error: {error}</p>}
       {!loading && !error && consultations.length === 0 && (
-        <p className={styles.stateMessage}>Este paciente todavía no tiene consultas.</p>
+        <p className={styles.stateMessage}>Todavía no hay consultas registradas.</p>
       )}
       {hasConsultations && (
         <div className={styles.tableWrapper}>
@@ -53,10 +57,10 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
                 <th scope="col">Fecha</th>
                 <th scope="col">Motivo</th>
                 <th scope="col" className={styles.num}>Peso</th>
-                <th scope="col" className={styles.num}>Altura</th>
                 <th scope="col" className={styles.num}>Talla</th>
+                <th scope="col" className={styles.num}>P. cefálico</th>
                 <th scope="col" className={styles.num}>IMC</th>
-                <th scope="col"><span className={styles.srOnly}>Acciones</span></th>
+                {!readOnly && <th scope="col"><span className={styles.srOnly}>Acciones</span></th>}
               </tr>
             </thead>
             <tbody>
@@ -67,13 +71,15 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
                   reason={c.reason}
                   date={c.date}
                   description={c.description}
+                  doctorName={showDoctor ? c.doctorName : undefined}
                   weight={c.measurement?.weight}
-                  height={c.measurement?.height}
-                  size={c.measurement?.size}
+                  height={heightInCm(c.measurement)}
+                  size={headCircumferenceInCm(c.measurement)}
                   imc={c.measurement?.imc}
                   isLatest={index === 0}
-                  onEdit={(consultationData) => setEditingConsultation(consultationData)}
-                  onDelete={(id) => setDeletingConsultation(id)}
+
+                  onEdit={onEditConsultation && (() => setEditingConsultation(c))}
+                  onDelete={onDeleteConsultation && ((id) => setDeletingConsultation(id))}
                 />
               ))}
             </tbody>
@@ -88,11 +94,7 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
             date: editingConsultation.date?.slice(0, 10) ?? '',
             reason: editingConsultation.reason ?? '',
             description: editingConsultation.description ?? '',
-            measurement: {
-              weight: editingConsultation.measurement?.weight ?? 0,
-              height: editingConsultation.measurement?.height ?? 0,
-              size: editingConsultation.measurement?.size ?? 0,
-            },
+            measurement: toFormMeasurement(editingConsultation.measurement),
           }}
           onClose={() => setEditingConsultation(null)}
           onSave={(formData) => {

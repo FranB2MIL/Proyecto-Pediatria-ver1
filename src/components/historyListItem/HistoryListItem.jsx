@@ -13,7 +13,7 @@ const Measure = ({ value, unit }) => {
     )
 }
 
-const HistoryListItem = ({ id, reason, date, description, weight, height, size, imc, isLatest, onEdit, onDelete }) => {
+const HistoryListItem = ({ id, reason, date, description, doctorName, weight, height, size, imc, isLatest, onEdit, onDelete }) => {
     return (
         <tr className={styles.row}>
             <td className={styles.date}>{formatDate(date)}</td>
@@ -22,40 +22,35 @@ const HistoryListItem = ({ id, reason, date, description, weight, height, size, 
                     {reason || '—'}
                     {isLatest && <span className={styles.badge}>Última</span>}
                 </span>
+                {doctorName && (
+                    <span className={styles.doctor}>{doctorName}</span>
+                )}
                 {description && (
                     <span className={styles.description} title={description}>{description}</span>
                 )}
             </td>
             <td className={styles.num}><Measure value={weight} unit="kg" /></td>
-            <td className={styles.num}><Measure value={height} unit="m" /></td>
-            <td className={styles.num}><Measure value={size} unit="m" /></td>
+            <td className={styles.num}><Measure value={height} unit="cm" /></td>
+            <td className={styles.num}><Measure value={size} unit="cm" /></td>
             <td className={`${styles.num} ${styles.imc}`}>{formatMeasure(imc, { decimals: 2 })}</td>
-            <td>
-                <div className={styles.actions}>
-                    {onEdit && (
-                        <button
-                        className={styles.editBtn}
-                        onClick={() => onEdit({
-                            id,
-                            date,
-                            reason,
-                            description,
-                            measurement: { weight, height, size },
-                        })}
-                        >
-                            Editar
-                        </button>
-                    )}
-                    {onDelete && (
-                        <button
-                        className={styles.deleteBtn}
-                        onClick={() => onDelete(id)}
-                        >
-                            Eliminar
-                        </button>
-                    )}
-                </div>
-            </td>
+
+            {(onEdit || onDelete) && (
+                <td>
+                    <div className={styles.actions}>
+                        {onEdit && (
+                            <button className={styles.editBtn} onClick={() => onEdit()}>
+                                Editar
+                            </button>
+                        )}
+                        {onDelete && (
+                            <button className={styles.deleteBtn} onClick={() => onDelete(id)}>
+                                Eliminar
+                            </button>
+                        )}
+                    </div>
+                </td>
+            )}
+
         </tr>
     );
 };
