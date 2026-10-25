@@ -1,0 +1,84 @@
+:global(.modal-content) {
+  border: 1px solid #EFE7DC;
+  border-radius: 12px;
+}
+
+:global(.modal-header) {
+  border-bottom: none;
+  padding: 24px 24px 0;
+}
+
+:global(.modal-body) {
+  padding: 16px 24px;
+}
+
+:global(.modal-footer) {
+  border-top: none;
+  padding: 0 24px 24px;
+  gap: 8px;
+}
+
+:global(.modal-backdrop.show) {
+  background: #2B2320;
+  opacity: 0.4;
+}
+
+.modalTitle {
+  font-family: 'Fraunces', serif;
+  color: #2B2320;
+}
+
+.message {
+  font-family: 'Inter', sans-serif;
+  color: #2B2320;
+  font-size: 15px;
+}
+
+.message p {
+  margin: 0 0 4px;
+}
+
+.error {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  background: #FDF4F2;
+  border: 1px solid #F1CFC9;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #7D241B;
+}
+
+.secondaryBtn,
+.primaryBtn,
+.dangerBtn {
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+}
+
+.secondaryBtn {
+  background: transparent;
+  color: #5C544C;
+  border: 1px solid #EFE7DC;
+}
+
+.primaryBtn,
+.dangerBtn {
+  background: #C0392B;
+  color: #FFFFFF;
+  border: none;
+}
+
+.primaryBtn:hover:not(:disabled),
+.dangerBtn:hover:not(:disabled) {
+  background: #A93226;
+}
+
+.secondaryBtn:disabled,
+.primaryBtn:disabled,
+.dangerBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,18 +1,27 @@
-import { APPOINTMENT_STATUS } from '../../constants/appointmentStatus'
-import { formatDayNumber, formatLongDate, formatMonthShort, parseLocalDate } from '../../utils/dateUtils'
+import { useState } from 'react'
+import AppointmentItem from '../appointmentItem/AppointmentItem'
+import AllAppointmentsModal from '../allAppointmentsModal/AllAppointmentsModal'
+import { MAX_VISIBLE_APPOINTMENTS } from '../../utils/upcomingAppointments'
 import styles from './UpcomingAppointments.module.css'
 
-const STATUS_CLASSES = {
-  [APPOINTMENT_STATUS.RESERVADO]: styles.statusOk,
-  [APPOINTMENT_STATUS.CANCELADO]: styles.statusWarn,
-}
+// appointments: turnos activos; cancelledAppointments: cancelados.
+// Ambos llegan completos: acá se recortan los activos al tope y el modal "Mis turnos" muestra todos.
+const UpcomingAppointments = ({
+  appointments,
+  cancelledAppointments = [],
+  loading,
+  error,
+  onAddAppointment,
+  onCancelAppointment,
+}) => {
+  const [showAllModal, setShowAllModal] = useState(false)
 
-const STATUS_LABELS = {
-  [APPOINTMENT_STATUS.RESERVADO]: 'Confirmado',
-  [APPOINTMENT_STATUS.CANCELADO]: 'Cancelado',
-}
+  const visibleAppointments = appointments.slice(0, MAX_VISIBLE_APPOINTMENTS)
+  const totalCount = appointments.length + cancelledAppointments.length
+  // Hay algo que la tarjeta no muestra: activos de más o cualquier cancelado
+  const hasHidden = appointments.length > MAX_VISIBLE_APPOINTMENTS || cancelledAppointments.length > 0
+  const ready = !loading && !error
 
-const UpcomingAppointments = ({ appointments, loading, error, onAddAppointment }) => {
   return (
     <section className={styles.upcoming}>
       <div className={styles.header}>
@@ -34,39 +43,34 @@ const UpcomingAppointments = ({ appointments, loading, error, onAddAppointment }
 
       {loading && <p className={styles.stateMessage}>Cargando turnos...</p>}
       {!loading && error && <p className={styles.stateMessage}>Error: {error}</p>}
-      {!loading && !error && appointments.length === 0 && (
-        <p className={styles.stateMessage}>No tenés turnos agendados.</p>
+      {ready && appointments.length === 0 && (
+        <p className={styles.stateMessage}>No tenés turnos agendados</p>
       )}
-      {!loading && !error && appointments.length > 0 && (
+      {ready && appointments.length > 0 && (
         <ul className={styles.list}>
-          {appointments.map(appointment => {
-            const isCancelled = appointment.status === APPOINTMENT_STATUS.CANCELADO
-            return (
-              <li
-                key={appointment.id}
-                className={`${styles.item} ${isCancelled ? styles.itemCancelled : ''}`}
-              >
-                <div className={styles.dateBlock} aria-hidden="true">
-                  <span className={styles.dayNumber}>
-                    {formatDayNumber(parseLocalDate(appointment.date))}
-                  </span>
-                  <span className={styles.month}>{formatMonthShort(appointment.date)}</span>
-                </div>
-                <div className={styles.details}>
-                  <span className={styles.when}>
-                    {formatLongDate(appointment.date)} · {appointment.startTime} h
-                  </span>
-                  {appointment.doctorName && (
-                    <span className={styles.doctor}>{appointment.doctorName}</span>
-                  )}
-                </div>
-                <span className={STATUS_CLASSES[appointment.status] ?? styles.statusNeutral}>
-                  {STATUS_LABELS[appointment.status] ?? appointment.status}
-                </span>
-              </li>
-            )
-          })}
+          {visibleAppointments.map(appointment => (
+            <AppointmentItem
+              key={appointment.id}
+              appointment={appointment}
+              onCancelAppointment={onCancelAppointment}
+            />
+          ))}
         </ul>
+      )}
+      {ready && hasHidden && (
+        <button type="button" className={styles.toggleButton} onClick={() => setShowAllModal(true)}>
+          Ver todos ({totalCount})
+        </button>
+      )}
+
+      {ready && (
+        <AllAppointmentsModal
+          show={showAllModal}
+          activeAppointments={appointments}
+          cancelledAppointments={cancelledAppointments}
+          onCancelAppointment={onCancelAppointment}
+          onClose={() => setShowAllModal(false)}
+        />
       )}
     </section>
   )

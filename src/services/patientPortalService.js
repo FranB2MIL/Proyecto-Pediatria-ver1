@@ -30,3 +30,19 @@ export async function getMyAppointments() {
   const appointments = await apiFetch('/me/appointments')
   return appointments.map(withDoctorName)
 }
+
+// Solo horarios libres dentro de la disponibilidad. Máx 31 días entre from y to (yyyy-MM-dd)
+export async function getAvailableSlots(doctorId, from, to) {
+  return apiFetch(`/me/doctors/${doctorId}/available-slots?from=${from}&to=${to}`)
+}
+
+export async function bookAppointment({ doctorId, date, startTime }) {
+  return apiFetch('/me/appointments', {
+    method: 'POST',
+    body: JSON.stringify({ doctorId, date, startTime }),
+  })
+}
+
+export async function cancelMyAppointment(id) {
+  return apiFetch(`/me/appointments/${id}/cancel`, { method: 'PUT' })
+}

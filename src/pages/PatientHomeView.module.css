@@ -20,7 +20,7 @@
 
 .columns {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 20px;
 }
 
@@ -32,9 +32,21 @@
   min-width: 0;
 }
 
+/*
+ * La altura de la fila la define solo la columna izquierda: sideInner va en absolute,
+ * así la tarjeta de turnos no suma altura y se estira hasta el borde inferior del historial.
+ * El min-height evita que quede diminuta si la columna izquierda es corta.
+ */
 .sideColumn {
+  position: relative;
   flex: 0 0 340px;
   min-width: 0;
+  min-height: 360px;
+}
+
+.sideInner {
+  position: absolute;
+  inset: 0;
 }
 
 .stateMessage {
@@ -60,8 +72,15 @@
     align-items: stretch;
   }
 
+  /* Apilado: la tarjeta vuelve al flujo normal (su max-height la acota) */
   .sideColumn {
     flex: none;
+    position: static;
+    min-height: 0;
+  }
+
+  .sideInner {
+    position: static;
   }
 }
 
