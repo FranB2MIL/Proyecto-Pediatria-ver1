@@ -10,10 +10,46 @@
   min-width: 0;
   padding: 24px;
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow: hidden;
   font-family: 'Inter', sans-serif;
   color: #2B2320;
 }
+
+.tableWrapper {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+ 
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #E4D9CE transparent;
+}
+
+/* Chrome, Edge, Safari */
+.tableWrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  background: #E4D9CE;
+  border-radius: 8px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+  background: #C9B9AA;
+}
+
+/* Saca las flechitas de arriba y abajo */
+.tableWrapper::-webkit-scrollbar-button {
+  display: none;
+}
+
+
 
 .sectionHeader {
   display: flex;
@@ -65,7 +101,7 @@
 
 .table th {
   padding: 10px 12px;
-  border-bottom: 1px solid #EFE7DC;
+  box-shadow: inset 0 -1px 0 #EFE7DC;
   font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
@@ -73,6 +109,10 @@
   color: #6E655D;
   text-align: left;
   white-space: nowrap;
+  position: sticky;
+  top: 0;
+  background: #FFFFFF;
+  z-index: 1;
 }
 
 .table th.num {

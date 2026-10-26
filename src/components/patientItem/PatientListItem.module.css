@@ -4,10 +4,50 @@
   border-radius: 10px;
   padding: 10px 12px;
   box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
 
   display: flex;
   align-items: center;
   gap: 10px;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+/* Hover: neutro, sutil */
+.patientlistitem:hover {
+  background: #FAF6F1;
+  border-color: #E4D9CE;
+}
+
+/* Seleccionado: fondo tintado + barra roja a la izquierda */
+.patientlistitem[aria-current="true"] {
+  background: #FBEAE6;
+  border-color: #E8B9B2;
+}
+
+.patientlistitem[aria-current="true"]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+  background: #C0392B;
+}
+
+/* Seleccionado + hover: mantiene el tinte, no vuelve al neutro */
+.patientlistitem[aria-current="true"]:hover {
+  background: #F8DFD9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .patientlistitem {
+    transition: none;
+  }
 }
 
 .avatar {
