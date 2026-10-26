@@ -1,0 +1,41 @@
+/* Ancho cómodo en pantallas grandes; en móvil bootstrap deja solo el margen chico */
+.dialog {
+  --bs-modal-width: 560px;
+}
+
+.modalTitle {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  color: #2B2320;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: 'Inter', sans-serif;
+  color: #2B2320;
+}
+
+.section + .section {
+  margin-top: 20px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #5C544C;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

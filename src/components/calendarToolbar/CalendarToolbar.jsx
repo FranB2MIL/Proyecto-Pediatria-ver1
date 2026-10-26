@@ -1,7 +1,7 @@
 import styles from './CalendarToolbar.module.css'
 import { formatWeekRange } from '../../utils/dateUtils'
 
-const CalendarToolbar = ({ referenceDate, onPrevWeek, onNextWeek, onToday, onConfigureAvailability, onRefresh, refreshing }) => {
+const CalendarToolbar = ({ referenceDate, onPrevWeek, onNextWeek, onToday, onConfigureAvailability, onRefresh, refreshing, onlyReserved, onToggleOnlyReserved }) => {
   return (
     <div className={styles.toolbar}>
       <div className={styles.navGroup}>
@@ -18,6 +18,14 @@ const CalendarToolbar = ({ referenceDate, onPrevWeek, onNextWeek, onToday, onCon
 
       <p className={styles.weekRange}>{formatWeekRange(referenceDate)}</p>
       <div className={styles.rightActions}>
+        <button
+          type="button"
+          className={`${styles.toggleBtn} ${onlyReserved ? styles.toggleBtnActive : ''}`}
+          onClick={onToggleOnlyReserved}
+          aria-pressed={onlyReserved}
+        >
+          Solo reservados
+        </button>
         <button
           type="button"
           className={styles.refreshBtn}

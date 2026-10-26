@@ -47,6 +47,14 @@
   box-sizing: border-box;
 }
 
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+}
+
 .title {
   margin: 0;
   font-family: 'Fraunces', serif;
@@ -69,4 +77,99 @@
   .card {
     padding: 16px;
   }
+
+  /* El selector de doctor pasa debajo del título, a todo el ancho */
+  .cardHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* A 640 px o menos el botón ocupa todo el ancho, debajo de la navegación de semana */
+  .refreshBtn {
+    flex: 1 1 100%;
+  }
+}
+
+.weekNav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Mismo look que el botón "Actualizar turnos" del calendario del doctor */
+.refreshBtn {
+  margin-left: auto;
+  padding: 10px 16px;
+  border: 1px solid #EFE7DC;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #5C544C;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.refreshBtn:hover:not(:disabled) {
+  background: #FBF7F3;
+}
+
+.refreshBtn:focus-visible {
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
+}
+
+.refreshBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.weekRange {
+  min-width: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2B2320;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #EFE7DC;
+  border-radius: 10px;
+  background: #FFFFFF;
+  color: #C0392B;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.navButton:hover:not(:disabled) {
+  background: #FDF4F2;
+}
+
+.navButton:focus-visible {
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
+}
+
+.navButton:disabled {
+  color: #B5ABA1;
+  cursor: not-allowed;
+}
+
+.error {
+  margin: 0;
+  padding: 10px 14px;
+  background: #FDF4F2;
+  border: 1px solid #F1CFC9;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #7D241B;
 }

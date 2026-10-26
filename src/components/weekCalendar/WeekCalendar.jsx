@@ -1,13 +1,25 @@
 import styles from './WeekCalendar.module.css'
 import AppointmentSlot from '../appointmentSlot/AppointmentSlot'
-import { formatDayName, formatDayNumber, toDateKey, isToday } from '../../utils/dateUtils'
+import { formatDayName, formatDayNumber, toDateKey, isToday, isSlotPast } from '../../utils/dateUtils'
+import { APPOINTMENT_STATUS } from '../../constants/appointmentStatus'
 
-const WeekCalendar = ({ weekDays, slotsByDay, onSlotClick }) => {
+const WeekCalendar = ({ weekDays, slotsByDay, onSlotClick, onlyReserved = false }) => {
+  const now = new Date()
+
   return (
     <div className={styles.calendar}>
       {weekDays.map((day) => {
         const key = toDateKey(day)
         const slots = slotsByDay[key] ?? []
+        // "Solo reservados": solo los reservados (pasados incluidos).
+        // Vista normal: se ocultan los libres cuyo horario ya pasó.
+        const visibleSlots = onlyReserved
+          ? slots.filter((slot) => slot.status === APPOINTMENT_STATUS.RESERVADO)
+          : slots.filter(
+              (slot) =>
+                slot.status !== APPOINTMENT_STATUS.DISPONIBLE ||
+                !isSlotPast(slot.date, slot.startTime, now)
+            )
 
         return (
           <div key={key} className={styles.dayColumn}>
@@ -19,9 +31,21 @@ const WeekCalendar = ({ weekDays, slotsByDay, onSlotClick }) => {
             <div className={styles.slotsContainer}>
               {slots.length === 0 ? (
                 <p className={styles.emptyDay}>Sin atención</p>
+              ) : visibleSlots.length === 0 ? (
+                <p className={styles.emptyDay}>
+                  {onlyReserved ? 'Sin turnos reservados' : 'Sin horarios disponibles'}
+                </p>
               ) : (
-                slots.map((slot) => (
-                  <AppointmentSlot key={slot.id} slot={slot} onClick={onSlotClick} />
+                visibleSlots.map((slot) => (
+                  <AppointmentSlot
+                    key={slot.id}
+                    slot={slot}
+                    onClick={onSlotClick}
+                    isPast={
+                      slot.status === APPOINTMENT_STATUS.RESERVADO &&
+                      isSlotPast(slot.date, slot.startTime, now)
+                    }
+                  />
                 ))
               )}
             </div>

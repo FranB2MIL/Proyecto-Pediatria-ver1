@@ -2,7 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 12px 16px;
   flex-shrink: 0;
   padding: 0 2px;
 }
@@ -41,8 +42,11 @@
 
 .weekRange {
   margin: 0;
-  flex: 1;
+  /* Tamaño natural (una línea): si no entra junto a la navegación y los botones, baja
+     a su propia línea y recién ahí puede partirse (máx. 2 líneas) */
+  flex: 1 1 auto;
   text-align: center;
+  text-wrap: balance;
   font-family: 'Fraunces', serif;
   font-size: 18px;
   font-weight: 600;
@@ -66,6 +70,16 @@
   align-items: center;
   flex-wrap: wrap;
   justify-content: flex-end;
+  /* No se angosta: si no entra en la línea, pasa entera a la siguiente, a la derecha */
+  flex-shrink: 0;
+  max-width: 100%;
+  margin-left: auto;
+}
+
+.configButton,
+.refreshBtn,
+.toggleBtn {
+  white-space: nowrap;
 }
 
 .refreshBtn {
@@ -82,4 +96,31 @@
 .refreshBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.toggleBtn {
+  background: #FFFFFF;
+  color: #5C544C;
+  border: 1px solid #E4D9CE;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.toggleBtn:hover {
+  background: #FBF7F2;
+}
+
+.toggleBtn:focus-visible {
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
+}
+
+.toggleBtnActive,
+.toggleBtnActive:hover {
+  background: #FBEAE7;
+  border-color: #C0392B;
+  color: #A83226;
 }

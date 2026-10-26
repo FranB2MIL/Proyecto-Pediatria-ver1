@@ -72,6 +72,17 @@ export function parseLocalDate(value) {
   return new Date(year, month - 1, day)
 }
 
+/**
+ * ¿Ya pasó el horario de inicio de este slot? Compara fecha Y hora contra `now`
+ * (hora local del navegador). `date` es "yyyy-MM-dd" y `startTime` es "HH:mm".
+ */
+export function isSlotPast(date, startTime, now = new Date()) {
+  const day = parseLocalDate(date)
+  if (!day || !startTime) return false
+  const start = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0, timeToMinutes(startTime))
+  return start < now
+}
+
 /** "21/10/2026" */
 export function formatDate(value) {
   const date = parseLocalDate(value)

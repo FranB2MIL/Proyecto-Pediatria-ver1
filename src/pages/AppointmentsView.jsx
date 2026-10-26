@@ -19,8 +19,10 @@ function AppointmentsView() {
   const [error, setError] = useState(null)
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [refreshTrigger, setRefreshTrigger] = useState(0)
+  // Presentation-only filter: when true the calendar shows just the booked slots
+  const [onlyReserved, setOnlyReserved] = useState(false)
 
-  
+
 
   // useMemo avoids re-calculating the days in each render.
   // Without this, weekDays would be a new array each time, and the useEffect would trigger in loop
@@ -94,6 +96,8 @@ function AppointmentsView() {
         onConfigureAvailability={handleConfigureAvailability}
         onRefresh={() => setRefreshTrigger((n) => n + 1)}
         refreshing={loading}
+        onlyReserved={onlyReserved}
+        onToggleOnlyReserved={() => setOnlyReserved((v) => !v)}
       />
 
       
@@ -105,6 +109,7 @@ function AppointmentsView() {
           weekDays={weekDays}
           slotsByDay={slotsByDay}
           onSlotClick={handleSlotClick}
+          onlyReserved={onlyReserved}
         />
       )}
 
