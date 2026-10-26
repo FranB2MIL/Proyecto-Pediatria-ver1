@@ -39,7 +39,7 @@ const HistoryListItem = ({ id, reason, date, description, doctorName, weight, he
                     <div className={styles.actions}>
                         {onEdit && (
                             <button className={styles.editBtn} onClick={() => onEdit()}>
-                                Editar
+                                Ver / Editar
                             </button>
                         )}
                         {onDelete && (

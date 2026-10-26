@@ -29,7 +29,7 @@ function PatientsView() {
 
   return (
     <div className={styles.pageContainer}>
-      <PatientList onSelectPatient={handleSelectPatient} deletedPatientId={deletedPatientId} />
+      <PatientList onSelectPatient={handleSelectPatient} deletedPatientId={deletedPatientId} selectedPatientId={selectedPatient?.id} />
       <div className={styles.infoColumn}>
         {selectedPatient ? (
           <>

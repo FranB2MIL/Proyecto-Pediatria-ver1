@@ -1,7 +1,7 @@
 import { getAvatarColors, calculateAge } from '../../utils/patientFormat'
 import styles from './PatientListItem.module.css'
 
-const PatientListItem = ({ patient, onSelectPatient }) => {
+const PatientListItem = ({ patient, onSelectPatient, isSelected }) => {
   const fullName = `${patient.firstName} ${patient.lastName}`
   const initial = patient.firstName?.charAt(0).toUpperCase()
   const avatarColors = getAvatarColors(fullName)
@@ -10,6 +10,7 @@ const PatientListItem = ({ patient, onSelectPatient }) => {
   return (
     <div className={styles.patientlistitem}
       onClick={() => onSelectPatient(patient)}
+      aria-current={isSelected ? 'true' : undefined}
       style={{ cursor: 'pointer' }}
     >
       <div className={styles.avatar} style={{ background: avatarColors.bg, color: avatarColors.text }}>

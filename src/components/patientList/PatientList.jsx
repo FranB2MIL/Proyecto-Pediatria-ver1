@@ -5,7 +5,7 @@ import { getAllPatients } from '../../services/patientService'
 import AddPatientModal from '../../modal/AddPatientModal'
 import { normalize } from '../../utils/text'
 
-const PatientList = ({ onSelectPatient, deletedPatientId }) => {
+const PatientList = ({ onSelectPatient, deletedPatientId, selectedPatientId }) => {
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -45,6 +45,7 @@ const PatientList = ({ onSelectPatient, deletedPatientId }) => {
     <div className={styles.patientlist}>
 
       <div className={styles.searchContainer}>
+        <button onClick={() => setIsModalOpen(true)} className={styles.primaryBtn}>Agregar Paciente</button>
         <input
           type="text"
           placeholder="Buscar paciente..."
@@ -52,7 +53,6 @@ const PatientList = ({ onSelectPatient, deletedPatientId }) => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button onClick={() => setIsModalOpen(true)} className={styles.primaryBtn}>Agregar Paciente</button>
       </div>
 
       {isModalOpen && (
@@ -81,6 +81,7 @@ const PatientList = ({ onSelectPatient, deletedPatientId }) => {
             key={patient.id}
             patient={patient}
             onSelectPatient={onSelectPatient}
+            isSelected={patient.id === selectedPatientId}
           />
         ))}
       </div>
