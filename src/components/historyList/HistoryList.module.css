@@ -77,6 +77,45 @@
   min-width: 0;
 }
 
+/* Selector + X en la misma línea; la X toma el alto del selector */
+.filterRow {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.clearFilter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 36px;
+  padding: 0;
+  box-sizing: border-box;
+  border: 1px solid #EFE7DC;
+  border-radius: 10px;
+  background: #FFFFFF;
+  color: #5C544C;
+  cursor: pointer;
+}
+
+.clearFilter:hover:not(:disabled) {
+  background: #FBF7F3;
+}
+
+/* Sin doctor elegido: apagada, conserva su lugar para que el selector no se mueva */
+.clearFilter:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.clearFilter:focus-visible {
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
+}
+
 .title {
   margin: 0;
   font-family: 'Fraunces', serif;
@@ -158,5 +197,16 @@
   /* El selector baja debajo del título y ocupa todo el ancho */
   .filter {
     flex: 1 1 100%;
+  }
+
+  /* El selector se estira y la X queda fija a la derecha */
+  .filterRow {
+    width: 100%;
+  }
+
+  .filterRow > :first-child {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
   }
 }

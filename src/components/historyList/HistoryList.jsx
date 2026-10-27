@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import DoctorSelect from '../doctorSelect/DoctorSelect'
 import HistoryListItem from '../historyListItem/HistoryListItem'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
@@ -13,6 +13,7 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
   const [actionError, setActionError] = useState(null)
   // null o '' = sin filtro ("Seleccionar doctor"); otro valor = id del doctor
   const [selectedDoctorId, setSelectedDoctorId] = useState(null)
+  const filterRef = useRef(null)
 
   // Doctores únicos sacados de las consultas (ya vienen con doctorId y doctorName)
   const doctors = useMemo(() => {
@@ -29,6 +30,12 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
   const visibleConsultations = selectedDoctorId
     ? consultations.filter(c => String(c.doctorId) === selectedDoctorId)
     : consultations
+
+  // Quita el filtro y deja el foco en el botón del selector (la X desaparece)
+  const clearDoctorFilter = () => {
+    setSelectedDoctorId(null)
+    filterRef.current?.querySelector('button[aria-haspopup="listbox"]')?.focus()
+  }
 
   const handleEditConsultation = async (consultationId, formData) => {
     try {
@@ -69,13 +76,28 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
         </div>
         {showFilter && (
           <div className={styles.filter}>
-            <DoctorSelect
-              doctors={doctors}
-              selectedId={selectedDoctorId}
-              onChange={setSelectedDoctorId}
-              placeholder={canFilter ? 'Seleccionar doctor' : 'Sin doctores'}
-              allLabel={canFilter ? 'Seleccionar doctor' : undefined}
-            />
+            <div ref={filterRef} className={styles.filterRow}>
+              <DoctorSelect
+                doctors={doctors}
+                selectedId={selectedDoctorId}
+                onChange={setSelectedDoctorId}
+                placeholder={canFilter ? 'Seleccionar doctor' : 'Sin doctores'}
+                allLabel={canFilter ? 'Seleccionar doctor' : undefined}
+              />
+              {/* Siempre renderizada para reservar su lugar; deshabilitada sin doctor elegido */}
+              <button
+                type="button"
+                className={styles.clearFilter}
+                aria-label="Quitar filtro de doctor"
+                title="Quitar filtro de doctor"
+                disabled={!selectedDoctorId}
+                onClick={clearDoctorFilter}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
           </div>
         )}
       </div>
