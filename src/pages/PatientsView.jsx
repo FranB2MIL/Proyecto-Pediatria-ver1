@@ -1,19 +1,32 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import PatientList from '../components/patientList/PatientList'
 import PatientCard from '../components/patientCard/PatientCard'
 import HistoryList from '../components/historyList/HistoryList'
 import UpcomingAppointments from '../components/upcomingAppointments/UpcomingAppointments'
 import PatientConfirmModal from '../modal/PatientConfirmModal'
 import { useConsultations } from '../hooks/useConsultations'
+import { usePatients } from '../hooks/usePatients'
 import { useUpcomingAppointments } from '../hooks/useUpcomingAppointments'
 import { formatLongDate } from '../utils/dateUtils'
 import styles from './PatientsView.module.css'
 
 function PatientsView() {
   const navigate = useNavigate()
-  const [selectedPatient, setSelectedPatient] = useState(null)
+  // El id vive en DoctorLayout (persiste al ir a /turnos); el paciente se resuelve desde la lista
+  const { selectedPatientId, setSelectedPatientId } = useOutletContext()
   const [deletedPatientId, setDeletedPatientId] = useState(null)
+
+  const patientList = usePatients(deletedPatientId)
+  const selectedPatient = patientList.patients.find((p) => p.id === selectedPatientId) ?? null
+
+  // Si el paciente ya no está en la lista (lo quitaron mientras estábamos en otra vista),
+  // se olvida el id para que no reaparezca seleccionado si se lo vuelve a vincular
+  useEffect(() => {
+    if (!patientList.loading && !patientList.error && selectedPatientId != null && !selectedPatient) {
+      setSelectedPatientId(null)
+    }
+  }, [patientList.loading, patientList.error, selectedPatientId, selectedPatient, setSelectedPatientId])
 
   const {
     consultations,
@@ -28,17 +41,28 @@ function PatientsView() {
   const upcoming = useUpcomingAppointments(deletedPatientId)
 
   const handleSelectPatient = (patient) => {
-    setSelectedPatient(patient)
+    setSelectedPatientId(patient.id)
   }
 
   const handleDeletePatient = (id) => {
-    setSelectedPatient(null)
+    setSelectedPatientId(null)
     setDeletedPatientId(id)
   }
 
+  // Al volver de /turnos la lista se vuelve a pedir: mientras tanto no se muestra
+  // "Seleccioná un paciente" si había uno seleccionado
+  const resolvingSelection = patientList.loading && selectedPatientId != null
+
   return (
     <div className={styles.pageContainer}>
-      <PatientList onSelectPatient={handleSelectPatient} deletedPatientId={deletedPatientId} selectedPatientId={selectedPatient?.id} />
+      <PatientList
+        patients={patientList.patients}
+        loading={patientList.loading}
+        error={patientList.error}
+        onPatientLinked={patientList.reload}
+        onSelectPatient={handleSelectPatient}
+        selectedPatientId={selectedPatient?.id}
+      />
       <div className={styles.infoColumn}>
         {selectedPatient ? (
           <>
@@ -62,7 +86,7 @@ function PatientsView() {
               />
             </div>
           </>
-        ) : (
+        ) : !resolvingSelection && (
           <p>Seleccioná un paciente de la lista para ver su información</p>
         )}
       </div>

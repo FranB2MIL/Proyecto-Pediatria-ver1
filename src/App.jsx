@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import TopBar from './components/topBar/TopBar'
 import { Routes, Route, Outlet, useMatch } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
@@ -20,6 +21,9 @@ const BACK_TO_PATIENTS = { to: '/', label: 'Mis pacientes' }
 function DoctorLayout() {
   const { user } = useAuth()
   const onAppointments = useMatch('/turnos')
+  // El paciente seleccionado vive acá para sobrevivir a "/" ↔ "/turnos".
+  // Al hacer logout se sale del layout y se pierde: el próximo doctor arranca sin selección
+  const [selectedPatientId, setSelectedPatientId] = useState(null)
   return (
     <div style={fullHeightStyle}>
       <TopBar
@@ -29,7 +33,7 @@ function DoctorLayout() {
         fullWidth
         backTo={onAppointments ? BACK_TO_PATIENTS : undefined}
       />
-      <Outlet />
+      <Outlet context={{ selectedPatientId, setSelectedPatientId }} />
     </div>
   )
 }

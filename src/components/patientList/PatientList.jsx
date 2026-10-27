@@ -1,38 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import styles from './PatientList.module.css'
 import PatientListItem from '../patientItem/PatientListItem'
-import { getAllPatients } from '../../services/patientService'
 import AddPatientModal from '../../modal/AddPatientModal'
 import { normalize } from '../../utils/text'
 
-const PatientList = ({ onSelectPatient, deletedPatientId, selectedPatientId }) => {
-  const [patients, setPatients] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+const PatientList = ({ patients, loading, error, onPatientLinked, onSelectPatient, selectedPatientId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [query, setQuery] = useState('')
-
-  const loadPatients = async () => {
-    try {
-      setError(null)
-      const data = await getAllPatients()
-      setPatients(data)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    loadPatients()
-  }, [])
-
-  useEffect(() => {
-    if (deletedPatientId) {
-      setPatients(prev => prev.filter(p => p.id !== deletedPatientId))
-    }
-  }, [deletedPatientId])
 
   const term = normalize(query.trim())
   const filtered = patients.filter((p) =>
@@ -58,7 +32,7 @@ const PatientList = ({ onSelectPatient, deletedPatientId, selectedPatientId }) =
       {isModalOpen && (
         <AddPatientModal
           onClose={() => setIsModalOpen(false)}
-          onPatientLinked={loadPatients}
+          onPatientLinked={onPatientLinked}
         />
       )}
 
