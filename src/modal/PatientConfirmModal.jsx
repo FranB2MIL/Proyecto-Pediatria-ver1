@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal'
 import styles from './PatientConfirmModal.module.css'
 
-// Confirmación del lado paciente (reservar / cancelar turno). El que lo abre maneja
+// Confirmación de turnos (paciente: reservar / cancelar; doctor: cancelar). El que lo abre maneja
 // el envío: mientras submitting es true los botones quedan deshabilitados.
 const PatientConfirmModal = ({
   title, children, confirmLabel, cancelLabel = 'Volver', danger = false, submitting, error, onConfirm, onClose,

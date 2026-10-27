@@ -60,6 +60,7 @@
   font-size: 14px;
   font-weight: 500;
   color: #2B2320;
+  overflow-wrap: anywhere;
 }
 
 .when::first-letter {
@@ -73,18 +74,20 @@
   white-space: nowrap;
 }
 
-/* Badge a la izquierda, botón Cancelar a la derecha en la misma línea */
+/* Badge a la izquierda, botón Cancelar a la derecha; si no entran juntos, Cancelar baja */
 .statusRow {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px 8px;
   margin-top: 4px;
 }
 
 .doctor {
   font-size: 13px;
   color: #5C544C;
+  overflow-wrap: anywhere;
 }
 
 .statusOk,

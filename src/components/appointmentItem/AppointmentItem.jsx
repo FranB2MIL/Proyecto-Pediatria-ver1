@@ -12,10 +12,12 @@ const STATUS_LABELS = {
   [APPOINTMENT_STATUS.CANCELADO]: 'Cancelado',
 }
 
-// Tarjeta de un turno (fecha, hora, doctor, estado). Compartida por la lista y el modal
+// Tarjeta de un turno (fecha, hora, persona, estado). Compartida por la lista y el modal
 const AppointmentItem = ({ appointment, onCancelAppointment }) => {
   const isCancelled = appointment.status === APPOINTMENT_STATUS.CANCELADO
   const canCancel = Boolean(onCancelAppointment) && appointment.status === APPOINTMENT_STATUS.RESERVADO
+  // Cada vista recibe uno solo: el paciente ve al doctor (/me/appointments), el doctor al paciente (/appointment)
+  const personName = appointment.doctorName || appointment.patientName
   return (
     <li className={`${styles.item} ${isCancelled ? styles.itemCancelled : ''}`}>
       <div className={styles.dateBlock} aria-hidden="true">
@@ -28,8 +30,8 @@ const AppointmentItem = ({ appointment, onCancelAppointment }) => {
         <span className={styles.when}>{formatLongDate(appointment.date)}</span>
         {/* Espacio de no separación: la hora y la "h" nunca quedan en líneas distintas */}
         <span className={styles.time}>{appointment.startTime}&nbsp;h</span>
-        {appointment.doctorName && (
-          <span className={styles.doctor}>{appointment.doctorName}</span>
+        {personName && (
+          <span className={styles.doctor}>{personName}</span>
         )}
         <div className={styles.statusRow}>
           <span className={STATUS_CLASSES[appointment.status] ?? styles.statusNeutral}>

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import styles from './UserMenu.module.css'
 
-// Saludo + botón Salir. Lo comparten la navbar del doctor y el TopBar (paciente y admin)
+// Saludo + botón Salir. Lo usa el TopBar (doctor, paciente y admin)
 const UserMenu = ({ name, logoutPath }) => {
   const navigate = useNavigate()
   const { handleUserLogout } = useAuth()

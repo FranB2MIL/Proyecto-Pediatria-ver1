@@ -6,12 +6,15 @@ import styles from './UpcomingAppointments.module.css'
 
 // appointments: turnos activos; cancelledAppointments: cancelados.
 // Ambos llegan completos: acá se recortan los activos al tope y el modal "Mis turnos" muestra todos.
+// actionLabel (opcional): en lugar del "+", un botón con ese texto que también dispara onAddAppointment
 const UpcomingAppointments = ({
   appointments,
   cancelledAppointments = [],
   loading,
   error,
+  emptyMessage = 'No tenés turnos agendados',
   onAddAppointment,
+  actionLabel,
   onCancelAppointment,
 }) => {
   const [showAllModal, setShowAllModal] = useState(false)
@@ -26,7 +29,12 @@ const UpcomingAppointments = ({
     <section className={styles.upcoming}>
       <div className={styles.header}>
         <h2 className={styles.title}>Próximos turnos</h2>
-        {onAddAppointment && (
+        {onAddAppointment && actionLabel && (
+          <button type="button" className={styles.actionButton} onClick={onAddAppointment}>
+            {actionLabel}
+          </button>
+        )}
+        {onAddAppointment && !actionLabel && (
           <button
             type="button"
             className={styles.addButton}
@@ -44,7 +52,7 @@ const UpcomingAppointments = ({
       {loading && <p className={styles.stateMessage}>Cargando turnos...</p>}
       {!loading && error && <p className={styles.stateMessage}>Error: {error}</p>}
       {ready && appointments.length === 0 && (
-        <p className={styles.stateMessage}>No tenés turnos agendados</p>
+        <p className={styles.stateMessage}>{emptyMessage}</p>
       )}
       {ready && appointments.length > 0 && (
         <ul className={styles.list}>

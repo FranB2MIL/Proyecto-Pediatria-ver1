@@ -27,6 +27,15 @@
   min-height: 260px;
 }
 
+/* Próximos turnos: ancho fijo y alto completo; solo scrollea la lista de adentro */
+.sideColumn {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 clamp(320px, 24vw, 380px);
+  min-width: 0;
+  min-height: 0;
+}
+
 @media (max-width: 640px) {
   .pageContainer {
     flex-direction: column;
@@ -41,5 +50,11 @@
 
   .historySection {
     flex: none;
+  }
+
+  /* Apilado: queda abajo por orden del DOM y se acota para no estirar la página */
+  .sideColumn {
+    flex: none;
+    max-height: 420px;
   }
 }

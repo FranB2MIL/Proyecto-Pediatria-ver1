@@ -11,15 +11,81 @@
   background: #F5DFDA;
 }
 
+/* Vistas del doctor: contenido a todo el ancho con padding 20px (16px en mobile) */
+.fullWidth {
+  padding: 0 20px;
+}
+
 .brand {
   font-family: 'Fraunces', serif;
   font-size: 22px;
   font-weight: 600;
   color: #2B2320;
+  text-decoration: none;
+}
+
+.brand:focus-visible {
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Botón secundario de volver (reemplaza a la marca); ~38px de alto, entra en el header sin agrandarlo */
+.backButton {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border: 1px solid #E8B9B2;
+  border-radius: 8px;
+  background: #ffffff6f;
+  color: #7D241B;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.backButton:hover {
+  background: #FBEAE6;
+  border-color: #C0392B;
+  color: #7D241B;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(125, 36, 27, 0.12);
+}
+
+.backButton:active {
+  background: #F5DFDA;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.backButton:focus-visible {
+  outline: 2px solid #2B2320;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backButton {
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .backButton:hover,
+  .backButton:active {
+    transform: none;
+  }
 }
 
 @media (max-width: 640px) {
   .topBar {
     height: 64px;
+  }
+
+  .fullWidth {
+    padding: 0 16px;
   }
 }
