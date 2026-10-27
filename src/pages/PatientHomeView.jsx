@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import PatientTopBar from '../components/patientTopBar/PatientTopBar'
+import TopBar from '../components/topBar/TopBar'
 import PatientProfile from '../components/patientProfile/PatientProfile'
 import LatestConsultation from '../components/latestConsultation/LatestConsultation'
 import UpcomingAppointments from '../components/upcomingAppointments/UpcomingAppointments'
@@ -123,7 +123,7 @@ function PatientHomeView() {
 
   return (
     <div className={styles.page}>
-      <PatientTopBar firstName={data?.profile?.firstName} />
+      <TopBar name={data?.profile?.firstName} logoutPath="/login" />
 
       <main className={styles.content}>
         {loading && <p className={styles.stateMessage}>Cargando tu ficha...</p>}

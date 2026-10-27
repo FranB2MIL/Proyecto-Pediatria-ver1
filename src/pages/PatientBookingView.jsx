@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import PatientTopBar from '../components/patientTopBar/PatientTopBar'
+import TopBar from '../components/topBar/TopBar'
 import PatientWeekGrid from '../components/patientWeekGrid/PatientWeekGrid'
 import DoctorSelect from '../components/doctorSelect/DoctorSelect'
 import PatientConfirmModal from '../modal/PatientConfirmModal'
@@ -175,7 +175,7 @@ function PatientBookingView() {
 
   return (
     <div className={styles.page}>
-      <PatientTopBar firstName={!profileLoading && !profileError ? profile?.firstName : null} />
+      <TopBar name={!profileLoading && !profileError ? profile?.firstName : null} logoutPath="/login" />
 
       <main className={styles.content}>
         <Link to="/mi-ficha" className={styles.backLink}>‹ Volver a mi ficha</Link>
