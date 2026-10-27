@@ -1,36 +1,26 @@
 .navbar {
   height: 86px;
   background: #F5DFDA;
-  display: flex;
+  /* Columnas laterales iguales (minmax(0, 1fr)): la marca queda centrada aunque los grupos midan distinto */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
+  gap: 16px;
   padding: 0 24px;
   box-sizing: border-box;
   flex-shrink: 0;
 }
 
-.navButtonPrimary,
-.navButtonSecondary {
-  border: none;
-  min-width: 160px;
-  padding: 10px 20px;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 8px;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
+.navGroup {
+  display: flex;
+  gap: 12px;
+  justify-self: start;
 }
 
-.navButtonPrimary {
-  background: #C0392B;
-  color: #FBF7F2;
-}
-
-.navButtonSecondary {
-  background: #FFFFFF;
-  color: #7D241B;
-  border: 1px solid #E8B9B2;
+.userSlot {
+  min-width: 0;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .navButtonPrimary,

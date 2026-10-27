@@ -97,3 +97,14 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.footer {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #5C544C;
+  text-align: center;
+}
+.link {
+  color: #C0392B;
+  font-weight: 500;
+}
