@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {loginStaff} from "../services/authService";
-import {useNavigate} from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom'
 import styles from './LoginStaffView.module.css';
 import {HOME_BY_ROLE} from "../utils/roles";
 import { useAuth } from '../hooks/useAuth'
@@ -86,6 +86,7 @@ function LoginStaffView() {
                         <button type="submit" className={styles.button} disabled={loading}>
                             {loading ? 'ingresando...' : 'Iniciar sesión'}
                         </button>
+                        <p className={styles.footer}>¿Sos paciente? <Link to="/login" className={styles.link}>Incia sesion aqui.</Link></p>
                     </form>
                 </div>
             </div>

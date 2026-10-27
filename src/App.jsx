@@ -1,5 +1,7 @@
-import MyNavBar from './components/myNavBar/MyNavBar'
-import { Routes, Route, Outlet } from 'react-router-dom'
+import { useState } from 'react'
+import TopBar from './components/topBar/TopBar'
+import { Routes, Route, Outlet, useMatch } from 'react-router-dom'
+import { useAuth } from './hooks/useAuth'
 import PatientsView from './pages/PatientsView'
 import AppointmentsView from './pages/AppointmentsView'
 import PatientHomeView from './pages/PatientHomeView'
@@ -12,17 +14,31 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 const fullHeightStyle = { display: 'flex', flexDirection: 'column', height: '100vh' }
 
-// Pantallas del doctor: navbar + alto fijo (el doctor scrollea por columna: calendario, historial)
+// Pantallas del doctor: TopBar + alto fijo (el doctor scrollea por columna: calendario, historial)
+// En /turnos el header muestra "← Mis pacientes" en lugar de la marca
+const BACK_TO_PATIENTS = { to: '/', label: 'Mis pacientes' }
+
 function DoctorLayout() {
+  const { user } = useAuth()
+  const onAppointments = useMatch('/turnos')
+  // El paciente seleccionado vive acá para sobrevivir a "/" ↔ "/turnos".
+  // Al hacer logout se sale del layout y se pierde: el próximo doctor arranca sin selección
+  const [selectedPatientId, setSelectedPatientId] = useState(null)
   return (
     <div style={fullHeightStyle}>
-      <MyNavBar />
-      <Outlet />
+      <TopBar
+        name={user?.name}
+        logoutPath="/staff/login"
+        homePath="/"
+        fullWidth
+        backTo={onAppointments ? BACK_TO_PATIENTS : undefined}
+      />
+      <Outlet context={{ selectedPatientId, setSelectedPatientId }} />
     </div>
   )
 }
 
-// Login y registro: sin navbar, con el mismo contenedor de alto fijo
+// Login y registro: sin TopBar, con el mismo contenedor de alto fijo
 function AuthLayout() {
   return (
     <div style={fullHeightStyle}>
@@ -34,13 +50,13 @@ function AuthLayout() {
 function App() {
   return (
     <Routes>
-      {/* Vistas con Navbar de Doctor */}
+      {/* Vistas del doctor */}
       <Route element={<DoctorLayout />}>
         <Route path="/" element={<PatientsView />} />
         <Route path="/turnos" element={<AppointmentsView />} />
       </Route>
 
-      {/* Vistas de autenticación (sin Navbar) */}
+      {/* Vistas de autenticación (sin TopBar) */}
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginView />} />
         <Route path="/register" element={<RegisterView />} />

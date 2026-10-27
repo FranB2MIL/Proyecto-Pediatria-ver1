@@ -7,6 +7,7 @@
   gap: 24px;
   padding: 24px 16px;
   background: #FBF7F2;
+  background-image: url("/public/doodles.png");
   overflow-y: auto;
 }
 
@@ -14,7 +15,7 @@
   width: 100%;
   max-width: 420px;
   background: #FFFFFF;
-  border: 1px solid #EFE7DC;
+  border: 2px solid #734242;
   border-radius: 12px;
   padding: 32px 24px;
 }

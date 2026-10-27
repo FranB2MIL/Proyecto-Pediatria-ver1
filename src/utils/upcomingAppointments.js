@@ -4,6 +4,9 @@ import { toDateKey } from './dateUtils'
 // Cantidad de turnos activos que se muestran en la tarjeta antes de "Ver todos"
 export const MAX_VISIBLE_APPOINTMENTS = 5
 
+// Ventana (en días desde hoy) que trae el panel del doctor; el back exige from/to
+export const UPCOMING_DAYS = 30
+
 const pad = (n) => String(n).padStart(2, '0')
 
 // Las fechas son strings yyyy-MM-dd y la hora "HH:mm", así que se comparan como texto.

@@ -22,6 +22,8 @@
 }
 
 .title {
+  /* Si falta lugar, cede el título y no el botón del header */
+  min-width: 0;
   margin: 0;
   font-family: 'Fraunces', serif;
   font-size: 18px;
@@ -55,6 +57,54 @@
   outline-offset: 2px;
 }
 
+/* Botón de texto secundario (alternativa al "+"), compacto para no romper el header */
+.actionButton {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border: 1px solid #E8B9B2;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #7D241B;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.actionButton:hover {
+  background: #FBEAE6;
+  border-color: #C0392B;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(125, 36, 27, 0.12);
+}
+
+.actionButton:active {
+  background: #F5DFDA;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.actionButton:focus-visible {
+  outline: 2px solid #C0392B;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .actionButton {
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .actionButton:hover,
+  .actionButton:active {
+    transform: none;
+  }
+}
+
 .stateMessage {
   flex-shrink: 0;
   margin: 0;
@@ -69,18 +119,12 @@
   flex: 0 1 auto;
   min-height: 0;
   overflow-y: auto;
+  /* Red de seguridad: las tarjetas ya no desbordan, pero nunca debe aparecer scroll lateral */
+  overflow-x: hidden;
   gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-/* Apilado (una columna): sin altura de columna que seguir, se acota con max-height */
-@media (max-width: 900px) {
-  .upcoming {
-    height: auto;
-    max-height: 420px;
-  }
 }
 
 @media (max-width: 640px) {

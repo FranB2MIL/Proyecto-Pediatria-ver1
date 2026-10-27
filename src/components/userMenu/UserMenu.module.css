@@ -1,0 +1,47 @@
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* Un nombre muy largo se corta con "…" en vez de empujar el layout */
+.greeting {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5C544C;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  flex-shrink: 0;
+  background: #E8B9B2;
+}
+
+.logoutButton {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border: 1px solid #C0392B;
+  border-radius: 8px;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #C0392B;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.logoutButton:hover {
+  background: #FDF4F2;
+}
+
+.logoutButton:focus-visible {
+  outline: 2px solid #2B2320;
+  outline-offset: 2px;
+}
