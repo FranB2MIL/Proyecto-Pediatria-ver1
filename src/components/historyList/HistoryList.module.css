@@ -54,8 +54,27 @@
 .sectionHeader {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.headerText {
+  display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   gap: 4px 12px;
+}
+
+/* Con selector, la lista desplegable no puede quedar recortada por la tarjeta */
+.withFilter {
+  overflow: visible;
+}
+
+.filter {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
 .title {
@@ -134,5 +153,10 @@
 @media (max-width: 640px) {
   .historylist {
     padding: 16px;
+  }
+
+  /* El selector baja debajo del título y ocupa todo el ancho */
+  .filter {
+    flex: 1 1 100%;
   }
 }

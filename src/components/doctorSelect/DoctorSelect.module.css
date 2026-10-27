@@ -65,6 +65,14 @@
   color: #8A8078;
 }
 
+.placeholder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #8A8078;
+}
+
 .chevron {
   flex-shrink: 0;
   color: #8A8078;
