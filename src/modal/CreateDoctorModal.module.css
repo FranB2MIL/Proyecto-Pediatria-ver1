@@ -1,0 +1,123 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(43, 35, 32, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  background-color: #ffffff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+}
+
+.title {
+  margin: 0 0 16px 0;
+  font-family: 'Fraunces', serif;
+  color: #2b2320;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.errorMsg {
+  color: #c0392b;
+  font-size: 0.85rem;
+  margin: 0 0 12px 0;
+  background-color: #fdf2f2;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #f8d7da;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #6e655d;
+}
+
+.field input {
+  padding: 9px 12px;
+  border: 1px solid #e8dfd8;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: #2b2320;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.field input:focus {
+  border-color: #c0392b;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: 1px solid #e8dfd8;
+  color: #4a3e3d;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.cancelBtn:hover {
+  background-color: #f5ede4;
+}
+
+.submitBtn {
+  background-color: #c0392b;
+  color: #ffffff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.submitBtn:hover {
+  background-color: #962d23;
+}
+
+.submitBtn:disabled,
+.cancelBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
