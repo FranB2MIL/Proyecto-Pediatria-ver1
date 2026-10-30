@@ -137,7 +137,7 @@ function PatientHomeView() {
             <div className={styles.columns}>
               <div className={styles.mainColumn}>
                 <LatestConsultation consultation={consultations[0]} loading={false} error={null} />
-                <HistoryList consultations={consultations} loading={false} error={null} showDoctor />
+                <HistoryList consultations={consultations} loading={false} error={null} showDoctor filterByDoctor />
               </div>
               <aside className={styles.sideColumn}>
                 <div className={styles.sideInner}>

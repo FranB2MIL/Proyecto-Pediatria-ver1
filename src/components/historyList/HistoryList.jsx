@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
+import DoctorSelect from '../doctorSelect/DoctorSelect'
 import HistoryListItem from '../historyListItem/HistoryListItem'
 import CreateConsultationModal from '../../modal/CreateConsultationModal'
 import ConfirmModal from '../../modal/ConfirmModal'
@@ -6,10 +7,35 @@ import styles from './HistoryList.module.css'
 import { toFormMeasurement } from '../../utils/measurement'
 import { heightInCm, headCircumferenceInCm } from '../../utils/measurement'
 
-const HistoryList = ({ consultations, loading, error, onEditConsultation, onDeleteConsultation, showDoctor = false }) => {
+const HistoryList = ({ consultations, loading, error, onEditConsultation, onDeleteConsultation, showDoctor = false, filterByDoctor = false }) => {
   const [editingConsultation, setEditingConsultation] = useState(null)
   const [deletingConsultation, setDeletingConsultation] = useState(null)
   const [actionError, setActionError] = useState(null)
+  // null o '' = sin filtro ("Seleccionar doctor"); otro valor = id del doctor
+  const [selectedDoctorId, setSelectedDoctorId] = useState(null)
+  const filterRef = useRef(null)
+
+  // Doctores únicos sacados de las consultas (ya vienen con doctorId y doctorName)
+  const doctors = useMemo(() => {
+    if (!filterByDoctor) return []
+    const byId = new Map()
+    consultations.forEach(c => {
+      if (c.doctorId != null && !byId.has(c.doctorId)) {
+        byId.set(c.doctorId, { id: c.doctorId, firstName: c.doctorName })
+      }
+    })
+    return [...byId.values()]
+  }, [consultations, filterByDoctor])
+
+  const visibleConsultations = selectedDoctorId
+    ? consultations.filter(c => String(c.doctorId) === selectedDoctorId)
+    : consultations
+
+  // Quita el filtro y deja el foco en el botón del selector (la X desaparece)
+  const clearDoctorFilter = () => {
+    setSelectedDoctorId(null)
+    filterRef.current?.querySelector('button[aria-haspopup="listbox"]')?.focus()
+  }
 
   const handleEditConsultation = async (consultationId, formData) => {
     try {
@@ -29,18 +55,50 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
     }
   }
 
-  const hasConsultations = !loading && !error && consultations.length > 0
+  const hasConsultations = !loading && !error && visibleConsultations.length > 0
+  const showFilter = filterByDoctor && !loading && !error
+  // Con al menos 1 doctor se puede elegir; con 0 la caja dice "Sin doctores"
+  const canFilter = doctors.length >= 1
+  const latestId = consultations[0]?.id
   // Sin callbacks (vista del paciente) la tabla es solo lectura
   const readOnly = !onEditConsultation && !onDeleteConsultation
 
   return (
-    <section className={styles.historylist}>
+    <section className={`${styles.historylist} ${showFilter ? styles.withFilter : ''}`}>
       <div className={styles.sectionHeader}>
-        <h2 className={styles.title}>Historial de consultas</h2>
-        {hasConsultations && (
-          <span className={styles.count}>
-            {consultations.length === 1 ? '1 consulta' : `${consultations.length} consultas`}
-          </span>
+        <div className={styles.headerText}>
+          <h2 className={styles.title}>Historial de consultas</h2>
+          {hasConsultations && (
+            <span className={styles.count}>
+              {visibleConsultations.length === 1 ? '1 consulta' : `${visibleConsultations.length} consultas`}
+            </span>
+          )}
+        </div>
+        {showFilter && (
+          <div className={styles.filter}>
+            <div ref={filterRef} className={styles.filterRow}>
+              <DoctorSelect
+                doctors={doctors}
+                selectedId={selectedDoctorId}
+                onChange={setSelectedDoctorId}
+                placeholder={canFilter ? 'Seleccionar doctor' : 'Sin doctores'}
+                allLabel={canFilter ? 'Seleccionar doctor' : undefined}
+              />
+              {/* Siempre renderizada para reservar su lugar; deshabilitada sin doctor elegido */}
+              <button
+                type="button"
+                className={styles.clearFilter}
+                aria-label="Quitar filtro de doctor"
+                title="Quitar filtro de doctor"
+                disabled={!selectedDoctorId}
+                onClick={clearDoctorFilter}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
         )}
       </div>
       {actionError && <p className={styles.actionError} role="alert">{actionError}</p>}
@@ -48,6 +106,9 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
       {!loading && error && <p className={styles.stateMessage}>Error: {error}</p>}
       {!loading && !error && consultations.length === 0 && (
         <p className={styles.stateMessage}>Todavía no hay consultas registradas.</p>
+      )}
+      {!loading && !error && consultations.length > 0 && visibleConsultations.length === 0 && (
+        <p className={styles.stateMessage}>No hay consultas de este doctor</p>
       )}
       {hasConsultations && (
         <div className={styles.tableWrapper}>
@@ -64,7 +125,7 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
               </tr>
             </thead>
             <tbody>
-              {consultations.map((c, index) => (
+              {visibleConsultations.map((c) => (
                 <HistoryListItem
                   key={c.id}
                   id={c.id}
@@ -76,7 +137,7 @@ const HistoryList = ({ consultations, loading, error, onEditConsultation, onDele
                   height={heightInCm(c.measurement)}
                   size={headCircumferenceInCm(c.measurement)}
                   imc={c.measurement?.imc}
-                  isLatest={index === 0}
+                  isLatest={c.id === latestId}
 
                   onEdit={onEditConsultation && (() => setEditingConsultation(c))}
                   onDelete={onDeleteConsultation && ((id) => setDeletingConsultation(id))}
