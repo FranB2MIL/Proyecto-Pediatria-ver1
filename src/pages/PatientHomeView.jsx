@@ -45,8 +45,7 @@ function PatientHomeView() {
     setCancelError(null)
     try {
       await cancelMyAppointment(appointmentToCancel.id)
-      // Éxito: se marca cancelado en el mismo arreglo; la lista de activos y la de cancelados
-      // se derivan de ahí, así que el turno cambia de grupo al instante (abajo se refresca igual)
+      
       const cancelledId = appointmentToCancel.id
       setData(prev => ({
         ...prev,

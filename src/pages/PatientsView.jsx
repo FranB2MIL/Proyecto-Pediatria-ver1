@@ -20,8 +20,7 @@ function PatientsView() {
   const patientList = usePatients(deletedPatientId)
   const selectedPatient = patientList.patients.find((p) => p.id === selectedPatientId) ?? null
 
-  // Si el paciente ya no está en la lista (lo quitaron mientras estábamos en otra vista),
-  // se olvida el id para que no reaparezca seleccionado si se lo vuelve a vincular
+  
   useEffect(() => {
     if (!patientList.loading && !patientList.error && selectedPatientId != null && !selectedPatient) {
       setSelectedPatientId(null)
