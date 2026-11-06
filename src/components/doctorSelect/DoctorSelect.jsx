@@ -13,7 +13,9 @@ const DoctorInfo = ({ doctor }) => (
 
 // Selector de doctor: botón con listbox desplegable. Sin fetch; el padre maneja el estado.
 // doctors: [{ id, firstName, lastName, specialty? }]; selectedId: id (string); onChange(id: string).
-const DoctorSelect = ({ doctors, selectedId, onChange }) => {
+// Opcionales: placeholder (texto cuando no hay selección) y allLabel (suma una primera opción
+// que emite id '' para "sin filtro"). Sin ellos se comporta como siempre.
+const DoctorSelect = ({ doctors: doctorList, selectedId, onChange, placeholder, allLabel }) => {
   const [open, setOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
   const rootRef = useRef(null)
@@ -21,7 +23,11 @@ const DoctorSelect = ({ doctors, selectedId, onChange }) => {
   const listRef = useRef(null)
   const listId = useId()
 
-  const selectedIndex = Math.max(0, doctors.findIndex(d => String(d.id) === String(selectedId)))
+  const doctors = allLabel ? [{ id: '', firstName: allLabel }, ...doctorList] : doctorList
+
+  const foundIndex = doctors.findIndex(d => String(d.id) === String(selectedId))
+  // Con placeholder, sin coincidencia no hay selección; sin placeholder cae en el primero
+  const selectedIndex = placeholder ? foundIndex : Math.max(0, foundIndex)
   const selected = doctors[selectedIndex]
 
   // Abierto: el foco pasa a la lista y un clic fuera la cierra
@@ -40,21 +46,23 @@ const DoctorSelect = ({ doctors, selectedId, onChange }) => {
     if (open) listRef.current?.children[activeIndex]?.scrollIntoView({ block: 'nearest' })
   }, [open, activeIndex])
 
-  if (!selected) return null
+  if (!selected && !placeholder) return null
 
-  // Un solo doctor: caja informativa, sin flecha ni lista
-  if (doctors.length === 1) {
+  // Un solo doctor (o ninguno): caja informativa, sin flecha ni lista
+  if (doctors.length <= 1) {
     return (
       <div className={styles.root}>
         <div className={`${styles.box} ${styles.boxStatic}`}>
-          <DoctorInfo doctor={selected} />
+          {selected
+            ? <DoctorInfo doctor={selected} />
+            : <span className={styles.placeholder}>{placeholder}</span>}
         </div>
       </div>
     )
   }
 
   const openList = () => {
-    setActiveIndex(selectedIndex)
+    setActiveIndex(Math.max(0, selectedIndex))
     setOpen(true)
   }
 
@@ -122,7 +130,9 @@ const DoctorSelect = ({ doctors, selectedId, onChange }) => {
         onClick={() => (open ? closeList() : openList())}
         onKeyDown={handleButtonKeyDown}
       >
-        <DoctorInfo doctor={selected} />
+        {selected
+          ? <DoctorInfo doctor={selected} />
+          : <span className={styles.placeholder}>{placeholder}</span>}
         <svg
           className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`}
           width="16"
