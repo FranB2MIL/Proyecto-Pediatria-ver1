@@ -10,7 +10,7 @@ import AvailabilityModal from '../components/availabilityModal/AvailabilityModal
 import styles from './AppointmentsView.module.css'
 
 function AppointmentsView() {
-  // Anchor date: any day within the week which we are looking at
+  
   const [referenceDate, setReferenceDate] = useState(new Date())
 
   const [availabilities, setAvailabilities] = useState([])
@@ -19,13 +19,8 @@ function AppointmentsView() {
   const [error, setError] = useState(null)
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [refreshTrigger, setRefreshTrigger] = useState(0)
-  // Presentation-only filter: when true the calendar shows just the booked slots
   const [onlyReserved, setOnlyReserved] = useState(false)
 
-
-
-  // useMemo avoids re-calculating the days in each render.
-  // Without this, weekDays would be a new array each time, and the useEffect would trigger in loop
   const weekDays = useMemo(() => getWeekDays(referenceDate), [referenceDate])
 
   useEffect(() => {
@@ -33,7 +28,6 @@ function AppointmentsView() {
       setLoading(true)
       setError(null)
       try {
-        // Promise.all triggers both calls in paralell instead of one after the other.
         const [availabilityData, appointmentData] = await Promise.all([
           getAvailabilities(),
           getAppointmentsByWeek(weekDays[0], weekDays[6]),
@@ -50,7 +44,6 @@ function AppointmentsView() {
     fetchData()
   }, [weekDays, refreshTrigger])
 
-  // Here is where everything merges: days + availabiliy + appointments => table ready.
   const slotsByDay = useMemo(
     () => buildWeekSlots(weekDays, availabilities, appointments),
     [weekDays, availabilities, appointments]

@@ -1,26 +1,13 @@
-// Mock de turnos agendados.
-// Refleja la entidad Appointment del backend (Domain/Entities/Appointment.cs):
-//   Id, Date, StartTime, Status, AvailabilityId, DoctorId, PatientId
-//
-// patientName NO existe en el backend: lo agregamos solo para poder mostrar algo
-// mientras trabajamos con mocks. Cuando conectemos la API real, el nombre va a
-// venir de un join o de una llamada aparte a /api/patient/{id}.
-//
-// status refleja el enum AppointmentStatus: 'Disponible' | 'Reservado' | 'Cancelado'
+
 
 import { APPOINTMENT_STATUS } from '../constants/appointmentStatus'
 
 export { APPOINTMENT_STATUS } from '../constants/appointmentStatus'
 
-// Las fechas son relativas a "hoy" para que el mock siempre caiga en la semana
-// que estás viendo, sin importar cuándo corras el proyecto.
 const today = new Date()
 const monday = new Date(today)
 monday.setDate(today.getDate() - ((today.getDay() + 6) % 7))
 
-// Formateamos en hora LOCAL a propósito. Usar toISOString() acá sería un bug:
-// convierte a UTC y, con el huso de Argentina (UTC-3), correría la fecha un día
-// para atrás si abrís la app entre medianoche y las 3 AM.
 const isoDate = (offsetDays) => {
   const d = new Date(monday)
   d.setDate(monday.getDate() + offsetDays)

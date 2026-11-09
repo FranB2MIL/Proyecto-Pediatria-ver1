@@ -22,6 +22,7 @@
   display: flex;
   align-items: stretch;
   gap: 20px;
+  flex: 1; 
 }
 
 .mainColumn {
@@ -30,6 +31,7 @@
   gap: 20px;
   flex: 1;
   min-width: 0;
+  
 }
 
 /*
@@ -42,6 +44,9 @@
   flex: 0 0 340px;
   min-width: 0;
   min-height: 360px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #E5DCD3 transparent;
 }
 
 .sideInner {

@@ -1,4 +1,3 @@
-// Placeholder heuristic — reemplazar cuando se defina la regla de negocio real para clasificar percentilos.
 export const getPercentileStatus = (value) => {
   if (value === undefined || value === null) return null
 
