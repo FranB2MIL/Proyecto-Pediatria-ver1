@@ -1,12 +1,19 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom"
+import { useAuth } from "../hooks/useAuth"
+import { getDefaultHome } from "../utils/roles"
 
-function RequireAuth() {
-  const token = localStorage.getItem("token") 
+function RequireAuth({ allowedRoles }) {
+  const { token, user } = useAuth()
   const location = useLocation()
 
-  if (!token) {
+  if (!token || !user) {
     return <Navigate to="/login" replace state={{ from: location }} />
   }
+
+  if (allowedRoles && !allowedRoles.some((role) => user.roles.includes(role))) {
+    return <Navigate to={getDefaultHome(user.roles)} replace />
+  }
+
   return <Outlet />
 }
 

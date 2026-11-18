@@ -140,15 +140,45 @@ Base: `http://localhost:5072/api` (configurable con `VITE_API_URL` en un `.env`)
 
 ### Auth (público)
 
-```
-POST /api/auth/register
-  body: { firstName, lastName, email, password }
+Hay un único login para todos los usuarios. Ya no existen `/auth/staff/login` ni
+`/auth/patient/login`.
 
+```
 POST /api/auth/login
   body: { email, password }
-  200:  { token, email, firstName }
+  200:  { token, email, fullName, roles: string[] }
   401:  { message: "Credenciales inválidas" }
+
+POST /api/auth/patient/register
+  body: { firstName, lastName, dateOfBirth, dni, healthInsurance, insuranceNumber,
+          email, password, phoneNumber }
+  200:  { token, email, fullName, roles: string[] }
+  409:  { message: "Ya existe una cuenta con ese mail o un paciente con ese DNI." }
 ```
+
+**Roles múltiples.** Un médico también es paciente (`Doctor : Patient : User`, un solo Id),
+así que `roles` puede ser `["Admin"]`, `["Patient"]` o `["Doctor","Patient"]`.
+
+Cómo lo maneja el front:
+
+- **Sesión:** `AuthContext` guarda `token` y `user = { email, name: fullName, roles }` en
+  `localStorage`. Si falta alguno o `user` tiene el formato viejo (`role` string), limpia
+  ambos y pide login.
+- **Rutas:** `RequireAuth` recibe `allowedRoles`. Sin sesión redirige a `/login`; sin un rol
+  permitido, al home por defecto (`getDefaultHome` en `utils/roles.js`, prioridad
+  Admin > Doctor > Patient).
+
+  | Rutas | `allowedRoles` |
+  |---|---|
+  | `/`, `/turnos` | `['Doctor']` |
+  | `/admin` | `['Admin']` |
+  | `/mi-ficha`, `/mi-ficha/turnos` | `['Patient']` |
+
+- **Portal actual:** la URL es la fuente de verdad, no hay estado `activePortal`. `UserMenu`
+  muestra un link por portal si el usuario tiene más de un rol.
+- **Logout:** siempre va a `/login`.
+- **401:** en `/auth/*` llega como error normal con su `message`. En el resto de los
+  endpoints, con token guardado, `apiClient` borra la sesión y redirige a `/login`.
 
 El resto de los endpoints requieren el header:
 

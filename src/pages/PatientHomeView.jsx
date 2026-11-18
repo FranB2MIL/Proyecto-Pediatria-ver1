@@ -123,7 +123,7 @@ function PatientHomeView() {
 
   return (
     <div className={styles.page}>
-      <TopBar name={data?.profile?.firstName} logoutPath="/login" />
+      <TopBar name={data?.profile?.firstName} />
 
       <main className={styles.content}>
         {loading && <p className={styles.stateMessage}>Cargando tu ficha...</p>}

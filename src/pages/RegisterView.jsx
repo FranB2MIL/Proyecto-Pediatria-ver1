@@ -2,17 +2,14 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { registerPatient } from '../services/authService'
 import { useAuth } from '../hooks/useAuth'
-import { initialRegisterForm, validateRegisterForm } from './registerHelper'
+import { getDefaultHome } from '../utils/roles'
+import { PERSONAL_FIELDS, initialRegisterForm, validateRegisterForm } from './registerHelper'
 import styles from './AuthForm.module.css'
 
 const FIELDS = [
   { key: 'firstName', label: 'Nombre', type: 'text' },
   { key: 'lastName', label: 'Apellido', type: 'text' },
-  { key: 'dni', label: 'DNI', type: 'text' },
-  { key: 'dateOfBirth', label: 'Fecha de nacimiento', type: 'date' },
-  { key: 'healthInsurance', label: 'Obra social (opcional)', type: 'text' },
-  { key: 'insuranceNumber', label: 'N° de afiliado (opcional)', type: 'text' },
-  { key: 'phoneNumber', label: 'Teléfono', type: 'tel' },
+  ...PERSONAL_FIELDS,
   { key: 'email', label: 'Email', type: 'email' },
   { key: 'password', label: 'Contraseña', type: 'password' },
   { key: 'confirmPassword', label: 'Repetir contraseña', type: 'password' },
@@ -47,7 +44,7 @@ function RegisterView() {
         try {
             const response = await registerPatient(formData)
             handleUserLogin(response)
-            navigate('/mi-ficha')
+            navigate(getDefaultHome(response.roles))
           } catch (err) {
             setError(err.message)
           } finally {

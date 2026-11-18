@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginPatient } from '../services/authService'
+import { login } from '../services/authService'
 import { useAuth } from '../hooks/useAuth'
+import { getDefaultHome } from '../utils/roles'
 import styles from './AuthForm.module.css'
 
 function LoginView() {
@@ -31,9 +32,9 @@ function LoginView() {
         setLoading(true)
 
         try {
-            const response = await loginPatient(formData.email.trim(),formData.password)
+            const response = await login(formData.email.trim(), formData.password)
             handleUserLogin(response)
-            navigate('/mi-ficha')
+            navigate(getDefaultHome(response.roles))
           } catch (err) {
             setError(err.message)
           } finally {
@@ -46,7 +47,7 @@ function LoginView() {
                 <h2 className={styles.brand}>MediTrack</h2>
                 <div className={styles.card}>
                     <h1 className={styles.title}>Iniciar sesión</h1>
-                    <p className={styles.subtitle}>Ingresá con tu cuenta de paciente</p>
+                    <p className={styles.subtitle}>Ingresá con tu cuenta</p>
 
                     <form onSubmit={handleSubmit} className={styles.form} noValidate>
                         <div className={styles.field}>
@@ -80,7 +81,6 @@ function LoginView() {
                     <p className={styles.footer}>
                         ¿No tenés cuenta? <Link to="/register" className={styles.link}>Registrate</Link>
                     </p>
-                    <p className={styles.footer}>¿Sos medico o admin? <Link to="/staff/login" className={styles.link}>Incia sesion aqui.</Link></p>
                 </div>
             </div>
         )
