@@ -6,7 +6,7 @@ import styles from './TopBar.module.css'
 // homePath (opcional): la marca pasa a ser un link a esa ruta.
 // fullWidth (opcional): mismo padding lateral que las vistas a todo el ancho, sin el contenedor de 1760px.
 // backTo (opcional, { to, label }): en lugar de la marca, un botón para volver a esa ruta
-const TopBar = ({ name, logoutPath, homePath, fullWidth = false, backTo }) => {
+const TopBar = ({ name, homePath, fullWidth = false, backTo }) => {
   let start
   if (backTo) {
     start = (
@@ -23,7 +23,7 @@ const TopBar = ({ name, logoutPath, homePath, fullWidth = false, backTo }) => {
   return (
     <header className={`${styles.topBar} ${fullWidth ? styles.fullWidth : ''}`}>
       {start}
-      <UserMenu name={name} logoutPath={logoutPath} />
+      <UserMenu name={name} />
     </header>
   )
 }

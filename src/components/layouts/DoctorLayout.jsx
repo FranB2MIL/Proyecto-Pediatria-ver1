@@ -17,7 +17,6 @@ function DoctorLayout() {
     <div style={fullHeightStyle}>
       <TopBar
         name={user?.name}
-        logoutPath="/staff/login"
         homePath="/"
         fullWidth
         backTo={onAppointments ? BACK_TO_PATIENTS : undefined}

@@ -59,7 +59,7 @@ function AdminView() {
 
   return (
     <div className={styles.page}>
-      <TopBar name={user?.name} logoutPath="/staff/login" />
+      <TopBar name={user?.name} />
 
       <div className={styles.pageContainer}>
         <DoctorList

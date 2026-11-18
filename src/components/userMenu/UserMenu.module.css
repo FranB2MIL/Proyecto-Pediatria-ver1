@@ -45,3 +45,49 @@
   outline: 2px solid #2B2320;
   outline-offset: 2px;
 }
+
+.portals {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.portalLink {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #5C544C;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.portalLink:hover {
+  color: #C0392B;
+}
+
+.portalLink:focus-visible {
+  outline: 2px solid #2B2320;
+  outline-offset: 2px;
+}
+
+.portalLinkActive {
+  font-weight: 600;
+  color: #C0392B;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* En mobile el switch no entra en línea junto al botón de volver y Salir */
+@media (max-width: 640px) {
+  .portals {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .withPortals .greeting,
+  .withPortals .divider {
+    display: none;
+  }
+}

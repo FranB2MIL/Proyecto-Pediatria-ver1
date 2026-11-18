@@ -12,8 +12,13 @@ export async function apiFetch(path, options = {}) {
     },
   })
 
-  if (response.status === 401 && token) {
+  // En /auth/* un 401 son credenciales inválidas, no una sesión vencida:
+  // sigue como error normal para que la vista muestre su message
+  const isAuthEndpoint = path.startsWith('/auth/')
+
+  if (response.status === 401 && token && !isAuthEndpoint) {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     window.location.href = '/login'
     throw new Error('Sesión expirada')
   }

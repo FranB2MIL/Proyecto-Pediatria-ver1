@@ -175,7 +175,7 @@ function PatientBookingView() {
 
   return (
     <div className={styles.page}>
-      <TopBar name={!profileLoading && !profileError ? profile?.firstName : null} logoutPath="/login" />
+      <TopBar name={!profileLoading && !profileError ? profile?.firstName : null} />
 
       <main className={styles.content}>
         <Link to="/mi-ficha" className={styles.backLink}>‹ Volver a mi ficha</Link>
